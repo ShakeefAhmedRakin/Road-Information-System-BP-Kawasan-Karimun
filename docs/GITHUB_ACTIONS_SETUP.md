@@ -10,7 +10,7 @@ Quick guide to set up and troubleshoot GitHub Actions for database migrations.
 
 ```
 The actions actions/checkout@v4, pnpm/action-setup@v2, and actions/setup-node@v4
-are not allowed in ShakeefAhmedRakin/internal-portal-template because all actions
+are not allowed in ShakeefAhmedRakin/sistem-informasi-jalan-bp-kawasan-karimun because all actions
 must be from a repository owned by ShakeefAhmedRakin.
 ```
 
@@ -29,7 +29,7 @@ This approach is **secure** - you only allow the specific actions you need.
 1. **Go to your GitHub repository**
 
    ```
-   https://github.com/ShakeefAhmedRakin/internal-portal-template
+   https://github.com/ShakeefAhmedRakin/sistem-informasi-jalan-bp-kawasan-karimun
    ```
 
 2. **Navigate to Settings**

@@ -9,8 +9,8 @@ const interFont = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "internal-portal-template",
-  description: "internal-portal-template",
+  title: "sistem-informasi-jalan-bp-kawasan-karimun",
+  description: "sistem-informasi-jalan-bp-kawasan-karimun",
 };
 
 export default function RootLayout({

@@ -1,5 +1,5 @@
 {
-  "name": "internal-portal-template",
+  "name": "sistem-informasi-jalan-bp-kawasan-karimun",
   "private": true,
   "workspaces": [
     "apps/*",

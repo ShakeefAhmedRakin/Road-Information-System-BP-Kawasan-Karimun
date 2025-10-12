@@ -17,7 +17,7 @@ are not allowed
 
 ### The Fix
 
-1. **Go to your repository**: https://github.com/ShakeefAhmedRakin/internal-portal-template
+1. **Go to your repository**: https://github.com/ShakeefAhmedRakin/sistem-informasi-jalan-bp-kawasan-karimun
 2. **Settings** → **Actions** → **General**
 3. Scroll to **"Actions permissions"**
 4. Select: **"Allow [your org], and select non-[your org], actions and reusable workflows"**
