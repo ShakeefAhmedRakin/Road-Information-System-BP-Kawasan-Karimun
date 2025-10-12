@@ -11,7 +11,8 @@
         "CORS_ORIGIN",
         "DATABASE_URL",
         "NEXT_PUBLIC_*",
-        "NODE_ENV"
+        "NODE_ENV",
+        "IMG_HIPPO_API_KEY"
       ]
     },
     "lint": {
