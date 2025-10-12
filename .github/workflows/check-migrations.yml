@@ -1,0 +1,75 @@
+name: Check Migrations
+
+# Run on all PRs to ensure migrations are generated
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - "packages/api/src/**/*.ts"
+      - "packages/api/migrations/**"
+
+jobs:
+  check-migrations:
+    name: Verify Migration Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for comparison
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check schema against existing migrations
+        run: |
+          cd packages/api
+
+          echo "🔍 Checking if schema matches migrations..."
+
+          # Try to generate migrations
+          pnpm drizzle-kit generate --config=drizzle.config.ts
+
+          # Check if any new migration files were created
+          if [[ -n $(git status --porcelain migrations/) ]]; then
+            echo ""
+            echo "❌ ERROR: Schema changes detected without corresponding migrations!"
+            echo ""
+            echo "You modified the database schema but didn't generate migration files."
+            echo ""
+            echo "📝 To fix this:"
+            echo "  1. Run: pnpm db:dev:generate"
+            echo "  2. Review the generated migration file"
+            echo "  3. Commit the new migration file"
+            echo ""
+            git status migrations/
+            exit 1
+          fi
+
+          echo "✅ Schema matches migrations - all good!"
+
+      - name: Comment on PR (if migrations missing)
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **Migration Check Failed**\n\nYour schema changes are missing migration files.\n\n**To fix:**\n```bash\npnpm db:dev:generate\ngit add packages/api/migrations/\ngit commit -m "Add database migrations"\n```'
+            })

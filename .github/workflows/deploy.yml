@@ -1,0 +1,96 @@
+name: Database Migrations
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Check for uncommitted migrations
+  check-migrations:
+    name: Check Migration Status
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for pending migrations
+        run: |
+          cd packages/api
+          # This checks if schema changes need to be generated
+          # If there are changes, the workflow will fail
+          pnpm drizzle-kit generate --config=drizzle.config.ts
+
+          # Check if any new files were generated
+          if [[ -n $(git status --porcelain migrations/) ]]; then
+            echo "❌ Error: Schema changes detected but migrations not generated!"
+            echo "Run 'pnpm db:dev:generate' to create migration files"
+            git status migrations/
+            exit 1
+          fi
+
+          echo "✅ All schema changes have been generated as migrations"
+
+  # Run migrations on production Neon database
+  migrate-production:
+    name: Run Neon Database Migrations
+    runs-on: ubuntu-latest
+    needs: check-migrations
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run migrations on Neon
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NODE_ENV: production
+        run: |
+          cd packages/api
+          echo "🚀 Running production migrations on Neon..."
+          pnpm db:prod:migrate
+          echo "✅ Migrations completed successfully!"
+          echo ""
+          echo "📌 Vercel will automatically deploy the frontend"
+
+      - name: Migration summary
+        run: |
+          echo "✅ Database migrations applied to Neon"
+          echo "🔄 Vercel is auto-deploying frontend from main branch"
+          echo "🎉 Deployment pipeline complete!"

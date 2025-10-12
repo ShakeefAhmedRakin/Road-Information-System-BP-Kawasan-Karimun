@@ -1,0 +1,45 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:dev:push": "dotenv -e .env.development -- cross-env NODE_ENV=development drizzle-kit push",
+    "db:dev:studio": "dotenv -e .env.development -- cross-env NODE_ENV=development drizzle-kit studio",
+    "db:dev:generate": "dotenv -e .env.development -- cross-env NODE_ENV=development drizzle-kit generate",
+    "db:dev:migrate": "dotenv -e .env.development -- cross-env NODE_ENV=development drizzle-kit migrate",
+    "db:prod:push": "dotenv -e .env.production -- cross-env NODE_ENV=production drizzle-kit push",
+    "db:prod:studio": "dotenv -e .env.production -- cross-env NODE_ENV=production drizzle-kit studio",
+    "db:prod:generate": "dotenv -e .env.production -- cross-env NODE_ENV=production drizzle-kit generate",
+    "db:prod:migrate": "dotenv -e .env.production -- cross-env NODE_ENV=production drizzle-kit migrate",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/pg": "^8.11.11",
+    "cross-env": "^10.1.0",
+    "dotenv-cli": "^7.4.2",
+    "drizzle-kit": "^0.30.5",
+    "prettier": "^3.4.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "@orpc/client": "^1.5.0",
+    "@orpc/server": "^1.5.0",
+    "better-auth": "^1.2.9",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.38.4",
+    "pg": "^8.14.1",
+    "tsx": "^4.20.3",
+    "zod": "^4.0.0"
+  }
+}

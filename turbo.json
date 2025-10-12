@@ -1,0 +1,84 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "env": [
+        "BETTER_AUTH_*",
+        "CORS_ORIGIN",
+        "DATABASE_URL",
+        "NEXT_PUBLIC_*",
+        "NODE_ENV"
+      ]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:push": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:studio": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:migrate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:generate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:dev:push": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:dev:studio": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:dev:migrate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:dev:generate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:prod:push": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:prod:studio": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:prod:migrate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:prod:generate": {
+      "cache": false,
+      "persistent": true
+    },
+    "format": {
+      "cache": false,
+      "persistent": false
+    },
+    "format:check": {
+      "cache": false,
+      "persistent": false
+    }
+  }
+}

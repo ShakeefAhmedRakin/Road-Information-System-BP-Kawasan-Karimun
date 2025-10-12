@@ -1,0 +1,35 @@
+{
+  "name": "internal-portal-template",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "format": "turbo format",
+    "format:check": "turbo format:check",
+    "dev:web": "turbo -F web dev",
+    "dev:server": "turbo -F api dev",
+    "db:push": "turbo -F api db:push",
+    "db:studio": "turbo -F api db:studio",
+    "db:generate": "turbo -F api db:generate",
+    "db:migrate": "turbo -F api db:migrate",
+    "db:dev:push": "turbo -F api db:dev:push",
+    "db:dev:studio": "turbo -F api db:dev:studio",
+    "db:dev:generate": "turbo -F api db:dev:generate",
+    "db:dev:migrate": "turbo -F api db:dev:migrate",
+    "db:prod:push": "turbo -F api db:prod:push",
+    "db:prod:studio": "turbo -F api db:prod:studio",
+    "db:prod:generate": "turbo -F api db:prod:generate",
+    "db:prod:migrate": "turbo -F api db:prod:migrate"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "pnpm@9.13.1"
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "test2" text DEFAULT 'test2';
