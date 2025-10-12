@@ -2,7 +2,7 @@
 
 A production-ready, enterprise-grade template for building **admin-controlled internal portals** and **B2B SaaS applications**. Built with modern TypeScript stack for maximum type safety and developer experience.
 
-> **🚀 Live Demo**: [https://internal-portal-template-demo.vercel.app/](https://internal-portal-template-demo.vercel.app/)  
+> **🚀 Live Demo**: [https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/](https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/)  
 > **🔑 Need admin access?** Email me for test credentials to explore the full admin dashboard.
 
 ---
@@ -344,7 +344,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 📬 Contact & Support
 
-- **Live Demo**: [https://internal-portal-template-demo.vercel.app/](https://internal-portal-template-demo.vercel.app/)
+- **Live Demo**: [https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/](https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/)
 - **Need Admin Credentials?** Email me to get test access to the admin dashboard
 - **Issues**: Open an issue on GitHub for bugs or feature requests
 
