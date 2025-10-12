@@ -8,8 +8,7 @@ export const StaticRoutes = {
 
   // ADMIN RELATED
   MANAGE_USERS: "/dashboard/manage-users",
-  MANAGE_PERMISSIONS: "/dashboard/manage-permissions",
 
   // OPERATOR RELATED
-  MANAGE_PROJECTS: "/dashboard/manage-projects",
+  MANAGE_ROADS: "/dashboard/manage-roads",
 };

@@ -1,9 +1,9 @@
+import PageLayout from "@/components/ui/page-layout";
 import { hasMinimumRole } from "@/hooks/auth/useAuthServer";
 import { USER_ROLES } from "api/src/modules/auth/auth.constants";
 import UnauthorizedCard from "../../../../components/unauthorized-card";
-import PageHeader from "../_components/page-header";
 
-export default async function ManageProjectsPage() {
+export default async function ManageRoadsPage() {
   const allowedAccess = await hasMinimumRole(USER_ROLES.OPERATOR);
 
   if (!allowedAccess) {
@@ -11,8 +11,8 @@ export default async function ManageProjectsPage() {
   }
 
   return (
-    <>
-      <PageHeader title="Manage Projects" description="Manage your projects" />
-    </>
+    <PageLayout title="Manage Roads" description="Manage your roads" contained>
+      2
+    </PageLayout>
   );
 }

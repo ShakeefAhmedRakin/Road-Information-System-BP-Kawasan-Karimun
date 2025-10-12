@@ -15,15 +15,13 @@ const protectedRoutes = [
   StaticRoutes.DASHBOARD,
   StaticRoutes.ACCOUNTS,
   StaticRoutes.MANAGE_USERS,
-  StaticRoutes.MANAGE_PERMISSIONS,
-  StaticRoutes.MANAGE_PROJECTS,
+  StaticRoutes.MANAGE_ROADS,
 ];
 
 // Route permissions mapping (minimum role required)
 const routePermissions: Record<string, UserRole> = {
   [StaticRoutes.MANAGE_USERS]: USER_ROLES.ADMIN,
-  [StaticRoutes.MANAGE_PERMISSIONS]: USER_ROLES.ADMIN,
-  [StaticRoutes.MANAGE_PROJECTS]: USER_ROLES.OPERATOR,
+  [StaticRoutes.MANAGE_ROADS]: USER_ROLES.OPERATOR,
 };
 
 // Helper to check if user has minimum role required

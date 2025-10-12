@@ -3,8 +3,8 @@ import { AudioWaveform } from "lucide-react";
 
 export const OperatorRoutes = [
   {
-    title: "Manage Projects",
-    path: StaticRoutes.MANAGE_PROJECTS,
+    title: "Manage Roads",
+    path: StaticRoutes.MANAGE_ROADS,
     icon: <AudioWaveform />,
   },
 ];

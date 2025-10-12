@@ -22,6 +22,27 @@
       "when": 1759829659095,
       "tag": "0002_futuristic_clea",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1760278175602,
+      "tag": "0003_groovy_white_tiger",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1760278905180,
+      "tag": "0004_young_tag",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1760280981553,
+      "tag": "0005_parched_talkback",
+      "breakpoints": true
     }
   ]
 }
