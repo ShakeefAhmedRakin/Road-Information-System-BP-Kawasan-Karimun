@@ -1,33 +1,40 @@
-# 🏢 Internal Portal Template
+# 🛣️ Sistem Informasi Jalan BP Kawasan Karimun
 
-A production-ready, enterprise-grade template for building **admin-controlled internal portals** and **B2B SaaS applications**. Built with modern TypeScript stack for maximum type safety and developer experience.
+A comprehensive **Road Information System** for BP Kawasan Karimun, designed to manage road inventory, pavement condition assessment, and Traffic Tolerance Index (TTI) calculations based on PKRMS Manual (SE 22/2022).
 
+> **🚧 Status**: Work in Progress  
 > **🚀 Live Demo**: [https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/](https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/)  
-> **🔑 Need admin access?** Email me for test credentials to explore the full admin dashboard.
+> **🔑 Need admin access?** Contact for test credentials.
 
 ---
 
-## 📋 Summary
+## 📋 Project Overview
 
-**What You Get:**
+**Sistem Informasi Jalan BP Kawasan Karimun** is an internal management system for tracking and analyzing road infrastructure conditions within the BP Kawasan Karimun industrial area.
 
-- ✅ **Admin-controlled user management** - No public sign-ups, full admin control
-- ✅ **Role-based access control** - Admin, Operator, and Visitor roles with hierarchical permissions
+**Key Features:**
+
+- 📊 **Road Inventory Management** - Comprehensive road and segment data entry (3 forms)
+- 🛣️ **Pavement Condition Assessment** - Support for 5 pavement types (Asphalt, Concrete, Block, Gravel, Unpaved)
+- 🧮 **TTI Calculation Engine** - Automated Traffic Tolerance Index computation based on PKRMS standards
+- 📈 **Reporting & Export** - Excel export capabilities for analysis and reporting
+- 👥 **Role-Based Access** - Admin, Operator, and Visitor roles with hierarchical permissions
+- 🔐 **Admin-Controlled Access** - No public sign-ups, full admin control over user management
+
+**Built For:**
+
+- 🏭 BP Kawasan Karimun infrastructure management team
+- 🛣️ Road maintenance and planning personnel
+- 📊 Management reporting and decision-making
+
+**Technical Foundation:**
+
 - ✅ **Modern tech stack** - Next.js 15, TypeScript, Tailwind CSS v4, shadcn/ui
 - ✅ **Type-safe APIs** - Full-stack type safety with oRPC
 - ✅ **Production-ready auth** - Secure authentication with Better Auth
 - ✅ **Responsive design** - Mobile and desktop optimized
-- ✅ **Dark/Light themes** - Built-in theme switching
 - ✅ **Database migrations** - Managed with Drizzle ORM
 - ✅ **Monorepo setup** - Turborepo for optimized builds
-- ✅ **Deploy-ready** - Optimized for Vercel (frontend) + Neon (database)
-
-**Perfect For:**
-
-- 🏢 Internal company dashboards and tools
-- 🤝 Client portals and admin-managed systems
-- 🔧 B2B SaaS applications
-- 📊 Enterprise data management tools
 
 ---
 
@@ -45,8 +52,6 @@ A production-ready, enterprise-grade template for building **admin-controlled in
 | **Monorepo**       | Turborepo            | Optimized build system          |
 | **Language**       | TypeScript           | End-to-end type safety          |
 
----
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -59,8 +64,8 @@ A production-ready, enterprise-grade template for building **admin-controlled in
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
-cd internal-portal-template
+git clone https://github.com/your-username/Road-Information-System-BP-Kawasan-Karimun.git
+cd Road-Information-System-BP-Kawasan-Karimun
 pnpm install
 ```
 
@@ -236,10 +241,10 @@ That's it! Your app is now live on Vercel with Neon database! 🎉
 
 ---
 
-## 🏗️ Project Structure
+## 📁 Project Structure
 
 ```
-internal-portal-template/
+sistem-informasi-jalan/
 ├── apps/
 │   └── web/                           # Next.js frontend application
 │       ├── src/
@@ -277,13 +282,13 @@ internal-portal-template/
 
 ## 🔐 Role-Based Access Control
 
-The template includes three built-in roles with hierarchical permissions:
+The system includes three built-in roles with hierarchical permissions:
 
-| Role         | Permissions                                          |
-| ------------ | ---------------------------------------------------- |
-| **Admin**    | Full access: manage users, projects, and permissions |
-| **Operator** | Manage projects, view all data, limited user access  |
-| **Visitor**  | View-only access to dashboard and account settings   |
+| Role         | Permissions                                                  |
+| ------------ | ------------------------------------------------------------ |
+| **Admin**    | Full access: manage users, road data, and system permissions |
+| **Operator** | Manage road inventory and pavement data, view all reports    |
+| **Visitor**  | View-only access to road data, reports, and account settings |
 
 Routes automatically display based on user role. See `apps/web/src/config/` for route configuration.
 
@@ -314,15 +319,16 @@ For detailed guides and troubleshooting, check out the `docs/` folder:
 
 ---
 
-## 🤝 Contributing
+## 🤝 Development Team
 
-Contributions are welcome! Please follow these steps:
+This project is developed for BP Kawasan Karimun's internal infrastructure management needs.
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+**Technical Stack Credits:**
+
+- Built with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Icons by [Lucide](https://lucide.dev/)
+- Authentication by [Better Auth](https://www.better-auth.com/)
 
 ---
 
@@ -332,23 +338,15 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ---
 
-## 🙏 Acknowledgments
+## 📬 Project Info & Access
 
-- Built with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack)
-- UI components from [shadcn/ui](https://ui.shadcn.com/)
-- Icons by [Lucide](https://lucide.dev/)
-- Authentication by [Better Auth](https://www.better-auth.com/)
-- Hosted on [Vercel](https://vercel.com/) + [Neon](https://neon.tech/)
-
----
-
-## 📬 Contact & Support
-
-- **Live Demo**: [https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/](https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/)
-- **Need Admin Credentials?** Email me to get test access to the admin dashboard
-- **Issues**: Open an issue on GitHub for bugs or feature requests
+- **Organization**: BP Kawasan Karimun
+- **Live System**: [https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/](https://sistem-informasi-jalan-bp-kawasan-karimun.vercel.app/)
+- **Deployment**: Hosted on [Vercel](https://vercel.com/) + [Neon](https://neon.tech/)
+- **Status**: 🚧 Work in Progress
+- **Access Credentials**: Contact system administrator for user credentials
 
 ---
 
-**Ready to build your internal portal?** 🚀  
-Clone this template and start customizing for your needs!
+**Sistem Informasi Jalan BP Kawasan Karimun** 🛣️  
+Road Infrastructure Management System
