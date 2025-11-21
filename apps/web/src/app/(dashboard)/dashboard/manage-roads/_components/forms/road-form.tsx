@@ -9,12 +9,17 @@ import PavementDamageForms from "./pavement-damage-forms";
 
 import { getDefaultDamageAssessment } from "@/lib/damage-assessment";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Button } from "../../../../../../components/ui/button";
+import { StaticRoutes } from "../../../../../../config/static-routes";
 import { orpc } from "../../../../../../utils/orpc";
 import RoadSegmentFields from "./road-segment-fields";
 import SegmentForms from "./segment-forms";
 
 export default function RoadForm() {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(createRoadInputSchema),
     mode: "onChange",
@@ -63,9 +68,14 @@ export default function RoadForm() {
 
   const onSubmit = async (values: z.infer<typeof createRoadInputSchema>) => {
     try {
-      console.log("hit");
       const parsedValues = createRoadInputSchema.parse(values);
-      await createRoadMutation.mutateAsync(parsedValues);
+      const response = await createRoadMutation.mutateAsync(parsedValues);
+      if (response.success) {
+        router.push(`${StaticRoutes.MANAGE_ROADS}/${response.roadId}`);
+        toast.success("Road created successfully");
+      } else {
+        toast.error("Failed to create road");
+      }
     } catch (error) {
       console.error("Error creating road:", error);
     }
