@@ -9,8 +9,8 @@ const interFont = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "sistem-informasi-jalan-bp-kawasan-karimun",
-  description: "sistem-informasi-jalan-bp-kawasan-karimun",
+  title: "Sistem Informasi Jalan BP Kawasan Karimun",
+  description: "Sistem Informasi Jalan BP Kawasan Karimun",
 };
 
 export default function RootLayout({

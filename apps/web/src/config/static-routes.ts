@@ -11,4 +11,5 @@ export const StaticRoutes = {
 
   // OPERATOR RELATED
   MANAGE_ROADS: "/dashboard/manage-roads",
+  CREATE_ROAD: "/dashboard/manage-roads/create-road",
 };

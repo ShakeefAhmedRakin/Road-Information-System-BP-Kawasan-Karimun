@@ -1,13 +1,19 @@
+import type { DamageAssessment } from "@repo/shared";
+import { createDrizzleEnums } from "@repo/shared";
 import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
+  jsonb,
   numeric,
   pgTable,
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
 import { road } from "../road/road.schema";
+
+const drizzleEnums = createDrizzleEnums();
 
 // Segments table for storing stationing/chainage data
 // Stationing stored as numeric values in meters from the start of the road
@@ -32,6 +38,51 @@ export const segment = pgTable(
     stationingToM: numeric("stationing_to_m", { precision: 10, scale: 2 })
       .notNull()
       .$type<number>(),
+    // Pavement Inventory (copied from road creation)
+    pavementType: drizzleEnums.pavementTypeEnum("pavement_type").notNull(),
+    pavementWidthM: numeric("pavement_width_m", { precision: 10, scale: 2 })
+      .notNull()
+      .$type<number>(),
+    carriagewayWidthM: numeric("carriageway_width_m", {
+      precision: 10,
+      scale: 2,
+    }).$type<number>(),
+    rightOfWayWidthM: numeric("right_of_way_width_m", {
+      precision: 10,
+      scale: 2,
+    })
+      .notNull()
+      .$type<number>(),
+    terrain: drizzleEnums.terrainTypeEnum("terrain").notNull(),
+    notPassable: boolean("not_passable").notNull(),
+    // Left side attributes
+    leftShoulderType: drizzleEnums
+      .shoulderTypeEnum("left_shoulder_type")
+      .notNull(),
+    leftShoulderWidthM: drizzleEnums
+      .shoulderWidthEnum("left_shoulder_width_m")
+      .notNull(),
+    leftDrainageType: drizzleEnums
+      .drainageTypeEnum("left_drainage_type")
+      .notNull(),
+    leftLandUseType: drizzleEnums
+      .landUseTypeEnum("left_land_use_type")
+      .notNull(),
+    // Right side attributes
+    rightShoulderType: drizzleEnums
+      .shoulderTypeEnum("right_shoulder_type")
+      .notNull(),
+    rightShoulderWidthM: drizzleEnums
+      .shoulderWidthEnum("right_shoulder_width_m")
+      .notNull(),
+    rightDrainageType: drizzleEnums
+      .drainageTypeEnum("right_drainage_type")
+      .notNull(),
+    rightLandUseType: drizzleEnums
+      .landUseTypeEnum("right_land_use_type")
+      .notNull(),
+    // Damage assessment data stored as JSONB based on pavement type
+    damageAssessment: jsonb("damage_assessment").$type<DamageAssessment>(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },

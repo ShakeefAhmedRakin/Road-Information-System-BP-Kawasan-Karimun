@@ -1,20 +1,17 @@
+import { createDrizzleEnums } from "@repo/shared";
 import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
   numeric,
-  pgEnum,
   pgTable,
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
 import { user } from "../auth/auth.schema";
 
-// Enum to control how the last segment is generated
-export const segmentGenerationModeEnum = pgEnum("segment_generation_mode", [
-  "exact", // Last segment matches exact road length (e.g., 800-840 for 840m road)
-  "rounded", // Last segment rounds up to complete interval (e.g., 800-900 for 840m road)
-]);
+const drizzleEnums = createDrizzleEnums();
 
 export const road = pgTable(
   "road",
@@ -28,21 +25,27 @@ export const road = pgTable(
       .notNull()
       .$type<number>(),
     // Fixed to 100m as per requirements - this is informational
-    segmentIntervalM: integer("segment_interval_m").notNull().default(100),
+    segmentIntervalM: integer("segment_interval_m").notNull(),
     pavementWidthM: numeric("pavement_width_m", { precision: 10, scale: 2 })
       .notNull()
       .$type<number>(),
     // Controls how the last segment is generated when road length doesn't align with interval
     // "exact" - last segment ends at actual road length (e.g., 800-840 for 840m)
     // "rounded" - last segment rounds up to complete interval (e.g., 800-900 for 840m)
-    segmentGenerationMode: segmentGenerationModeEnum("segment_generation_mode")
-      .notNull()
-      .default("rounded"),
+    segmentGenerationMode: drizzleEnums
+      .segmentGenerationModeEnum("segment_generation_mode")
+      .notNull(),
     createdBy: text("created_by").references(() => user.id, {
       onDelete: "set null",
     }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    isVisibleByVisitors: boolean("is_visible_by_visitors")
+      .notNull()
+      .default(false),
+    updatedAt: timestamp("updated_at")
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (table) => [
     index("road_name_idx").on(table.name),

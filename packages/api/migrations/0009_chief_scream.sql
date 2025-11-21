@@ -1,0 +1,1 @@
+ALTER TABLE "road" ADD COLUMN "is_visible_by_visitors" boolean DEFAULT false NOT NULL;
