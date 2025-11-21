@@ -275,6 +275,8 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
             <div className="flex items-center gap-x-2">
               <ReportDialogTrigger
                 roadId={roadId}
+                roadName={data.road.name}
+                roadNumber={data.road.number}
                 disabled={isViewDisabled}
                 isChecking={isStatusLoading}
               />

@@ -34,6 +34,8 @@
     "better-auth": "^1.2.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "html2canvas-pro": "^1.5.13",
+    "jspdf": "^3.0.4",
     "lucide-react": "^0.487.0",
     "motion": "^12.19.1",
     "next": "15.3.0",
