@@ -13,10 +13,8 @@ import {
 import { forwardRef, useEffect, useImperativeHandle, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
-import PavementDamageForms from "../../../manage-roads/_components/forms/pavement-damage-forms";
 import SegmentForms from "../../../manage-roads/_components/forms/segment-forms";
 
-import { paragraphVariants } from "@/components/ui/typography";
 import { getDefaultDamageAssessment } from "@/lib/damage-assessment";
 import { orpc } from "@/utils/orpc";
 import { useMutation } from "@tanstack/react-query";
@@ -117,7 +115,10 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
       ) {
         const newDamageAssessment =
           getDefaultDamageAssessment(watchedPavementType);
-        form.setValue("damageAssessment", newDamageAssessment);
+        form.setValue("damageAssessment", newDamageAssessment, {
+          shouldDirty: true,
+          shouldValidate: true,
+        });
       }
     }, [watchedPavementType, form]);
 
@@ -204,19 +205,6 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
           >
             {/* Segment Attributes */}
             <SegmentForms />
-
-            {/* Damage Assessment */}
-            <div className="max-w-4xl space-y-4">
-              <h3
-                className={paragraphVariants({
-                  size: "lg",
-                  className: "font-medium",
-                })}
-              >
-                Damage Assessment
-              </h3>
-              <PavementDamageForms />
-            </div>
           </form>
         </FormProvider>
       </div>

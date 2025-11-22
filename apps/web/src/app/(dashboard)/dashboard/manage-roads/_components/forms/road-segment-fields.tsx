@@ -133,7 +133,7 @@ export default function RoadSegmentFields() {
               <div>
                 <FormLabel>Segment Interval</FormLabel>
                 <FormDescription>
-                  Interval for dividing the road into segments (100m standard)
+                  Fixed at 100m standard interval
                 </FormDescription>
               </div>
               <FormControl>
@@ -145,10 +145,10 @@ export default function RoadSegmentFields() {
                     {...field}
                     type="number"
                     placeholder="Enter segment interval"
-                    value={field.value || ""}
-                    onChange={(e) =>
-                      field.onChange(parseInt(e.target.value, 10) || 0)
-                    }
+                    value={100}
+                    disabled={true}
+                    readOnly={true}
+                    className="cursor-not-allowed opacity-60"
                   />
                   <InputGroupAddon align="inline-end">
                     <span className="text-muted-foreground text-sm">m</span>

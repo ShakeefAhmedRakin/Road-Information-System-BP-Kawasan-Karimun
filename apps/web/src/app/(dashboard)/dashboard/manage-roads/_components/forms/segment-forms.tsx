@@ -30,6 +30,7 @@ import {
 } from "@repo/shared";
 import { Mountain, Ruler, Settings, TreePine, Waves } from "lucide-react";
 import { useFormContext } from "react-hook-form";
+import PavementDamageForms from "./pavement-damage-forms";
 
 export default function SegmentForms() {
   const form = useFormContext();
@@ -353,7 +354,7 @@ export default function SegmentForms() {
         </TabsContent>
 
         <TabsContent value="pavement" className="mt-4">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Pavement Type */}
             <FormField
               control={form.control}
@@ -541,6 +542,8 @@ export default function SegmentForms() {
               )}
             />
           </div>
+
+          <PavementDamageForms />
         </TabsContent>
       </Tabs>
     </div>

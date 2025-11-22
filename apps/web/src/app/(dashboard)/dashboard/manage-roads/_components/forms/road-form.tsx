@@ -5,7 +5,6 @@ import { createRoadInputSchema } from "@repo/shared";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
-import PavementDamageForms from "./pavement-damage-forms";
 
 import { getDefaultDamageAssessment } from "@/lib/damage-assessment";
 import { useMutation } from "@tanstack/react-query";
@@ -59,10 +58,18 @@ export default function RoadForm() {
   // Update damage assessment when pavement type changes
   useEffect(() => {
     const currentDamageAssessment = form.getValues("damageAssessment");
-    if (currentDamageAssessment.pavementType !== watchedPavementType) {
+    if (
+      currentDamageAssessment &&
+      typeof currentDamageAssessment === "object" &&
+      "pavementType" in currentDamageAssessment &&
+      currentDamageAssessment.pavementType !== watchedPavementType
+    ) {
       const newDamageAssessment =
         getDefaultDamageAssessment(watchedPavementType);
-      form.setValue("damageAssessment", newDamageAssessment);
+      form.setValue("damageAssessment", newDamageAssessment, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
     }
   }, [watchedPavementType, form]);
 
@@ -97,9 +104,6 @@ export default function RoadForm() {
 
         {/* Damage Assessment */}
         <div className="max-w-4xl space-y-4">
-          <h3 className="text-lg font-semibold">Damage Assessment</h3>
-          <PavementDamageForms />
-
           <Button
             type="submit"
             disabled={isSubmitting || !isValid}
