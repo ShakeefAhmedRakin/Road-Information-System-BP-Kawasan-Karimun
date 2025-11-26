@@ -175,7 +175,7 @@ export default function RoadSegmentFields() {
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={field.value || ""}
                   disabled={form.formState.isSubmitting}
                 >
                   <SelectTrigger className="w-full">

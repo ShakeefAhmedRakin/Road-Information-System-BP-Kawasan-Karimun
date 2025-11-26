@@ -709,8 +709,14 @@ class ResultService {
   }): SegmentResultSummary {
     const sectionAreaRounded = this.round(context.area);
     const weightedDistressRounded = this.round(weightedDistress);
+
+    // Special case: Unpaved roads always have a fixed TTI of 150
     const ttiRaw =
-      context.area > 0 ? (weightedDistress / context.area) * 100 : 0;
+      pavementType === "unpaved"
+        ? 150
+        : context.area > 0
+          ? (weightedDistress / context.area) * 100
+          : 0;
     const tti = this.round(ttiRaw);
 
     return {

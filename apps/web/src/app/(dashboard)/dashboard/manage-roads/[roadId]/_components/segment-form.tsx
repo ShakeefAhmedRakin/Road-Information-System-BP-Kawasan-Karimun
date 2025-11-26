@@ -47,6 +47,7 @@ type UpdateSegmentFormData = z.infer<typeof updateSegmentSchema>;
 
 interface SegmentFormProps {
   segment: ReadRoadSegmentType;
+  allSegments: ReadRoadSegmentType[];
   onUpdateSuccess?: () => void;
   onDirtyStateChange?: (segmentId: string, isDirty: boolean) => void;
 }
@@ -78,10 +79,11 @@ const buildSegmentFormValues = (
 export type SegmentFormHandle = {
   saveChanges: () => Promise<void>;
   discardChanges: () => void;
+  copyFromSegment: (sourceSegmentId: string) => void;
 };
 
 const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
-  ({ segment, onUpdateSuccess, onDirtyStateChange }, ref) => {
+  ({ segment, allSegments, onUpdateSuccess, onDirtyStateChange }, ref) => {
     const defaultValues = useMemo(
       () => buildSegmentFormValues(segment),
       [segment]
@@ -189,9 +191,32 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
       toast.info(`Discarded changes for segment ${segment.segmentNumber}`);
     };
 
+    const copyFromSegment = (sourceSegmentId: string) => {
+      const sourceSegment = allSegments.find((s) => s.id === sourceSegmentId);
+      if (!sourceSegment) {
+        toast.error("Source segment not found");
+        return;
+      }
+
+      const sourceValues = buildSegmentFormValues(sourceSegment);
+
+      // Set all values from the source segment
+      Object.entries(sourceValues).forEach(([key, value]) => {
+        form.setValue(key as keyof UpdateSegmentFormData, value, {
+          shouldDirty: true,
+          shouldValidate: true,
+        });
+      });
+
+      toast.success(
+        `Copied data from Segment ${sourceSegment.segmentNumber} to Segment ${segment.segmentNumber}`
+      );
+    };
+
     useImperativeHandle(ref, () => ({
       saveChanges: saveSegment,
       discardChanges: discardSegment,
+      copyFromSegment,
     }));
 
     return (

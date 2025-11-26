@@ -7,10 +7,17 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import PageLayout from "@/components/ui/page-layout";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { orpc } from "@/utils/orpc";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ReadRoadSegmentType } from "api/src/modules/segment/segment.schema";
-import { ArrowRightIcon, InfoIcon, Loader2 } from "lucide-react";
+import { ArrowRightIcon, CopyIcon, InfoIcon, Loader2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../../../../../components/ui/button";
@@ -230,6 +237,18 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
     );
   }, []);
 
+  const handleCopyFromSegment = useCallback(
+    (targetSegmentId: string, sourceSegmentId: string) => {
+      const formRef = formRefs.current[targetSegmentId];
+      if (!formRef) {
+        return;
+      }
+
+      formRef.copyFromSegment(sourceSegmentId);
+    },
+    []
+  );
+
   if (isLoading) {
     return (
       <PageLayout title="Road Details" description="View the details of a road">
@@ -319,6 +338,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                 const isSavingSegment = pendingSaves[segment.id] ?? false;
                 const isHighlighted = highlightedSegment === segment.id;
                 const itemValue = getItemValue(segment.id);
+                const isAccordionOpen = openItem === itemValue;
 
                 return (
                   <AccordionItem
@@ -359,6 +379,29 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                         isHighlighted && "ring-primary animate-pulse ring-2"
                       )}
                     >
+                      <Select
+                        value=""
+                        onValueChange={(sourceSegmentId) => {
+                          if (sourceSegmentId) {
+                            handleCopyFromSegment(segment.id, sourceSegmentId);
+                          }
+                        }}
+                        disabled={!isAccordionOpen || isSavingSegment}
+                      >
+                        <SelectTrigger size="sm" className="w-auto">
+                          <CopyIcon className="mr-2 h-4 w-4" />
+                          <SelectValue placeholder="Copy from..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {segments
+                            .filter((s) => s.id !== segment.id)
+                            .map((s) => (
+                              <SelectItem key={s.id} value={s.id}>
+                                Segment {s.segmentNumber}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
                       <Button
                         size="sm"
                         onClick={() => handleSaveClick(segment.id)}
@@ -392,6 +435,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                           }
                         }}
                         segment={segment}
+                        allSegments={segments}
                         onUpdateSuccess={() => {
                           refetch();
                         }}
