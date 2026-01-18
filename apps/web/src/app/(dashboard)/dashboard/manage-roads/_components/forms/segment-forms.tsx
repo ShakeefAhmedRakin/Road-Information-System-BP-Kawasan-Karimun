@@ -354,193 +354,209 @@ export default function SegmentForms() {
         </TabsContent>
 
         <TabsContent value="pavement" className="mt-4">
-          <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* Pavement Type */}
-            <FormField
-              control={form.control}
-              name="pavementType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Pavement Type</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={
-                        form.formState.isSubmitting ||
-                        form.getValues("notPassable") === true
-                      }
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select pavement type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {PAVEMENT_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            <div className="flex items-center gap-2">
-                              <Settings className="size-3.5" />
-                              <span className="capitalize">
-                                {type === "unpaved"
-                                  ? "Unpaved Road"
-                                  : `${type} Pavement`}
-                              </span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+          <div className="mb-4 space-y-6">
+            {/* Road Inventory Group */}
+            <div className="space-y-4">
+              <h3 className="text-foreground border-b pb-2 text-lg font-semibold">
+                Road Inventory
+              </h3>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {/* Pavement Type */}
+                <FormField
+                  control={form.control}
+                  name="pavementType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Pavement Type</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          disabled={
+                            form.formState.isSubmitting ||
+                            form.getValues("notPassable") === true
+                          }
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select pavement type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {PAVEMENT_TYPES.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                <div className="flex items-center gap-2">
+                                  <Settings className="size-3.5" />
+                                  <span className="capitalize">
+                                    {type === "unpaved"
+                                      ? "Unpaved Road"
+                                      : `${type} Pavement`}
+                                  </span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-            {/* Pavement Width */}
-            <FormField
-              control={form.control}
-              name="pavementWidthM"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Pavement Width</FormLabel>
-                  <FormControl>
-                    <InputGroup>
-                      <InputGroupAddon>
-                        <Ruler className="size-3.5" />
-                      </InputGroupAddon>
-                      <InputGroupInput
-                        {...field}
-                        type="number"
-                        placeholder="Enter pavement width"
-                        disabled={form.getValues("notPassable") === true}
-                        value={field.value || ""}
-                        onChange={(e) =>
-                          field.onChange(parseFloat(e.target.value) || 0)
-                        }
-                      />
-                      <InputGroupAddon align="inline-end">
-                        <span className="text-muted-foreground text-sm">m</span>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                {/* Pavement Width */}
+                <FormField
+                  control={form.control}
+                  name="pavementWidthM"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Pavement Width</FormLabel>
+                      <FormControl>
+                        <InputGroup>
+                          <InputGroupAddon>
+                            <Ruler className="size-3.5" />
+                          </InputGroupAddon>
+                          <InputGroupInput
+                            {...field}
+                            type="number"
+                            placeholder="Enter pavement width"
+                            disabled={form.getValues("notPassable") === true}
+                            value={field.value || ""}
+                            onChange={(e) =>
+                              field.onChange(parseFloat(e.target.value) || 0)
+                            }
+                          />
+                          <InputGroupAddon align="inline-end">
+                            <span className="text-muted-foreground text-sm">m</span>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-            {/* Carriageway Width */}
-            <FormField
-              control={form.control}
-              name="carriagewayWidthM"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Carriageway Width</FormLabel>
-                  <FormControl>
-                    <InputGroup>
-                      <InputGroupAddon>
-                        <Ruler className="size-3.5" />
-                      </InputGroupAddon>
-                      <InputGroupInput
-                        {...field}
-                        type="number"
-                        disabled={form.getValues("notPassable") === true}
-                        placeholder="Enter carriageway width"
-                        value={field.value || ""}
-                        onChange={(e) =>
-                          field.onChange(parseFloat(e.target.value) || 0)
-                        }
-                      />
-                      <InputGroupAddon align="inline-end">
-                        <span className="text-muted-foreground text-sm">m</span>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                {/* Carriageway Width */}
+                <FormField
+                  control={form.control}
+                  name="carriagewayWidthM"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Carriageway Width</FormLabel>
+                      <FormControl>
+                        <InputGroup>
+                          <InputGroupAddon>
+                            <Ruler className="size-3.5" />
+                          </InputGroupAddon>
+                          <InputGroupInput
+                            {...field}
+                            type="number"
+                            disabled={form.getValues("notPassable") === true}
+                            placeholder="Enter carriageway width"
+                            value={field.value || ""}
+                            onChange={(e) =>
+                              field.onChange(parseFloat(e.target.value) || 0)
+                            }
+                          />
+                          <InputGroupAddon align="inline-end">
+                            <span className="text-muted-foreground text-sm">m</span>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-            {/* Right of Way Width */}
-            <FormField
-              control={form.control}
-              name="rightOfWayWidthM"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Right of Way Width</FormLabel>
-                  <FormControl>
-                    <InputGroup>
-                      <InputGroupAddon>
-                        <Ruler className="size-3.5" />
-                      </InputGroupAddon>
-                      <InputGroupInput
-                        {...field}
-                        type="number"
-                        disabled={form.getValues("notPassable") === true}
-                        placeholder="Enter right of way width"
-                        value={field.value || ""}
-                        onChange={(e) =>
-                          field.onChange(parseFloat(e.target.value) || 0)
-                        }
-                      />
-                      <InputGroupAddon align="inline-end">
-                        <span className="text-muted-foreground text-sm">m</span>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                {/* Right of Way Width */}
+                <FormField
+                  control={form.control}
+                  name="rightOfWayWidthM"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Right of Way Width</FormLabel>
+                      <FormControl>
+                        <InputGroup>
+                          <InputGroupAddon>
+                            <Ruler className="size-3.5" />
+                          </InputGroupAddon>
+                          <InputGroupInput
+                            {...field}
+                            type="number"
+                            disabled={form.getValues("notPassable") === true}
+                            placeholder="Enter right of way width"
+                            value={field.value || ""}
+                            onChange={(e) =>
+                              field.onChange(parseFloat(e.target.value) || 0)
+                            }
+                          />
+                          <InputGroupAddon align="inline-end">
+                            <span className="text-muted-foreground text-sm">m</span>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
-            {/* Terrain */}
-            <FormField
-              control={form.control}
-              name="terrain"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Terrain</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      disabled={
-                        form.formState.isSubmitting ||
-                        form.getValues("notPassable") === true
-                      }
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select terrain type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {TERRAIN_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            <div className="flex items-center gap-2">
-                              <Mountain className="size-3.5" />
-                              <span className="capitalize">{type}</span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            {/* Road Condition Group */}
+            <div className="space-y-4">
+              <h3 className="text-foreground border-b pb-2 text-lg font-semibold">
+                Road Condition
+              </h3>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {/* Terrain */}
+                <FormField
+                  control={form.control}
+                  name="terrain"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Terrain</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          disabled={
+                            form.formState.isSubmitting ||
+                            form.getValues("notPassable") === true
+                          }
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select terrain type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {TERRAIN_TYPES.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                <div className="flex items-center gap-2">
+                                  <Mountain className="size-3.5" />
+                                  <span className="capitalize">{type}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-            {/* Not Passable Checkbox */}
-            <FormField
-              control={form.control}
-              name="notPassable"
-              render={({ field }) => (
-                <FormItem className="flex h-full flex-1 flex-row items-end pb-2">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      disabled={form.formState.isSubmitting}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Not Passable</FormLabel>
-                  </div>
-                </FormItem>
-              )}
-            />
+                {/* Not Passable Checkbox */}
+                <FormField
+                  control={form.control}
+                  name="notPassable"
+                  render={({ field }) => (
+                    <FormItem className="flex h-full flex-1 flex-row items-end pb-2">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          disabled={form.formState.isSubmitting}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>Not Passable</FormLabel>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
           </div>
 
           <PavementDamageForms />

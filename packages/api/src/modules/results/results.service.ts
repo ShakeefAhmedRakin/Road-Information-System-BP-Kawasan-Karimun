@@ -41,6 +41,23 @@ type ReportSegmentDetail = SegmentResultSummary & {
   stationingFromM: number | null;
   stationingToM: number | null;
   segmentLengthM: number;
+  inventory: {
+    pavementType: string;
+    pavementWidthM: number;
+    carriagewayWidthM: number | null;
+    rightOfWayWidthM: number;
+    terrain: string;
+    notPassable: boolean;
+    leftShoulderType: string;
+    leftShoulderWidthM: string;
+    leftDrainageType: string;
+    leftLandUseType: string;
+    rightShoulderType: string;
+    rightShoulderWidthM: string;
+    rightDrainageType: string;
+    rightLandUseType: string;
+  } | null;
+  damageAssessment: DamageAssessment | null;
 };
 
 interface GenerateResultsInput {
@@ -226,6 +243,25 @@ class ResultService {
             segmentNumber: segment.segmentNumber,
             stationingFromM: segment.stationingFromM,
             stationingToM: segment.stationingToM,
+            // Inventory attributes
+            pavementType: segment.pavementType,
+            pavementWidthM: segment.pavementWidthM,
+            carriagewayWidthM: segment.carriagewayWidthM,
+            rightOfWayWidthM: segment.rightOfWayWidthM,
+            terrain: segment.terrain,
+            notPassable: segment.notPassable,
+            // Left side attributes
+            leftShoulderType: segment.leftShoulderType,
+            leftShoulderWidthM: segment.leftShoulderWidthM,
+            leftDrainageType: segment.leftDrainageType,
+            leftLandUseType: segment.leftLandUseType,
+            // Right side attributes
+            rightShoulderType: segment.rightShoulderType,
+            rightShoulderWidthM: segment.rightShoulderWidthM,
+            rightDrainageType: segment.rightDrainageType,
+            rightLandUseType: segment.rightLandUseType,
+            // Damage assessment
+            damageAssessment: segment.damageAssessment,
           })
           .from(segment)
           .where(inArray(segment.id, segmentIds))
@@ -251,6 +287,28 @@ class ResultService {
           stationingFromM: stationingFrom,
           stationingToM: stationingTo,
           segmentLengthM,
+          // Include full segment inventory and damage assessment data
+          inventory: meta
+            ? {
+                pavementType: meta.pavementType,
+                pavementWidthM: this.toNumber(meta.pavementWidthM),
+                carriagewayWidthM: this.toNullableNumber(
+                  meta.carriagewayWidthM
+                ),
+                rightOfWayWidthM: this.toNumber(meta.rightOfWayWidthM),
+                terrain: meta.terrain,
+                notPassable: meta.notPassable,
+                leftShoulderType: meta.leftShoulderType,
+                leftShoulderWidthM: meta.leftShoulderWidthM,
+                leftDrainageType: meta.leftDrainageType,
+                leftLandUseType: meta.leftLandUseType,
+                rightShoulderType: meta.rightShoulderType,
+                rightShoulderWidthM: meta.rightShoulderWidthM,
+                rightDrainageType: meta.rightDrainageType,
+                rightLandUseType: meta.rightLandUseType,
+              }
+            : null,
+          damageAssessment: meta?.damageAssessment ?? null,
         };
       }
     );
@@ -632,10 +690,35 @@ class ResultService {
     }
 
     const percentages = {} as PavementTypePercentages;
+    const rawPercentages: Array<{ type: PavementType; value: number }> = [];
 
+    // Calculate raw percentages
     for (const pavementType of PAVEMENT_TYPES) {
       const count = counts[pavementType];
-      percentages[pavementType] = this.round((count / totalSegments) * 100);
+      const rawPercentage = (count / totalSegments) * 100;
+      rawPercentages.push({ type: pavementType, value: rawPercentage });
+    }
+
+    // Round each percentage
+    for (const { type, value } of rawPercentages) {
+      percentages[type] = this.round(value);
+    }
+
+    // Normalize to ensure sum equals exactly 100%
+    const sum = Object.values(percentages).reduce((acc, val) => acc + val, 0);
+    const difference = 100 - sum;
+
+    if (Math.abs(difference) > 0.001) {
+      // Adjust the largest percentage to account for rounding differences
+      const entries = Object.entries(percentages) as Array<
+        [PavementType, number]
+      >;
+      const largestEntry = entries.reduce((max, entry) =>
+        entry[1] > max[1] ? entry : max
+      );
+      percentages[largestEntry[0]] = this.round(
+        largestEntry[1] + difference
+      );
     }
 
     return percentages;
@@ -659,10 +742,42 @@ class ResultService {
 
     const divisor = totalLength || 1;
 
+    // Calculate and round percentages
+    const rawPercentages: Array<{
+      condition: SegmentCondition;
+      percentage: number;
+    }> = [];
+
     for (const condition of this.conditionKeys) {
       const entry = stats[condition];
       entry.lengthKm = this.round(entry.lengthKm);
-      entry.percentage = this.round((entry.lengthKm / divisor) * 100);
+      const rawPercentage = (entry.lengthKm / divisor) * 100;
+      rawPercentages.push({ condition, percentage: rawPercentage });
+    }
+
+    // Round each percentage
+    for (const { condition, percentage } of rawPercentages) {
+      stats[condition].percentage = this.round(percentage);
+    }
+
+    // Normalize to ensure sum equals exactly 100%
+    const sum = Object.values(stats).reduce(
+      (acc, stat) => acc + stat.percentage,
+      0
+    );
+    const difference = 100 - sum;
+
+    if (Math.abs(difference) > 0.001) {
+      // Adjust the largest percentage to account for rounding differences
+      const entries = Object.entries(stats) as Array<
+        [SegmentCondition, { lengthKm: number; percentage: number }]
+      >;
+      const largestEntry = entries.reduce((max, entry) =>
+        entry[1].percentage > max[1].percentage ? entry : max
+      );
+      stats[largestEntry[0]].percentage = this.round(
+        largestEntry[1].percentage + difference
+      );
     }
 
     return stats;

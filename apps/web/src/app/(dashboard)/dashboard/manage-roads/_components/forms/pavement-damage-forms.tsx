@@ -111,21 +111,15 @@ function AsphaltDamageForm() {
           options={SURFACE_CONDITIONS}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Bleeding">
         <DamageSelectField
           name="damageAssessment.data.bleeding"
-          label="Bleeding Percent"
+          label="Bleeding"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Disintegration">
         <DamageSelectField
           name="damageAssessment.data.disintegration"
-          label="Disintegration Percent"
+          label="Disintegration"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
@@ -146,13 +140,13 @@ function AsphaltDamageForm() {
         />
         <DamageSelectField
           name="damageAssessment.data.otherCrackArea"
-          label="Other Crack Area Percent"
+          label="Other Crack Area"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
         <DamageSelectField
           name="damageAssessment.data.reflectiveCracking"
-          label="Reflective Cracking Percent"
+          label="Reflective Cracking"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
@@ -173,7 +167,7 @@ function AsphaltDamageForm() {
         />
         <DamageSelectField
           name="damageAssessment.data.potholeArea"
-          label="Pothole Area Percent"
+          label="Pothole Area"
           options={POTHOLE_AREA_PERCENTAGE_RANGES}
           disabled={disabled}
         />
@@ -182,7 +176,7 @@ function AsphaltDamageForm() {
       <DamageSection title="Rutting Damage">
         <DamageSelectField
           name="damageAssessment.data.rutting"
-          label="Rutting Percent"
+          label="Rutting"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
@@ -218,52 +212,40 @@ function ConcreteDamageForm() {
 
   return (
     <div className="space-y-6">
-      <DamageSection title="Cracking">
+      <DamageSection title="Structural & Surface Damage">
         <DamageSelectField
           name="damageAssessment.data.cracking"
-          label="Cracking Percent"
+          label="Cracking"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Spalling">
         <DamageSelectField
           name="damageAssessment.data.spalling"
-          label="Spalling Percent"
+          label="Spalling"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Structural Cracking">
         <DamageSelectField
           name="damageAssessment.data.structuralCracking"
-          label="Structural Cracking Percent"
+          label="Structural Cracking"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Faulting">
         <DamageSelectField
           name="damageAssessment.data.faulting"
-          label="Faulting Percent"
+          label="Faulting"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
       </DamageSection>
 
-      <DamageSection title="Pumping">
+      <DamageSection title="Water & Joint Damage">
         <DamageSelectField
           name="damageAssessment.data.pumping"
           label="Pumping"
           options={YES_NO_TYPES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Corner Break">
         <DamageSelectField
           name="damageAssessment.data.cornerBreak"
           label="Corner Break"
@@ -281,19 +263,16 @@ function BlockDamageForm() {
 
   return (
     <div className="space-y-6">
-      <DamageSection title="Reflective Cracking">
+      <DamageSection title="Surface Damage">
         <DamageSelectField
           name="damageAssessment.data.reflectiveCracking"
-          label="Reflective Cracking Percent"
+          label="Reflective Cracking"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Disintegration">
         <DamageSelectField
           name="damageAssessment.data.disintegration"
-          label="Disintegration Percent"
+          label="Disintegration"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
@@ -314,19 +293,16 @@ function BlockDamageForm() {
         />
       </DamageSection>
 
-      <DamageSection title="Pothole Area">
+      <DamageSection title="Pothole & Deformation">
         <DamageSelectField
           name="damageAssessment.data.potholeArea"
-          label="Pothole Area Percent"
+          label="Pothole Area"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Rutting">
         <DamageSelectField
           name="damageAssessment.data.rutting"
-          label="Rutting Percent"
+          label="Rutting"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
@@ -341,70 +317,55 @@ function UnpavedDamageForm() {
 
   return (
     <div className="space-y-6">
-      <DamageSection title="Crossfall">
+      <DamageSection title="Crossfall & Shape">
         <DamageSelectField
           name="damageAssessment.data.crossfallCondition"
           label="Crossfall Condition"
           options={CROSSFALL_CONDITIONS}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Area Damage">
         <DamageSelectField
           name="damageAssessment.data.crossfallArea"
-          label="Area Percent"
+          label="Area"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
       </DamageSection>
 
-      <DamageSection title="Settlement">
+      <DamageSection title="Surface Failure">
         <DamageSelectField
           name="damageAssessment.data.settlement"
-          label="Settlement Percent"
+          label="Settlement"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Erosion">
         <DamageSelectField
           name="damageAssessment.data.erosion"
-          label="Erosion Percent"
+          label="Erosion"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
       </DamageSection>
 
-      <DamageSection title="Largest Particle Size">
+      <DamageSection title="Material Quality">
         <DamageSelectField
           name="damageAssessment.data.largestParticleSize"
           label="Largest Particle Size"
           options={PARTICLE_SIZE_TYPES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Gravel Thickness">
         <DamageSelectField
           name="damageAssessment.data.gravelThickness"
           label="Gravel Thickness"
           options={GRAVEL_THICKNESS_TYPES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Gravel Area">
         <DamageSelectField
           name="damageAssessment.data.gravelArea"
-          label="Gravel Area Percent"
+          label="Gravel Area"
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
         />
-      </DamageSection>
-
-      <DamageSection title="Gravel Distribution">
         <DamageSelectField
           name="damageAssessment.data.gravelDistribution"
           label="Gravel Distribution"
@@ -413,11 +374,23 @@ function UnpavedDamageForm() {
         />
       </DamageSection>
 
-      <DamageSection title="Corrugation">
+      <DamageSection title="Corrugation & Deformation">
         <DamageSelectField
           name="damageAssessment.data.corrugation"
-          label="Corrugation Percent"
+          label="Corrugation"
           options={DAMAGE_PERCENTAGE_RANGES}
+          disabled={disabled}
+        />
+        <DamageSelectField
+          name="damageAssessment.data.rutting"
+          label="Rutting"
+          options={DAMAGE_PERCENTAGE_RANGES}
+          disabled={disabled}
+        />
+        <DamageSelectField
+          name="damageAssessment.data.averageRutDepth"
+          label="Average Rut Depth"
+          options={UNPAVED_RUT_DEPTH_TYPES}
           disabled={disabled}
         />
       </DamageSection>
@@ -437,23 +410,8 @@ function UnpavedDamageForm() {
         />
         <DamageSelectField
           name="damageAssessment.data.potholeArea"
-          label="Pothole Area Percent"
+          label="Pothole Area"
           options={POTHOLE_AREA_PERCENTAGE_RANGES}
-          disabled={disabled}
-        />
-      </DamageSection>
-
-      <DamageSection title="Rutting Damage">
-        <DamageSelectField
-          name="damageAssessment.data.rutting"
-          label="Rutting Percent"
-          options={DAMAGE_PERCENTAGE_RANGES}
-          disabled={disabled}
-        />
-        <DamageSelectField
-          name="damageAssessment.data.averageRutDepth"
-          label="Average Rut Depth"
-          options={UNPAVED_RUT_DEPTH_TYPES}
           disabled={disabled}
         />
       </DamageSection>

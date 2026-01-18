@@ -4,115 +4,150 @@ import { z } from "zod";
 // DAMAGE ASSESSMENT ENUMS - Single source of truth for all damage types
 // ============================================================================
 
-// Surface condition types
+// D. Surface condition types (Asphalt Pavement)
+// Index: 1 = Good, 2 = Rough
 export const SURFACE_CONDITIONS = ["good", "rough"] as const;
 
-// Percentage ranges for damage assessments
+// C. Shared Percentage Range Index (used by most damage inputs)
+// Index: 1 = 0-5%, 2 = 5-10%, 3 = 10-20%, 4 = 20-30%, 5 = 30-40%, 6 = 40-50%, 7 = >50%
+// Note: "0%" is included for compatibility but index 1 is "0-5%"
 export const DAMAGE_PERCENTAGE_RANGES = [
-  "0%",
-  "0-5%",
-  "5-10%",
-  "10-20%",
-  "20-30%",
-  "30-40%",
-  "40-50%",
-  ">50%",
+  "0%", // Index 0 (optional, for explicit 0%)
+  "0-5%", // Index 1
+  "5-10%", // Index 2
+  "10-20%", // Index 3
+  "20-30%", // Index 4
+  "30-40%", // Index 5
+  "40-50%", // Index 6
+  ">50%", // Index 7
 ] as const;
 
-// Pothole area percentage ranges for unpaved roads (different ranges)
+// D. Pothole Area Percentage Ranges (Asphalt, Block, Unpaved/Gravel)
+// Index: 1 = 0-3%, 2 = 3-5%, 3 = 5-10%, 4 = 10-20%, 5 = 20-30%, 6 = 30-40%, 7 = 40-50%, 8 = >50%
+// Note: "0%" is included for compatibility but index 1 is "0-3%"
 export const POTHOLE_AREA_PERCENTAGE_RANGES = [
-  "0%",
-  "0-3%",
-  "3-5%",
-  "5-10%",
-  "10-20%",
-  "20-30%",
-  "30-40%",
-  "40-50%",
-  ">50%",
+  "0%", // Index 0 (optional, for explicit 0%)
+  "0-3%", // Index 1
+  "3-5%", // Index 2
+  "5-10%", // Index 3
+  "10-20%", // Index 4
+  "20-30%", // Index 5
+  "30-40%", // Index 6
+  "40-50%", // Index 7
+  ">50%", // Index 8
 ] as const;
 
-// Crack types
+// D. Crack types (Asphalt Pavement)
+// Index: 1 = None, 2 = Interconnected (Wide Area), 3 = Interconnected (Narrow Area)
+// Note: "not_connected" is included for compatibility but specification only lists interconnected types
 export const CRACK_TYPES = [
-  "none",
-  "not_connected",
-  "interconnected_wide_area",
-  "interconnected_narrow_area",
+  "none", // Index 0/1 = None
+  "not_connected", // Additional value (not in spec)
+  "interconnected_wide_area", // Index 2 = Interconnected (Wide Area)
+  "interconnected_narrow_area", // Index 3 = Interconnected (Narrow Area)
 ] as const;
 
-// Crack width types
-export const CRACK_WIDTH_TYPES = ["none", "<1mm", "1-5mm", ">5mm"] as const;
+// D. Average crack width (Asphalt Pavement)
+// Index: 1 = None, 2 = <1 mm, 3 = 1-5 mm, 4 = >5 mm
+export const CRACK_WIDTH_TYPES = [
+  "none", // Index 0/1 = None
+  "<1mm", // Index 1/2 = <1 mm
+  "1-5mm", // Index 2/3 = 1-5 mm
+  ">5mm", // Index 3/4 = >5 mm
+] as const;
 
-// Pothole count types
+// D. Number of potholes (Asphalt, Unpaved/Gravel)
+// Index: 0 = 0, 1 = 1, 2 = 2, 3 = 3, 4 = 4, 5 = 5, 6 = 6, 7 = 7, 8 = >7
 export const POTHOLE_COUNT_TYPES = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  ">7",
+  "0", // Index 0 = 0
+  "1", // Index 1 = 1
+  "2", // Index 2 = 2
+  "3", // Index 3 = 3
+  "4", // Index 4 = 4
+  "5", // Index 5 = 5
+  "6", // Index 6 = 6
+  "7", // Index 7 = 7
+  ">7", // Index 8 = >7
 ] as const;
 
-// Pothole size types
+// D. Pothole size (Asphalt, Unpaved/Gravel)
+// Index: 1 = None, 2 = Small–Shallow, 3 = Small–Deep, 4 = Large–Shallow, 5 = Large–Deep
 export const POTHOLE_SIZE_TYPES = [
-  "none",
-  "small_shallow",
-  "small_deep",
-  "large_shallow",
-  "large_deep",
+  "none", // Index 0/1 = None
+  "small_shallow", // Index 1/2 = Small–Shallow
+  "small_deep", // Index 2/3 = Small–Deep
+  "large_shallow", // Index 3/4 = Large–Shallow
+  "large_deep", // Index 4/5 = Large–Deep
 ] as const;
 
-// Rut depth types
-export const RUT_DEPTH_TYPES = ["none", "<1cm", "1-3cm", ">3cm"] as const;
+// D. Average rut depth (Asphalt Pavement)
+// Index: 1 = None, 2 = <1 cm, 3 = 1-3 cm, 4 = >3 cm
+export const RUT_DEPTH_TYPES = [
+  "none", // Index 0/1 = None
+  "<1cm", // Index 1/2 = <1 cm
+  "1-3cm", // Index 2/3 = 1-3 cm
+  ">3cm", // Index 3/4 = >3 cm
+] as const;
 
-// Edge damage types
+// D. Edge damage types (Left & Right) - Asphalt, Block
+// Index: 0 = None, 1 = Light (0-30%), 2 = Severe (>30%)
 export const EDGE_DAMAGE_TYPES = [
-  "none",
-  "light_0_30%",
-  "severe_>30%",
+  "none", // Index 0 = None
+  "light_0_30%", // Index 1 = Light (0-30%)
+  "severe_>30%", // Index 2 = Severe (>30%)
 ] as const;
 
-// Yes/No types
+// E. Yes/No types (Concrete Pavement - Pumping, Corner Break)
+// Index: 1 = Yes, 2 = No
 export const YES_NO_TYPES = ["yes", "no"] as const;
 
-// Crossfall condition types
-export const CROSSFALL_CONDITIONS = [">5%", "3-5%", "flat", "concave"] as const;
+// G. Crossfall condition types (Unpaved/Gravel)
+// Index: 1 = >5%, 2 = 3-5%, 3 = Flat, 4 = Concave
+export const CROSSFALL_CONDITIONS = [
+  ">5%", // Index 0/1 = >5%
+  "3-5%", // Index 1/2 = 3-5%
+  "flat", // Index 2/3 = Flat
+  "concave", // Index 3/4 = Concave
+] as const;
 
-// Particle size types
+// G. Largest particle size (Unpaved/Gravel)
+// Index: 1 = <1 cm, 2 = 1-5 cm, 3 = >5 cm, 4 = Not Uniform
+// Note: "none" is included for compatibility but specification starts at index 1
 export const PARTICLE_SIZE_TYPES = [
-  "none",
-  "<1cm",
-  "1-5cm",
-  ">5cm",
-  "not_uniform",
+  "none", // Index 0 (optional, for compatibility)
+  "<1cm", // Index 1 = <1 cm
+  "1-5cm", // Index 2 = 1-5 cm
+  ">5cm", // Index 3 = >5 cm
+  "not_uniform", // Index 4 = Not Uniform
 ] as const;
 
-// Gravel thickness types
+// G. Gravel thickness types (Unpaved/Gravel)
+// Index: 1 = <5 cm, 2 = 5-10 cm, 3 = 10-20 cm, 4 = >20 cm
+// Note: "none" is included for compatibility but specification starts at index 1
 export const GRAVEL_THICKNESS_TYPES = [
-  "none",
-  "<5cm",
-  "5-10cm",
-  "10-20cm",
-  ">20cm",
+  "none", // Index 0 (optional, for compatibility)
+  "<5cm", // Index 1 = <5 cm
+  "5-10cm", // Index 2 = 5-10 cm
+  "10-20cm", // Index 3 = 10-20 cm
+  ">20cm", // Index 4 = >20 cm
 ] as const;
 
-// Gravel distribution types
+// G. Gravel distribution types (Unpaved/Gravel)
+// Index: 1 = None, 2 = Even, 3 = Uneven, 4 = Longitudinal Windrow
 export const GRAVEL_DISTRIBUTION_TYPES = [
-  "none",
-  "even",
-  "uneven",
-  "longitudinal_windrow",
+  "none", // Index 0/1 = None
+  "even", // Index 1/2 = Even
+  "uneven", // Index 2/3 = Uneven
+  "longitudinal_windrow", // Index 3/4 = Longitudinal Windrow
 ] as const;
 
-// Rut depth types for unpaved (different from paved)
+// G. Rut depth types for unpaved (different from paved)
+// Index: 1 = None, 2 = <5 cm, 3 = 5-15 cm, 4 = >15 cm
 export const UNPAVED_RUT_DEPTH_TYPES = [
-  "none",
-  "<5cm",
-  "5-15cm",
-  ">15cm",
+  "none", // Index 0/1 = None
+  "<5cm", // Index 1/2 = <5 cm
+  "5-15cm", // Index 2/3 = 5-15 cm
+  ">15cm", // Index 3/4 = >15 cm
 ] as const;
 
 // ============================================================================

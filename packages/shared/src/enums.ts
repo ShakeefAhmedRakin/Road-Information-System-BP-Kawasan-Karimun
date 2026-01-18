@@ -14,37 +14,48 @@ export const PAVEMENT_TYPES = [
 // Segment generation modes
 export const SEGMENT_GENERATION_MODES = ["exact", "rounded"] as const;
 
-// Terrain types
+// B. Terrain types (Pavement Inventory)
+// Index: 1 = Flat, 2 = Rolling, 3 = Mountainous
 export const TERRAIN_TYPES = ["flat", "rolling", "mountainous"] as const;
 
-// Shoulder types
+// A. Shoulder types (Left & Right) - Road Side Attributes
+// Index: 1 = None, 2 = Earth, 3 = Concrete, 4 = Asphalt, 5 = Block
 export const SHOULDER_TYPES = [
-  "none",
-  "earth",
-  "concrete",
-  "asphalt",
-  "block",
+  "none", // Index 0/1 = None
+  "earth", // Index 1/2 = Earth
+  "concrete", // Index 2/3 = Concrete
+  "asphalt", // Index 3/4 = Asphalt
+  "block", // Index 4/5 = Block
 ] as const;
 
-// Shoulder widths
-export const SHOULDER_WIDTHS = ["0", "0.5", "1", "1.5", "2"] as const;
+// A. Shoulder widths (Left & Right) - Road Side Attributes
+// Index: 1 = 0 m, 2 = 0.5 m, 3 = 1 m, 4 = 1.5 m, 5 = 2 m
+export const SHOULDER_WIDTHS = [
+  "0", // Index 0/1 = 0 m
+  "0.5", // Index 1/2 = 0.5 m
+  "1", // Index 2/3 = 1 m
+  "1.5", // Index 3/4 = 1.5 m
+  "2", // Index 4/5 = 2 m
+] as const;
 
-// Drainage types
+// A. Drainage types (Left & Right) - Road Side Attributes
+// Index: 1 = None, 2 = Not Required, 3 = Earth, 4 = Masonry Open, 5 = Masonry Covered
 export const DRAINAGE_TYPES = [
-  "none",
-  "not_required",
-  "earth",
-  "masonry_open",
-  "masonry_covered",
+  "none", // Index 0/1 = None
+  "not_required", // Index 1/2 = Not Required
+  "earth", // Index 2/3 = Earth
+  "masonry_open", // Index 3/4 = Masonry Open
+  "masonry_covered", // Index 4/5 = Masonry Covered
 ] as const;
 
-// Land use types
+// A. Land use types (Left & Right) - Road Side Attributes
+// Index: 1 = None, 2 = Agriculture, 3 = Rural, 4 = Urban, 5 = Forest
 export const LAND_USE_TYPES = [
-  "none",
-  "agriculture",
-  "rural",
-  "urban",
-  "forest",
+  "none", // Index 0/1 = None
+  "agriculture", // Index 1/2 = Agriculture
+  "rural", // Index 2/3 = Rural
+  "urban", // Index 3/4 = Urban
+  "forest", // Index 4/5 = Forest
 ] as const;
 
 // ============================================================================

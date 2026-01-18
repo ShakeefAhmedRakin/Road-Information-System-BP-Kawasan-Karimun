@@ -9,9 +9,12 @@ import { Spinner } from "../../../../../../components/ui/spinner";
 import { paragraphVariants } from "../../../../../../components/ui/typography";
 import { StaticRoutes } from "../../../../../../config/static-routes";
 import { orpc } from "../../../../../../utils/orpc";
+import DeleteRoadDialog from "../../[roadId]/_components/delete-road-dialog";
 
 export default function AllRoads() {
-  const { data, isLoading } = useQuery(orpc.road.listAllRoads.queryOptions());
+  const { data, isLoading, refetch } = useQuery(
+    orpc.road.listAllRoads.queryOptions()
+  );
   {
     /* <Link
           href={StaticRoutes.CREATE_ROAD}
@@ -94,13 +97,22 @@ export default function AllRoads() {
                         User: {road.createdBy}
                       </h2>
                     </div>
-                    <div>
+                    <div className="flex items-center gap-2">
                       <Link
                         href={`${StaticRoutes.MANAGE_ROADS}/${road.id}`}
                         className={buttonVariants({ variant: "outline" })}
                       >
                         View <ArrowBigRight />
                       </Link>
+                      <DeleteRoadDialog
+                        roadId={road.id}
+                        roadName={road.name}
+                        roadNumber={road.number}
+                        segmentCount={road.segmentCount ?? 0}
+                        onDeleteSuccess={() => {
+                          refetch();
+                        }}
+                      />
                     </div>
                   </div>
                   <Separator className="mt-2" />

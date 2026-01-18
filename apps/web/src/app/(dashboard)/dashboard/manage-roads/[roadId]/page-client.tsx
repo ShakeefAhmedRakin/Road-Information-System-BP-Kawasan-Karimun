@@ -22,10 +22,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../../../../../components/ui/button";
 import { cn } from "../../../../../lib/utils";
+import DeleteRoadDialog from "./_components/delete-road-dialog";
 import { ReportDialogTrigger } from "./_components/report-dialog";
 import SegmentForm, {
   type SegmentFormHandle,
 } from "./_components/segment-form";
+import SegmentSummaryDialog from "./_components/segment-summary-dialog";
+import UpdateRoadDialog from "./_components/update-road-dialog";
 
 interface RoadPageClientProps {
   roadId: string;
@@ -274,7 +277,11 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
 
   return (
     <PageLayout title="Road Details" description="View the details of a road">
-      <div className="space-y-6">
+      <SegmentSummaryDialog
+        segments={segments}
+        roadName={data.road.name}
+      />
+      <div className="space-y-6 mb-24">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold">{data.road.name}</h2>
           <p className="text-muted-foreground">
@@ -291,7 +298,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
               <InfoIcon className="h-4 w-4" />
               Segments ({segments.length})
             </h3>
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-2 gap-y-2 flex-wrap">
               <ReportDialogTrigger
                 roadId={roadId}
                 roadName={data.road.name}
@@ -316,8 +323,25 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                   </>
                 )}
               </Button>
+              <UpdateRoadDialog
+                roadId={roadId}
+                roadName={data.road.name}
+                roadNumber={data.road.number}
+                roadLength={Number(data.road.totalLengthKm)}
+                segmentGenerationMode={data.road.segmentGenerationMode}
+                onUpdate={() => {
+                  refetch();
+                }}
+              />
+              <DeleteRoadDialog
+                roadId={roadId}
+                roadName={data.road.name}
+                roadNumber={data.road.number}
+                segmentCount={segments.length}
+              />
             </div>
           </div>
+   
           {segments.length === 0 ? (
             <p className="text-muted-foreground text-sm">
               No segments found for this road.
