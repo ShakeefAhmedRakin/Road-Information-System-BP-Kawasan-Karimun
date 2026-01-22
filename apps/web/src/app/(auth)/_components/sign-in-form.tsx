@@ -17,16 +17,31 @@ import { Spinner } from "@/components/ui/spinner";
 import { StaticRoutes } from "@/config/static-routes";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { SignInSchema } from "@/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
+import { useLanguage } from "@/i18n/context/LanguageContext";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const { t, translateError } = useTranslation("auth");
+  const { locale } = useLanguage();
+
+  // Create schema with translated error messages
+  const SignInSchema = useMemo(
+    () =>
+      z.object({
+        email: z.string().email(t("messages.validation.email.invalid")),
+        password: z
+          .string()
+          .min(8, t("messages.validation.password.minLength")),
+      }),
+    [t]
+  );
 
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
@@ -36,6 +51,16 @@ export default function SignInForm() {
       password: "",
     },
   });
+
+  // Update resolver when language changes
+  useEffect(() => {
+    form.clearErrors();
+    // Re-validate if form has been touched
+    if (form.formState.isDirty) {
+      form.trigger();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
 
   const { isSubmitting, isValid, isDirty } = form.formState;
 
@@ -50,14 +75,17 @@ export default function SignInForm() {
           onSuccess: () => {
             //
             form.reset();
-            toast.success("Sign in successful");
+            toast.success(t("messages.success.signIn"));
             // Use hard navigation to ensure all caches are cleared and fresh data is loaded
             window.location.href = StaticRoutes.DASHBOARD;
           },
           onError: (error) => {
             console.error("Sign in error:", error);
+            const errorMessage = error.error?.message || "";
             toast.error(
-              error.error.message || "Sign in failed. Please try again."
+              errorMessage
+                ? translateError(errorMessage)
+                : t("messages.error.signInFailed")
             );
             form.setValue("password", "");
           },
@@ -65,7 +93,7 @@ export default function SignInForm() {
       );
     } catch (error) {
       console.error("Unexpected error:", error);
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error(t("messages.error.unexpectedError"));
     }
   };
 
@@ -82,7 +110,7 @@ export default function SignInForm() {
                   !form.getFieldState("email").isDirty && "!text-foreground"
                 )}
               >
-                Email
+                {t("form.email.label")}
               </FormLabel>
               <FormControl>
                 <InputGroup>
@@ -90,7 +118,7 @@ export default function SignInForm() {
                     <MailIcon className="size-3.5" />
                   </InputGroupAddon>
                   <InputGroupInput
-                    placeholder="name@example.com"
+                    placeholder={t("form.email.placeholder")}
                     type="email"
                     autoComplete="email"
                     disabled={isSubmitting}
@@ -114,7 +142,7 @@ export default function SignInForm() {
                   !form.getFieldState("password").isDirty && "!text-foreground"
                 )}
               >
-                Password
+                {t("form.password.label")}
               </FormLabel>
               <FormControl>
                 <InputGroup>
@@ -122,7 +150,7 @@ export default function SignInForm() {
                     <LockIcon className="size-3.5" />
                   </InputGroupAddon>
                   <InputGroupInput
-                    placeholder="********"
+                    placeholder={t("form.password.placeholder")}
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
                     disabled={isSubmitting}
@@ -159,7 +187,7 @@ export default function SignInForm() {
           disabled={isSubmitting || !isValid || !isDirty}
         >
           {isSubmitting && <Spinner />}
-          Sign In
+          {t("form.submit")}
         </Button>
       </form>
     </Form>

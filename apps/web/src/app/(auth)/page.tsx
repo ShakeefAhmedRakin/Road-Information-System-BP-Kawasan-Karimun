@@ -1,25 +1,30 @@
+"use client";
+
+import { AppLogo } from "@/components/branding/app-logo";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
-import { Heading, Paragraph } from "@/components/ui/typography";
-import { Lock } from "lucide-react";
+import { Paragraph } from "@/components/ui/typography";
 import { ThemeToggleButton } from "../../components/theme-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import SignInForm from "./_components/sign-in-form";
-import { AppLogo } from "@/components/branding/app-logo";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 
 export default function SignInPage() {
+  const { t } = useTranslation("auth");
+
   return (
     <div className="bg-background fade-in-from-bottom flex h-screen max-h-screen w-screen max-w-screen items-center justify-center overflow-y-hidden p-4">
       <Card className="mx-auto w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="flex items-center justify-between gap-2">
             <AppLogo logoSize="size-8 md:size-16" className="!flex-1" />
-            <div className="ml-auto">
+            <div className="ml-auto flex items-center gap-2">
+              <LanguageSwitcher />
               <ThemeToggleButton />
             </div>
           </CardTitle>
@@ -31,7 +36,7 @@ export default function SignInPage() {
 
         <CardFooter>
           <Paragraph size="xs" className="w-full text-center">
-            For access issues, contact your administrator
+            {t("page.footer")}
           </Paragraph>
         </CardFooter>
       </Card>
