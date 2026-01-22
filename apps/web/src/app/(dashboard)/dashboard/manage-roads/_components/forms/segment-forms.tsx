@@ -1,3 +1,5 @@
+"use client";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   FormControl,
@@ -17,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { paragraphVariants } from "@/components/ui/typography";
@@ -33,6 +36,7 @@ import { useFormContext } from "react-hook-form";
 import PavementDamageForms from "./pavement-damage-forms";
 
 export default function SegmentForms() {
+  const { t } = useTranslation("createRoad");
   const form = useFormContext();
   return (
     <div className="max-w-4xl space-y-2">
@@ -42,15 +46,15 @@ export default function SegmentForms() {
           className: "font-medium",
         })}
       >
-        Segment Attributes
+        {t("segmentForms.title")}
       </h3>
       <Separator />
 
       <Tabs defaultValue="left-side" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="left-side">Left Side</TabsTrigger>
-          <TabsTrigger value="pavement">Pavement</TabsTrigger>
-          <TabsTrigger value="right-side">Right Side</TabsTrigger>
+          <TabsTrigger value="left-side">{t("segmentForms.tabs.leftSide")}</TabsTrigger>
+          <TabsTrigger value="pavement">{t("segmentForms.tabs.pavement")}</TabsTrigger>
+          <TabsTrigger value="right-side">{t("segmentForms.tabs.rightSide")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="left-side" className="mt-4">
@@ -61,7 +65,7 @@ export default function SegmentForms() {
               name="leftShoulderType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Shoulder Type</FormLabel>
+                  <FormLabel>{t("segmentForms.shoulderType.label")}</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -69,18 +73,14 @@ export default function SegmentForms() {
                       disabled={form.formState.isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select shoulder type" />
+                        <SelectValue placeholder={t("segmentForms.shoulderType.placeholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {SHOULDER_TYPES.map((type) => (
                           <SelectItem key={type} value={type}>
                             <div className="flex items-center gap-2">
                               <Settings className="size-3.5" />
-                              <span className="capitalize">
-                                {type === "none"
-                                  ? "No Shoulder"
-                                  : `${type} Shoulder`}
-                              </span>
+                              <span>{t(`enums.shoulderType.${type}`)}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -97,7 +97,7 @@ export default function SegmentForms() {
               name="leftShoulderWidthM"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Shoulder Width</FormLabel>
+                  <FormLabel>{t("segmentForms.shoulderWidth.label")}</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -105,7 +105,7 @@ export default function SegmentForms() {
                       disabled={form.formState.isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select shoulder width" />
+                        <SelectValue placeholder={t("segmentForms.shoulderWidth.placeholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {SHOULDER_WIDTHS.map((width) => (
@@ -129,7 +129,7 @@ export default function SegmentForms() {
               name="leftDrainageType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Drainage Type</FormLabel>
+                  <FormLabel>{t("segmentForms.drainageType.label")}</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -137,24 +137,14 @@ export default function SegmentForms() {
                       disabled={form.formState.isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select drainage type" />
+                        <SelectValue placeholder={t("segmentForms.drainageType.placeholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {DRAINAGE_TYPES.map((type) => (
                           <SelectItem key={type} value={type}>
                             <div className="flex items-center gap-2">
                               <Waves className="size-3.5" />
-                              <span className="capitalize">
-                                {type === "none"
-                                  ? "No Drainage"
-                                  : type === "not_required"
-                                    ? "Not Required"
-                                    : type === "masonry_open"
-                                      ? "Masonry Open"
-                                      : type === "masonry_covered"
-                                        ? "Masonry Covered"
-                                        : type}
-                              </span>
+                              <span>{t(`enums.drainageType.${type}`)}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -171,7 +161,7 @@ export default function SegmentForms() {
               name="leftLandUseType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Land Use Type</FormLabel>
+                  <FormLabel>{t("segmentForms.landUseType.label")}</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -179,18 +169,14 @@ export default function SegmentForms() {
                       disabled={form.formState.isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select land use type" />
+                        <SelectValue placeholder={t("segmentForms.landUseType.placeholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {LAND_USE_TYPES.map((type) => (
                           <SelectItem key={type} value={type}>
                             <div className="flex items-center gap-2">
                               <TreePine className="size-3.5" />
-                              <span className="capitalize">
-                                {type === "none"
-                                  ? "No Land Use"
-                                  : `${type} Land`}
-                              </span>
+                              <span>{t(`enums.landUseType.${type}`)}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -211,7 +197,7 @@ export default function SegmentForms() {
               name="rightShoulderType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Shoulder Type</FormLabel>
+                  <FormLabel>{t("segmentForms.shoulderType.label")}</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -219,18 +205,14 @@ export default function SegmentForms() {
                       disabled={form.formState.isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select shoulder type" />
+                        <SelectValue placeholder={t("segmentForms.shoulderType.placeholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {SHOULDER_TYPES.map((type) => (
                           <SelectItem key={type} value={type}>
                             <div className="flex items-center gap-2">
                               <Settings className="size-3.5" />
-                              <span className="capitalize">
-                                {type === "none"
-                                  ? "No Shoulder"
-                                  : `${type} Shoulder`}
-                              </span>
+                              <span>{t(`enums.shoulderType.${type}`)}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -247,7 +229,7 @@ export default function SegmentForms() {
               name="rightShoulderWidthM"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Shoulder Width</FormLabel>
+                  <FormLabel>{t("segmentForms.shoulderWidth.label")}</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -255,7 +237,7 @@ export default function SegmentForms() {
                       disabled={form.formState.isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select shoulder width" />
+                        <SelectValue placeholder={t("segmentForms.shoulderWidth.placeholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {SHOULDER_WIDTHS.map((width) => (
@@ -279,7 +261,7 @@ export default function SegmentForms() {
               name="rightDrainageType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Drainage Type</FormLabel>
+                  <FormLabel>{t("segmentForms.drainageType.label")}</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -287,24 +269,14 @@ export default function SegmentForms() {
                       disabled={form.formState.isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select drainage type" />
+                        <SelectValue placeholder={t("segmentForms.drainageType.placeholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {DRAINAGE_TYPES.map((type) => (
                           <SelectItem key={type} value={type}>
                             <div className="flex items-center gap-2">
                               <Waves className="size-3.5" />
-                              <span className="capitalize">
-                                {type === "none"
-                                  ? "No Drainage"
-                                  : type === "not_required"
-                                    ? "Not Required"
-                                    : type === "masonry_open"
-                                      ? "Masonry Open"
-                                      : type === "masonry_covered"
-                                        ? "Masonry Covered"
-                                        : type}
-                              </span>
+                              <span>{t(`enums.drainageType.${type}`)}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -321,7 +293,7 @@ export default function SegmentForms() {
               name="rightLandUseType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Land Use Type</FormLabel>
+                  <FormLabel>{t("segmentForms.landUseType.label")}</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -329,18 +301,14 @@ export default function SegmentForms() {
                       disabled={form.formState.isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select land use type" />
+                        <SelectValue placeholder={t("segmentForms.landUseType.placeholder")} />
                       </SelectTrigger>
                       <SelectContent>
                         {LAND_USE_TYPES.map((type) => (
                           <SelectItem key={type} value={type}>
                             <div className="flex items-center gap-2">
                               <TreePine className="size-3.5" />
-                              <span className="capitalize">
-                                {type === "none"
-                                  ? "No Land Use"
-                                  : `${type} Land`}
-                              </span>
+                              <span>{t(`enums.landUseType.${type}`)}</span>
                             </div>
                           </SelectItem>
                         ))}
@@ -358,7 +326,7 @@ export default function SegmentForms() {
             {/* Road Inventory Group */}
             <div className="space-y-4">
               <h3 className="text-foreground border-b pb-2 text-lg font-semibold">
-                Road Inventory
+                {t("segmentForms.roadInventory.title")}
               </h3>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* Pavement Type */}
@@ -367,7 +335,7 @@ export default function SegmentForms() {
                   name="pavementType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Pavement Type</FormLabel>
+                      <FormLabel>{t("segmentForms.roadInventory.pavementType.label")}</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
@@ -378,18 +346,14 @@ export default function SegmentForms() {
                           }
                         >
                           <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select pavement type" />
+                            <SelectValue placeholder={t("segmentForms.roadInventory.pavementType.placeholder")} />
                           </SelectTrigger>
                           <SelectContent>
                             {PAVEMENT_TYPES.map((type) => (
                               <SelectItem key={type} value={type}>
                                 <div className="flex items-center gap-2">
                                   <Settings className="size-3.5" />
-                                  <span className="capitalize">
-                                    {type === "unpaved"
-                                      ? "Unpaved Road"
-                                      : `${type} Pavement`}
-                                  </span>
+                                  <span>{t(`enums.pavementType.${type}`)}</span>
                                 </div>
                               </SelectItem>
                             ))}
@@ -406,7 +370,7 @@ export default function SegmentForms() {
                   name="pavementWidthM"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Pavement Width</FormLabel>
+                      <FormLabel>{t("segmentForms.roadInventory.pavementWidth.label")}</FormLabel>
                       <FormControl>
                         <InputGroup>
                           <InputGroupAddon>
@@ -415,7 +379,7 @@ export default function SegmentForms() {
                           <InputGroupInput
                             {...field}
                             type="number"
-                            placeholder="Enter pavement width"
+                            placeholder={t("segmentForms.roadInventory.pavementWidth.placeholder")}
                             disabled={form.getValues("notPassable") === true}
                             value={field.value || ""}
                             onChange={(e) =>
@@ -437,7 +401,7 @@ export default function SegmentForms() {
                   name="carriagewayWidthM"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Carriageway Width</FormLabel>
+                      <FormLabel>{t("segmentForms.roadInventory.carriagewayWidth.label")}</FormLabel>
                       <FormControl>
                         <InputGroup>
                           <InputGroupAddon>
@@ -447,7 +411,7 @@ export default function SegmentForms() {
                             {...field}
                             type="number"
                             disabled={form.getValues("notPassable") === true}
-                            placeholder="Enter carriageway width"
+                            placeholder={t("segmentForms.roadInventory.carriagewayWidth.placeholder")}
                             value={field.value || ""}
                             onChange={(e) =>
                               field.onChange(parseFloat(e.target.value) || 0)
@@ -468,7 +432,7 @@ export default function SegmentForms() {
                   name="rightOfWayWidthM"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Right of Way Width</FormLabel>
+                      <FormLabel>{t("segmentForms.roadInventory.rightOfWayWidth.label")}</FormLabel>
                       <FormControl>
                         <InputGroup>
                           <InputGroupAddon>
@@ -478,7 +442,7 @@ export default function SegmentForms() {
                             {...field}
                             type="number"
                             disabled={form.getValues("notPassable") === true}
-                            placeholder="Enter right of way width"
+                            placeholder={t("segmentForms.roadInventory.rightOfWayWidth.placeholder")}
                             value={field.value || ""}
                             onChange={(e) =>
                               field.onChange(parseFloat(e.target.value) || 0)
@@ -498,7 +462,7 @@ export default function SegmentForms() {
             {/* Road Condition Group */}
             <div className="space-y-4">
               <h3 className="text-foreground border-b pb-2 text-lg font-semibold">
-                Road Condition
+                {t("segmentForms.roadCondition.title")}
               </h3>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* Terrain */}
@@ -507,7 +471,7 @@ export default function SegmentForms() {
                   name="terrain"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Terrain</FormLabel>
+                      <FormLabel>{t("segmentForms.roadCondition.terrain.label")}</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
@@ -518,14 +482,14 @@ export default function SegmentForms() {
                           }
                         >
                           <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select terrain type" />
+                            <SelectValue placeholder={t("segmentForms.roadCondition.terrain.placeholder")} />
                           </SelectTrigger>
                           <SelectContent>
                             {TERRAIN_TYPES.map((type) => (
                               <SelectItem key={type} value={type}>
                                 <div className="flex items-center gap-2">
                                   <Mountain className="size-3.5" />
-                                  <span className="capitalize">{type}</span>
+                                  <span>{t(`enums.terrainType.${type}`)}</span>
                                 </div>
                               </SelectItem>
                             ))}
@@ -550,7 +514,7 @@ export default function SegmentForms() {
                         />
                       </FormControl>
                       <div className="space-y-1 leading-none">
-                        <FormLabel>Not Passable</FormLabel>
+                        <FormLabel>{t("segmentForms.roadCondition.notPassable.label")}</FormLabel>
                       </div>
                     </FormItem>
                   )}

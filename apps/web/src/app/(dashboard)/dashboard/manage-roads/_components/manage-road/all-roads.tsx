@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { ArrowBigRight } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "../../../../../../components/ui/button";
@@ -12,6 +13,7 @@ import { orpc } from "../../../../../../utils/orpc";
 import DeleteRoadDialog from "../../[roadId]/_components/delete-road-dialog";
 
 export default function AllRoads() {
+  const { t } = useTranslation("manageRoads");
   const { data, isLoading, refetch } = useQuery(
     orpc.road.listAllRoads.queryOptions()
   );
@@ -33,15 +35,17 @@ export default function AllRoads() {
         <div className="space-y-2">
           {data?.roads.length === 0 ? (
             <div className="flex min-h-64 flex-col items-center justify-center gap-y-2 p-2">
-              <h1 className="text-lg font-medium">No roads found</h1>
+              <h1 className="text-lg font-medium">
+                {t("allRoads.noRoadsFound.title")}
+              </h1>
               <p className="text-muted-foreground text-sm">
-                Create a new road to get started.
+                {t("allRoads.noRoadsFound.description")}
               </p>
               <Link
                 href={StaticRoutes.CREATE_ROAD}
                 className={buttonVariants({ variant: "default" })}
               >
-                Create Road
+                {t("allRoads.noRoadsFound.button")}
               </Link>
             </div>
           ) : (
@@ -51,7 +55,7 @@ export default function AllRoads() {
                   href={StaticRoutes.CREATE_ROAD}
                   className={buttonVariants({ variant: "default" })}
                 >
-                  Create Road
+                  {t("allRoads.createRoadButton")}
                 </Link>
               </div>
 
@@ -74,7 +78,7 @@ export default function AllRoads() {
                             className: "text-muted-foreground",
                           })}
                         >
-                          Road Number: {road.number}
+                          {t("allRoads.roadNumber")}: {road.number}
                         </h2>
                         <h2
                           className={paragraphVariants({
@@ -82,7 +86,7 @@ export default function AllRoads() {
                             className: "text-muted-foreground",
                           })}
                         >
-                          Length: {road.totalLengthKm} km
+                          {t("allRoads.length")}: {road.totalLengthKm} km
                         </h2>
                       </div>
                       <h2
@@ -94,7 +98,7 @@ export default function AllRoads() {
                           " max-w-xs overflow-hidden text-ellipsis whitespace-nowrap"
                         }
                       >
-                        User: {road.createdBy}
+                        {t("allRoads.user")}: {road.createdBy}
                       </h2>
                     </div>
                     <div className="flex items-center gap-2">
@@ -102,7 +106,7 @@ export default function AllRoads() {
                         href={`${StaticRoutes.MANAGE_ROADS}/${road.id}`}
                         className={buttonVariants({ variant: "outline" })}
                       >
-                        View <ArrowBigRight />
+                        {t("allRoads.viewButton")} <ArrowBigRight />
                       </Link>
                       <DeleteRoadDialog
                         roadId={road.id}

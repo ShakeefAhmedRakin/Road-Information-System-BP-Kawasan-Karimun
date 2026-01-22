@@ -1,3 +1,5 @@
+"use client";
+
 import {
   FormControl,
   FormField,
@@ -11,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import {
   CRACK_TYPES,
   CRACK_WIDTH_TYPES,
@@ -37,10 +40,8 @@ interface DamageSelectFieldProps {
   options: readonly string[];
   placeholder?: string;
   disabled?: boolean;
+  enumType?: string;
 }
-
-const formatLabel = (value: string) =>
-  value.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
 function DamageSelectField({
   name,
@@ -48,8 +49,18 @@ function DamageSelectField({
   options,
   placeholder,
   disabled,
-}: DamageSelectFieldProps) {
+  enumType,
+}: DamageSelectFieldProps & { enumType?: string }) {
+  const { t } = useTranslation("createRoad");
   const form = useFormContext();
+
+  const getEnumTranslationKey = (value: string, enumType?: string): string => {
+    if (!enumType) {
+      // Fallback to formatLabel for unknown enum types
+      return value.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+    }
+    return t(`enums.${enumType}.${value}`, undefined) || value.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   return (
     <FormField
@@ -70,7 +81,7 @@ function DamageSelectField({
               <SelectContent>
                 {options.map((option) => (
                   <SelectItem key={option} value={option}>
-                    {formatLabel(option)}
+                    {getEnumTranslationKey(option, enumType)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -99,107 +110,122 @@ function DamageSection({ title, children }: DamageSectionProps) {
 }
 
 function AsphaltDamageForm() {
+  const { t } = useTranslation("createRoad");
   const form = useFormContext();
   const disabled = form.formState.isSubmitting;
 
   return (
     <div className="space-y-6">
-      <DamageSection title="Surface Condition">
+      <DamageSection title={t("damageAssessment.sections.surfaceCondition")}>
         <DamageSelectField
           name="damageAssessment.data.surfaceCondition"
-          label="Surface Condition"
+          label={t("damageAssessment.fields.surfaceCondition")}
           options={SURFACE_CONDITIONS}
           disabled={disabled}
+          enumType="surfaceCondition"
         />
         <DamageSelectField
           name="damageAssessment.data.bleeding"
-          label="Bleeding"
+          label={t("damageAssessment.fields.bleeding")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.disintegration"
-          label="Disintegration"
+          label={t("damageAssessment.fields.disintegration")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
       </DamageSection>
 
-      <DamageSection title="Crack Damage">
+      <DamageSection title={t("damageAssessment.sections.crackDamage")}>
         <DamageSelectField
           name="damageAssessment.data.crackType"
-          label="Crack Type"
+          label={t("damageAssessment.fields.crackType")}
           options={CRACK_TYPES}
           disabled={disabled}
+          enumType="crackType"
         />
         <DamageSelectField
           name="damageAssessment.data.averageCrackWidth"
-          label="Average Crack Width"
+          label={t("damageAssessment.fields.averageCrackWidth")}
           options={CRACK_WIDTH_TYPES}
           disabled={disabled}
+          enumType="crackWidthType"
         />
         <DamageSelectField
           name="damageAssessment.data.otherCrackArea"
-          label="Other Crack Area"
+          label={t("damageAssessment.fields.otherCrackArea")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.reflectiveCracking"
-          label="Reflective Cracking"
+          label={t("damageAssessment.fields.reflectiveCracking")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
       </DamageSection>
 
-      <DamageSection title="Pothole Damage">
+      <DamageSection title={t("damageAssessment.sections.potholeDamage")}>
         <DamageSelectField
           name="damageAssessment.data.numberOfPotholes"
-          label="Number of Potholes"
+          label={t("damageAssessment.fields.numberOfPotholes")}
           options={POTHOLE_COUNT_TYPES}
           disabled={disabled}
+          enumType="potholeCountType"
         />
         <DamageSelectField
           name="damageAssessment.data.potholeSize"
-          label="Pothole Size"
+          label={t("damageAssessment.fields.potholeSize")}
           options={POTHOLE_SIZE_TYPES}
           disabled={disabled}
+          enumType="potholeSizeType"
         />
         <DamageSelectField
           name="damageAssessment.data.potholeArea"
-          label="Pothole Area"
+          label={t("damageAssessment.fields.potholeArea")}
           options={POTHOLE_AREA_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="potholeAreaPercentageRange"
         />
       </DamageSection>
 
-      <DamageSection title="Rutting Damage">
+      <DamageSection title={t("damageAssessment.sections.ruttingDamage")}>
         <DamageSelectField
           name="damageAssessment.data.rutting"
-          label="Rutting"
+          label={t("damageAssessment.fields.rutting")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.averageRutDepth"
-          label="Average Rut Depth"
+          label={t("damageAssessment.fields.averageRutDepth")}
           options={RUT_DEPTH_TYPES}
           disabled={disabled}
+          enumType="rutDepthType"
         />
       </DamageSection>
 
-      <DamageSection title="Edge Damage">
+      <DamageSection title={t("damageAssessment.sections.edgeDamage")}>
         <DamageSelectField
           name="damageAssessment.data.edgeDamageLeft"
-          label="Left Edge Damage"
+          label={t("damageAssessment.fields.leftEdgeDamage")}
           options={EDGE_DAMAGE_TYPES}
           disabled={disabled}
+          enumType="edgeDamageType"
         />
         <DamageSelectField
           name="damageAssessment.data.edgeDamageRight"
-          label="Right Edge Damage"
+          label={t("damageAssessment.fields.rightEdgeDamage")}
           options={EDGE_DAMAGE_TYPES}
           disabled={disabled}
+          enumType="edgeDamageType"
         />
       </DamageSection>
     </div>
@@ -207,50 +233,57 @@ function AsphaltDamageForm() {
 }
 
 function ConcreteDamageForm() {
+  const { t } = useTranslation("createRoad");
   const form = useFormContext();
   const disabled = form.formState.isSubmitting;
 
   return (
     <div className="space-y-6">
-      <DamageSection title="Structural & Surface Damage">
+      <DamageSection title={t("damageAssessment.sections.structuralSurfaceDamage")}>
         <DamageSelectField
           name="damageAssessment.data.cracking"
-          label="Cracking"
+          label={t("damageAssessment.fields.cracking")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.spalling"
-          label="Spalling"
+          label={t("damageAssessment.fields.spalling")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.structuralCracking"
-          label="Structural Cracking"
+          label={t("damageAssessment.fields.structuralCracking")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.faulting"
-          label="Faulting"
+          label={t("damageAssessment.fields.faulting")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
       </DamageSection>
 
-      <DamageSection title="Water & Joint Damage">
+      <DamageSection title={t("damageAssessment.sections.waterJointDamage")}>
         <DamageSelectField
           name="damageAssessment.data.pumping"
-          label="Pumping"
+          label={t("damageAssessment.fields.pumping")}
           options={YES_NO_TYPES}
           disabled={disabled}
+          enumType="yesNoType"
         />
         <DamageSelectField
           name="damageAssessment.data.cornerBreak"
-          label="Corner Break"
+          label={t("damageAssessment.fields.cornerBreak")}
           options={YES_NO_TYPES}
           disabled={disabled}
+          enumType="yesNoType"
         />
       </DamageSection>
     </div>
@@ -258,53 +291,60 @@ function ConcreteDamageForm() {
 }
 
 function BlockDamageForm() {
+  const { t } = useTranslation("createRoad");
   const form = useFormContext();
   const disabled = form.formState.isSubmitting;
 
   return (
     <div className="space-y-6">
-      <DamageSection title="Surface Damage">
+      <DamageSection title={t("damageAssessment.sections.surfaceDamage")}>
         <DamageSelectField
           name="damageAssessment.data.reflectiveCracking"
-          label="Reflective Cracking"
+          label={t("damageAssessment.fields.reflectiveCracking")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.disintegration"
-          label="Disintegration"
+          label={t("damageAssessment.fields.disintegration")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
       </DamageSection>
 
-      <DamageSection title="Edge Damage">
+      <DamageSection title={t("damageAssessment.sections.edgeDamage")}>
         <DamageSelectField
           name="damageAssessment.data.edgeDamageLeft"
-          label="Left Edge Damage"
+          label={t("damageAssessment.fields.leftEdgeDamage")}
           options={EDGE_DAMAGE_TYPES}
           disabled={disabled}
+          enumType="edgeDamageType"
         />
         <DamageSelectField
           name="damageAssessment.data.edgeDamageRight"
-          label="Right Edge Damage"
+          label={t("damageAssessment.fields.rightEdgeDamage")}
           options={EDGE_DAMAGE_TYPES}
           disabled={disabled}
+          enumType="edgeDamageType"
         />
       </DamageSection>
 
-      <DamageSection title="Pothole & Deformation">
+      <DamageSection title={t("damageAssessment.sections.potholeDeformation")}>
         <DamageSelectField
           name="damageAssessment.data.potholeArea"
-          label="Pothole Area"
+          label={t("damageAssessment.fields.potholeArea")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.rutting"
-          label="Rutting"
+          label={t("damageAssessment.fields.rutting")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
       </DamageSection>
     </div>
@@ -312,107 +352,122 @@ function BlockDamageForm() {
 }
 
 function UnpavedDamageForm() {
+  const { t } = useTranslation("createRoad");
   const form = useFormContext();
   const disabled = form.formState.isSubmitting;
 
   return (
     <div className="space-y-6">
-      <DamageSection title="Crossfall & Shape">
+      <DamageSection title={t("damageAssessment.sections.crossfallShape")}>
         <DamageSelectField
           name="damageAssessment.data.crossfallCondition"
-          label="Crossfall Condition"
+          label={t("damageAssessment.fields.crossfallCondition")}
           options={CROSSFALL_CONDITIONS}
           disabled={disabled}
+          enumType="crossfallCondition"
         />
         <DamageSelectField
           name="damageAssessment.data.crossfallArea"
-          label="Area"
+          label={t("damageAssessment.fields.area")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
       </DamageSection>
 
-      <DamageSection title="Surface Failure">
+      <DamageSection title={t("damageAssessment.sections.surfaceFailure")}>
         <DamageSelectField
           name="damageAssessment.data.settlement"
-          label="Settlement"
+          label={t("damageAssessment.fields.settlement")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.erosion"
-          label="Erosion"
+          label={t("damageAssessment.fields.erosion")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
       </DamageSection>
 
-      <DamageSection title="Material Quality">
+      <DamageSection title={t("damageAssessment.sections.materialQuality")}>
         <DamageSelectField
           name="damageAssessment.data.largestParticleSize"
-          label="Largest Particle Size"
+          label={t("damageAssessment.fields.largestParticleSize")}
           options={PARTICLE_SIZE_TYPES}
           disabled={disabled}
+          enumType="particleSizeType"
         />
         <DamageSelectField
           name="damageAssessment.data.gravelThickness"
-          label="Gravel Thickness"
+          label={t("damageAssessment.fields.gravelThickness")}
           options={GRAVEL_THICKNESS_TYPES}
           disabled={disabled}
+          enumType="gravelThicknessType"
         />
         <DamageSelectField
           name="damageAssessment.data.gravelArea"
-          label="Gravel Area"
+          label={t("damageAssessment.fields.gravelArea")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.gravelDistribution"
-          label="Gravel Distribution"
+          label={t("damageAssessment.fields.gravelDistribution")}
           options={GRAVEL_DISTRIBUTION_TYPES}
           disabled={disabled}
+          enumType="gravelDistributionType"
         />
       </DamageSection>
 
-      <DamageSection title="Corrugation & Deformation">
+      <DamageSection title={t("damageAssessment.sections.corrugationDeformation")}>
         <DamageSelectField
           name="damageAssessment.data.corrugation"
-          label="Corrugation"
+          label={t("damageAssessment.fields.corrugation")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.rutting"
-          label="Rutting"
+          label={t("damageAssessment.fields.rutting")}
           options={DAMAGE_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="damagePercentageRange"
         />
         <DamageSelectField
           name="damageAssessment.data.averageRutDepth"
-          label="Average Rut Depth"
+          label={t("damageAssessment.fields.averageRutDepth")}
           options={UNPAVED_RUT_DEPTH_TYPES}
           disabled={disabled}
+          enumType="unpavedRutDepthType"
         />
       </DamageSection>
 
-      <DamageSection title="Pothole Damage">
+      <DamageSection title={t("damageAssessment.sections.potholeDamage")}>
         <DamageSelectField
           name="damageAssessment.data.numberOfPotholes"
-          label="Number of Potholes"
+          label={t("damageAssessment.fields.numberOfPotholes")}
           options={POTHOLE_COUNT_TYPES}
           disabled={disabled}
+          enumType="potholeCountType"
         />
         <DamageSelectField
           name="damageAssessment.data.potholeSize"
-          label="Pothole Size"
+          label={t("damageAssessment.fields.potholeSize")}
           options={POTHOLE_SIZE_TYPES}
           disabled={disabled}
+          enumType="potholeSizeType"
         />
         <DamageSelectField
           name="damageAssessment.data.potholeArea"
-          label="Pothole Area"
+          label={t("damageAssessment.fields.potholeArea")}
           options={POTHOLE_AREA_PERCENTAGE_RANGES}
           disabled={disabled}
+          enumType="potholeAreaPercentageRange"
         />
       </DamageSection>
     </div>

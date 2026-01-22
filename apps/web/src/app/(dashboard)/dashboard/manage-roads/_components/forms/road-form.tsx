@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { getDefaultDamageAssessment } from "@/lib/damage-assessment";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -17,6 +18,7 @@ import RoadSegmentFields from "./road-segment-fields";
 import SegmentForms from "./segment-forms";
 
 export default function RoadForm() {
+  const { t } = useTranslation("createRoad");
   const router = useRouter();
 
   const form = useForm({
@@ -79,9 +81,9 @@ export default function RoadForm() {
       const response = await createRoadMutation.mutateAsync(parsedValues);
       if (response.success) {
         router.push(`${StaticRoutes.MANAGE_ROADS}/${response.roadId}`);
-        toast.success("Road created successfully");
+        toast.success(t("form.toasts.success"));
       } else {
-        toast.error("Failed to create road");
+        toast.error(t("form.toasts.error"));
       }
     } catch (error) {
       console.error("Error creating road:", error);
@@ -109,7 +111,7 @@ export default function RoadForm() {
             disabled={isSubmitting || !isValid}
             className="w-full"
           >
-            {isSubmitting ? "Creating road..." : "Create Road"}
+            {isSubmitting ? t("form.button.creating") : t("form.button.create")}
           </Button>
 
           {/* 

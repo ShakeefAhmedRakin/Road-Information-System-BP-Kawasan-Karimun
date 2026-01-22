@@ -1,0 +1,36 @@
+{
+  "allRoads": {
+    "noRoadsFound": {
+      "title": "Tidak ada jalan ditemukan",
+      "description": "Buat jalan baru untuk memulai.",
+      "button": "Buat Jalan"
+    },
+    "createRoadButton": "Buat Jalan",
+    "viewButton": "Lihat",
+    "roadNumber": "Nomor Jalan",
+    "length": "Panjang",
+    "user": "Pengguna"
+  },
+  "deleteRoad": {
+    "button": "Hapus Jalan",
+    "title": "Hapus Jalan",
+    "description": "Tindakan ini tidak dapat dibatalkan. Ini akan menghapus jalan dan semua data terkait secara permanen.",
+    "warning": {
+      "title": "Peringatan",
+      "description": "Jalan ini akan dihapus selamanya dan semua data segmen juga akan hilang. Tindakan ini tidak dapat dibatalkan."
+    },
+    "roadInfo": "Informasi Jalan",
+    "roadNumber": "Nomor Jalan",
+    "segments": "Segmen",
+    "note": "Catatan: Semua {{count}} segmen dan data terkaitnya akan dihapus secara permanen.",
+    "noteOne": "Catatan: Semua 1 segmen dan data terkaitnya akan dihapus secara permanen.",
+    "noteMultiple": "Catatan: Semua {{count}} segmen dan data terkaitnya akan dihapus secara permanen.",
+    "deleting": "Menghapus...",
+    "deleteButton": "Hapus Jalan",
+    "cancel": "Batal",
+    "toasts": {
+      "success": "Jalan berhasil dihapus",
+      "error": "Gagal menghapus jalan"
+    }
+  }
+}

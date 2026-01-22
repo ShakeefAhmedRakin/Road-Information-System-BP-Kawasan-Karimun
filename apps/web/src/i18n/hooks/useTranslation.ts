@@ -17,6 +17,10 @@ import enPageHeaders from "../locales/en/pageHeaders.json";
 import idPageHeaders from "../locales/id/pageHeaders.json";
 import enManageUsers from "../locales/en/manageUsers.json";
 import idManageUsers from "../locales/id/manageUsers.json";
+import enManageRoads from "../locales/en/manageRoads.json";
+import idManageRoads from "../locales/id/manageRoads.json";
+import enCreateRoad from "../locales/en/createRoad.json";
+import idCreateRoad from "../locales/id/createRoad.json";
 
 type TranslationKeys = {
   auth: typeof enAuth;
@@ -25,6 +29,8 @@ type TranslationKeys = {
   breadcrumbs: typeof enBreadcrumbs;
   pageHeaders: typeof enPageHeaders;
   manageUsers: typeof enManageUsers;
+  manageRoads: typeof enManageRoads;
+  createRoad: typeof enCreateRoad;
 };
 
 const translations: Record<string, TranslationKeys> = {
@@ -35,6 +41,8 @@ const translations: Record<string, TranslationKeys> = {
     breadcrumbs: enBreadcrumbs,
     pageHeaders: enPageHeaders,
     manageUsers: enManageUsers,
+    manageRoads: enManageRoads,
+    createRoad: enCreateRoad,
   },
   id: {
     auth: idAuth,
@@ -43,6 +51,8 @@ const translations: Record<string, TranslationKeys> = {
     breadcrumbs: idBreadcrumbs,
     pageHeaders: idPageHeaders,
     manageUsers: idManageUsers,
+    manageRoads: idManageRoads,
+    createRoad: idCreateRoad,
   },
 };
 

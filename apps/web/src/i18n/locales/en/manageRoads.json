@@ -1,0 +1,36 @@
+{
+  "allRoads": {
+    "noRoadsFound": {
+      "title": "No roads found",
+      "description": "Create a new road to get started.",
+      "button": "Create Road"
+    },
+    "createRoadButton": "Create Road",
+    "viewButton": "View",
+    "roadNumber": "Road Number",
+    "length": "Length",
+    "user": "User"
+  },
+  "deleteRoad": {
+    "button": "Delete Road",
+    "title": "Delete Road",
+    "description": "This action cannot be undone. This will permanently delete the road and all associated data.",
+    "warning": {
+      "title": "Warning",
+      "description": "This road will be deleted forever and all segment data will be gone as well. This action cannot be reversed."
+    },
+    "roadInfo": "Road Information",
+    "roadNumber": "Road Number",
+    "segments": "Segments",
+    "note": "Note: All {{count}} segment{{plural}} and their associated data will be permanently deleted.",
+    "noteOne": "Note: All 1 segment and its associated data will be permanently deleted.",
+    "noteMultiple": "Note: All {{count}} segments and their associated data will be permanently deleted.",
+    "deleting": "Deleting...",
+    "deleteButton": "Delete Road",
+    "cancel": "Cancel",
+    "toasts": {
+      "success": "Road deleted successfully",
+      "error": "Failed to delete road"
+    }
+  }
+}

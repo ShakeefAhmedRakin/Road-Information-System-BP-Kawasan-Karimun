@@ -1,0 +1,286 @@
+{
+  "form": {
+    "title": "Create Road",
+    "button": {
+      "create": "Create Road",
+      "creating": "Creating road..."
+    },
+    "toasts": {
+      "success": "Road created successfully",
+      "error": "Failed to create road"
+    }
+  },
+  "roadSegmentFields": {
+    "title": "Road and Segment Identify",
+    "roadName": {
+      "label": "Road Name",
+      "placeholder": "Enter road name"
+    },
+    "roadNumber": {
+      "label": "Road Number",
+      "placeholder": "Enter road number"
+    },
+    "roadLength": {
+      "label": "Road Length",
+      "description": "Total length of the road in kilometers",
+      "placeholder": "Enter total length"
+    },
+    "segmentInterval": {
+      "label": "Segment Interval",
+      "description": "Fixed at 100m standard interval",
+      "placeholder": "Enter segment interval"
+    },
+    "segmentGenerationMode": {
+      "label": "Segment Generation Mode",
+      "description": "Controls how the last segment is generated when road length doesn't align with interval",
+      "placeholder": "Select generation mode"
+    },
+    "visibleToVisitors": {
+      "label": "Visible to visitors",
+      "description": "When enabled, this road can be viewed by visitors."
+    }
+  },
+  "segmentForms": {
+    "title": "Segment Attributes",
+    "tabs": {
+      "leftSide": "Left Side",
+      "pavement": "Pavement",
+      "rightSide": "Right Side"
+    },
+    "shoulderType": {
+      "label": "Shoulder Type",
+      "placeholder": "Select shoulder type"
+    },
+    "shoulderWidth": {
+      "label": "Shoulder Width",
+      "placeholder": "Select shoulder width"
+    },
+    "drainageType": {
+      "label": "Drainage Type",
+      "placeholder": "Select drainage type"
+    },
+    "landUseType": {
+      "label": "Land Use Type",
+      "placeholder": "Select land use type"
+    },
+    "roadInventory": {
+      "title": "Road Inventory",
+      "pavementType": {
+        "label": "Pavement Type",
+        "placeholder": "Select pavement type"
+      },
+      "pavementWidth": {
+        "label": "Pavement Width",
+        "placeholder": "Enter pavement width"
+      },
+      "carriagewayWidth": {
+        "label": "Carriageway Width",
+        "placeholder": "Enter carriageway width"
+      },
+      "rightOfWayWidth": {
+        "label": "Right of Way Width",
+        "placeholder": "Enter right of way width"
+      }
+    },
+    "roadCondition": {
+      "title": "Road Condition",
+      "terrain": {
+        "label": "Terrain",
+        "placeholder": "Select terrain type"
+      },
+      "notPassable": {
+        "label": "Not Passable"
+      }
+    }
+  },
+  "enums": {
+    "segmentGenerationMode": {
+      "exact": "Exact",
+      "rounded": "Rounded"
+    },
+    "pavementType": {
+      "asphalt": "Asphalt Pavement",
+      "concrete": "Concrete Pavement",
+      "block": "Block Pavement",
+      "gravel": "Gravel Pavement",
+      "unpaved": "Unpaved Road"
+    },
+    "shoulderType": {
+      "none": "No Shoulder",
+      "earth": "Earth Shoulder",
+      "concrete": "Concrete Shoulder",
+      "asphalt": "Asphalt Shoulder",
+      "block": "Block Shoulder"
+    },
+    "drainageType": {
+      "none": "No Drainage",
+      "not_required": "Not Required",
+      "earth": "Earth",
+      "masonry_open": "Masonry Open",
+      "masonry_covered": "Masonry Covered"
+    },
+    "landUseType": {
+      "none": "No Land Use",
+      "agriculture": "Agriculture Land",
+      "rural": "Rural Land",
+      "urban": "Urban Land",
+      "forest": "Forest Land"
+    },
+    "terrainType": {
+      "flat": "Flat",
+      "rolling": "Rolling",
+      "mountainous": "Mountainous"
+    },
+    "surfaceCondition": {
+      "good": "Good",
+      "rough": "Rough"
+    },
+    "damagePercentageRange": {
+      "0%": "0%",
+      "0-5%": "0-5%",
+      "5-10%": "5-10%",
+      "10-20%": "10-20%",
+      "20-30%": "20-30%",
+      "30-40%": "30-40%",
+      "40-50%": "40-50%",
+      ">50%": ">50%"
+    },
+    "potholeAreaPercentageRange": {
+      "0%": "0%",
+      "0-3%": "0-3%",
+      "3-5%": "3-5%",
+      "5-10%": "5-10%",
+      "10-20%": "10-20%",
+      "20-30%": "20-30%",
+      "30-40%": "30-40%",
+      "40-50%": "40-50%",
+      ">50%": ">50%"
+    },
+    "crackType": {
+      "none": "None",
+      "not_connected": "Not Connected",
+      "interconnected_wide_area": "Interconnected (Wide Area)",
+      "interconnected_narrow_area": "Interconnected (Narrow Area)"
+    },
+    "crackWidthType": {
+      "none": "None",
+      "<1mm": "<1 mm",
+      "1-5mm": "1-5 mm",
+      ">5mm": ">5 mm"
+    },
+    "potholeCountType": {
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      ">7": ">7"
+    },
+    "potholeSizeType": {
+      "none": "None",
+      "small_shallow": "Small–Shallow",
+      "small_deep": "Small–Deep",
+      "large_shallow": "Large–Shallow",
+      "large_deep": "Large–Deep"
+    },
+    "rutDepthType": {
+      "none": "None",
+      "<1cm": "<1 cm",
+      "1-3cm": "1-3 cm",
+      ">3cm": ">3 cm"
+    },
+    "unpavedRutDepthType": {
+      "none": "None",
+      "<5cm": "<5 cm",
+      "5-15cm": "5-15 cm",
+      ">15cm": ">15 cm"
+    },
+    "edgeDamageType": {
+      "none": "None",
+      "light_0_30%": "Light (0-30%)",
+      "severe_>30%": "Severe (>30%)"
+    },
+    "yesNoType": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "crossfallCondition": {
+      ">5%": ">5%",
+      "3-5%": "3-5%",
+      "flat": "Flat",
+      "concave": "Concave"
+    },
+    "particleSizeType": {
+      "none": "None",
+      "<1cm": "<1 cm",
+      "1-5cm": "1-5 cm",
+      ">5cm": ">5 cm",
+      "not_uniform": "Not Uniform"
+    },
+    "gravelThicknessType": {
+      "none": "None",
+      "<5cm": "<5 cm",
+      "5-10cm": "5-10 cm",
+      "10-20cm": "10-20 cm",
+      ">20cm": ">20 cm"
+    },
+    "gravelDistributionType": {
+      "none": "None",
+      "even": "Even",
+      "uneven": "Uneven",
+      "longitudinal_windrow": "Longitudinal Windrow"
+    }
+  },
+  "damageAssessment": {
+    "sections": {
+      "surfaceCondition": "Surface Condition",
+      "crackDamage": "Crack Damage",
+      "potholeDamage": "Pothole Damage",
+      "ruttingDamage": "Rutting Damage",
+      "edgeDamage": "Edge Damage",
+      "structuralSurfaceDamage": "Structural & Surface Damage",
+      "waterJointDamage": "Water & Joint Damage",
+      "surfaceDamage": "Surface Damage",
+      "potholeDeformation": "Pothole & Deformation",
+      "crossfallShape": "Crossfall & Shape",
+      "surfaceFailure": "Surface Failure",
+      "materialQuality": "Material Quality",
+      "corrugationDeformation": "Corrugation & Deformation"
+    },
+    "fields": {
+      "surfaceCondition": "Surface Condition",
+      "bleeding": "Bleeding",
+      "disintegration": "Disintegration",
+      "crackType": "Crack Type",
+      "averageCrackWidth": "Average Crack Width",
+      "otherCrackArea": "Other Crack Area",
+      "reflectiveCracking": "Reflective Cracking",
+      "numberOfPotholes": "Number of Potholes",
+      "potholeSize": "Pothole Size",
+      "potholeArea": "Pothole Area",
+      "rutting": "Rutting",
+      "averageRutDepth": "Average Rut Depth",
+      "leftEdgeDamage": "Left Edge Damage",
+      "rightEdgeDamage": "Right Edge Damage",
+      "cracking": "Cracking",
+      "spalling": "Spalling",
+      "structuralCracking": "Structural Cracking",
+      "faulting": "Faulting",
+      "pumping": "Pumping",
+      "cornerBreak": "Corner Break",
+      "crossfallCondition": "Crossfall Condition",
+      "area": "Area",
+      "settlement": "Settlement",
+      "erosion": "Erosion",
+      "largestParticleSize": "Largest Particle Size",
+      "gravelThickness": "Gravel Thickness",
+      "gravelArea": "Gravel Area",
+      "gravelDistribution": "Gravel Distribution",
+      "corrugation": "Corrugation",
+      "selectPlaceholder": "Select {{field}}"
+    }
+  }
+}

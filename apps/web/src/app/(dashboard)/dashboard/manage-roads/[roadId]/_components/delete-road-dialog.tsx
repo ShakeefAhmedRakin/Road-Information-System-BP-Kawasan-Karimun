@@ -19,6 +19,7 @@ import {
     ItemSeparator,
     ItemTitle,
 } from "@/components/ui/item";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { orpc } from "@/utils/orpc";
@@ -44,6 +45,7 @@ export default function DeleteRoadDialog({
   segmentCount,
   onDeleteSuccess,
 }: DeleteRoadDialogProps) {
+  const { t } = useTranslation("manageRoads");
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -56,7 +58,7 @@ export default function DeleteRoadDialog({
       { roadId },
       {
         onSuccess: () => {
-          toast.success("Road deleted successfully");
+          toast.success(t("deleteRoad.toasts.success"));
           setOpen(false);
           if (onDeleteSuccess) {
             onDeleteSuccess();
@@ -65,7 +67,7 @@ export default function DeleteRoadDialog({
           }
         },
         onError: (error: Error) => {
-          toast.error(error.message || "Failed to delete road");
+          toast.error(error.message || t("deleteRoad.toasts.error"));
         },
       }
     );
@@ -77,21 +79,20 @@ export default function DeleteRoadDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="destructive">
-          Delete Road
+          {t("deleteRoad.button")}
           <Trash2 className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <AlertCircleIcon className="text-destructive size-5" /> Delete Road
+            <AlertCircleIcon className="text-destructive size-5" /> {t("deleteRoad.title")}
           </DialogTitle>
         </DialogHeader>
         <Separator />
 
         <DialogDescription>
-          This action cannot be undone. This will permanently delete the road
-          and all associated data.
+          {t("deleteRoad.description")}
         </DialogDescription>
 
         <Item variant="destructive">
@@ -99,30 +100,32 @@ export default function DeleteRoadDialog({
             <AlertCircleIcon className="text-destructive size-5" />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle className="text-destructive">Warning</ItemTitle>
+            <ItemTitle className="text-destructive">
+              {t("deleteRoad.warning.title")}
+            </ItemTitle>
             <ItemDescription>
-              This road will be deleted forever and all segment data will be
-              gone as well. This action cannot be reversed.
+              {t("deleteRoad.warning.description")}
             </ItemDescription>
           </ItemContent>
         </Item>
 
         <Item variant="outline">
           <ItemHeader className="flex w-full items-center justify-between gap-2">
-            <span className="whitespace-nowrap">Road Information</span>
+            <span className="whitespace-nowrap">{t("deleteRoad.roadInfo")}</span>
           </ItemHeader>
           <ItemSeparator />
           <ItemContent>
             <ItemTitle className="line-clamp-1">{roadName}</ItemTitle>
             <ItemDescription>
-              Road Number: {roadNumber}
+              {t("deleteRoad.roadNumber")}: {roadNumber}
               <br />
-              Segments: {segmentCount}
+              {t("deleteRoad.segments")}: {segmentCount}
             </ItemDescription>
           </ItemContent>
           <ItemFooter className="text-muted-foreground text-xs font-bold">
-            Note: All {segmentCount} segment{segmentCount !== 1 ? "s" : ""} and
-            their associated data will be permanently deleted.
+            {segmentCount === 1
+              ? t("deleteRoad.noteOne")
+              : t("deleteRoad.noteMultiple", { count: segmentCount })}
           </ItemFooter>
         </Item>
 
@@ -135,10 +138,10 @@ export default function DeleteRoadDialog({
             {isDeleting ? (
               <>
                 <Spinner className="mr-2" />
-                Deleting...
+                {t("deleteRoad.deleting")}
               </>
             ) : (
-              "Delete Road"
+              t("deleteRoad.deleteButton")
             )}
           </Button>
           <Button
@@ -146,7 +149,7 @@ export default function DeleteRoadDialog({
             onClick={() => setOpen(false)}
             disabled={isDeleting}
           >
-            Cancel
+            {t("deleteRoad.cancel")}
           </Button>
         </div>
       </DialogContent>

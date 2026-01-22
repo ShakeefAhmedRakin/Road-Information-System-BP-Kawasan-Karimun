@@ -1,3 +1,5 @@
+"use client";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   FormControl,
@@ -18,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Separator } from "@/components/ui/separator";
 import { paragraphVariants } from "@/components/ui/typography";
 import { SEGMENT_GENERATION_MODES } from "@repo/shared";
@@ -25,6 +28,7 @@ import { AudioWaveform, Hash, Ruler, Settings } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
 export default function RoadSegmentFields() {
+  const { t } = useTranslation("createRoad");
   const form = useFormContext();
   return (
     <div className="max-w-4xl space-y-2">
@@ -34,7 +38,7 @@ export default function RoadSegmentFields() {
           className: "font-medium",
         })}
       >
-        Road and Segment Identify
+        {t("roadSegmentFields.title")}
       </h3>
       <Separator />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -45,7 +49,7 @@ export default function RoadSegmentFields() {
           render={({ field }) => (
             <FormItem className="flex h-full flex-1 flex-col justify-between">
               <div>
-                <FormLabel>Road Name</FormLabel>
+                <FormLabel>{t("roadSegmentFields.roadName.label")}</FormLabel>
               </div>
               <FormControl>
                 <InputGroup>
@@ -53,7 +57,7 @@ export default function RoadSegmentFields() {
                     <AudioWaveform className="size-3.5" />
                   </InputGroupAddon>
                   <InputGroupInput
-                    placeholder="Enter road name"
+                    placeholder={t("roadSegmentFields.roadName.placeholder")}
                     disabled={form.formState.isSubmitting}
                     {...field}
                   />
@@ -70,7 +74,7 @@ export default function RoadSegmentFields() {
           render={({ field }) => (
             <FormItem className="flex h-full flex-1 flex-col justify-between">
               <div>
-                <FormLabel>Road Number</FormLabel>
+                <FormLabel>{t("roadSegmentFields.roadNumber.label")}</FormLabel>
               </div>
               <FormControl>
                 <InputGroup>
@@ -78,7 +82,7 @@ export default function RoadSegmentFields() {
                     <Hash className="size-3.5" />
                   </InputGroupAddon>
                   <InputGroupInput
-                    placeholder="Enter road number"
+                    placeholder={t("roadSegmentFields.roadNumber.placeholder")}
                     disabled={form.formState.isSubmitting}
                     {...field}
                   />
@@ -95,9 +99,9 @@ export default function RoadSegmentFields() {
           render={({ field }) => (
             <FormItem className="flex h-full flex-1 flex-col justify-between">
               <div>
-                <FormLabel>Road Length</FormLabel>
+                <FormLabel>{t("roadSegmentFields.roadLength.label")}</FormLabel>
                 <FormDescription>
-                  Total length of the road in kilometers
+                  {t("roadSegmentFields.roadLength.description")}
                 </FormDescription>
               </div>
               <FormControl>
@@ -108,7 +112,7 @@ export default function RoadSegmentFields() {
                   <InputGroupInput
                     {...field}
                     type="number"
-                    placeholder="Enter total length"
+                    placeholder={t("roadSegmentFields.roadLength.placeholder")}
                     disabled={form.formState.isSubmitting}
                     value={field.value ?? ""}
                     onChange={(e) =>
@@ -131,9 +135,9 @@ export default function RoadSegmentFields() {
           render={({ field }) => (
             <FormItem className="flex h-full flex-1 flex-col justify-between">
               <div>
-                <FormLabel>Segment Interval</FormLabel>
+                <FormLabel>{t("roadSegmentFields.segmentInterval.label")}</FormLabel>
                 <FormDescription>
-                  Fixed at 100m standard interval
+                  {t("roadSegmentFields.segmentInterval.description")}
                 </FormDescription>
               </div>
               <FormControl>
@@ -144,7 +148,7 @@ export default function RoadSegmentFields() {
                   <InputGroupInput
                     {...field}
                     type="number"
-                    placeholder="Enter segment interval"
+                    placeholder={t("roadSegmentFields.segmentInterval.placeholder")}
                     value={100}
                     disabled={true}
                     readOnly={true}
@@ -166,10 +170,9 @@ export default function RoadSegmentFields() {
           render={({ field }) => (
             <FormItem className="flex h-full flex-1 flex-col justify-between">
               <div>
-                <FormLabel>Segment Generation Mode</FormLabel>
+                <FormLabel>{t("roadSegmentFields.segmentGenerationMode.label")}</FormLabel>
                 <FormDescription>
-                  Controls how the last segment is generated when road length
-                  doesn't align with interval
+                  {t("roadSegmentFields.segmentGenerationMode.description")}
                 </FormDescription>
               </div>
               <FormControl>
@@ -179,14 +182,14 @@ export default function RoadSegmentFields() {
                   disabled={form.formState.isSubmitting}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select generation mode" />
+                    <SelectValue placeholder={t("roadSegmentFields.segmentGenerationMode.placeholder")} />
                   </SelectTrigger>
                   <SelectContent>
                     {SEGMENT_GENERATION_MODES.map((mode) => (
                       <SelectItem key={mode} value={mode}>
                         <div className="flex items-center gap-2">
                           <Settings className="size-3.5" />
-                          <span className="capitalize">{mode}</span>
+                          <span>{t(`enums.segmentGenerationMode.${mode}`)}</span>
                         </div>
                       </SelectItem>
                     ))}
@@ -212,9 +215,9 @@ export default function RoadSegmentFields() {
               />
             </FormControl>
             <div className="space-y-1 leading-none">
-              <FormLabel>Visible to visitors</FormLabel>
+              <FormLabel>{t("roadSegmentFields.visibleToVisitors.label")}</FormLabel>
               <FormDescription>
-                When enabled, this road can be viewed by visitors.
+                {t("roadSegmentFields.visibleToVisitors.description")}
               </FormDescription>
             </div>
           </FormItem>
