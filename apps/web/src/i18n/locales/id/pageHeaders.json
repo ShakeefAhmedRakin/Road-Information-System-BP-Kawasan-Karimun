@@ -1,0 +1,22 @@
+{
+  "home": {
+    "title": "Beranda",
+    "description": "Ringkasan jalan dan laporan"
+  },
+  "manageRoads": {
+    "title": "Kelola Jalan",
+    "description": "Kelola jalan Anda"
+  },
+  "manageUsers": {
+    "title": "Kelola Pengguna",
+    "description": "Kelola pengguna Anda"
+  },
+  "createRoad": {
+    "title": "Buat Jalan",
+    "description": "Buat jalan baru"
+  },
+  "roadDetails": {
+    "title": "Detail Jalan",
+    "description": "Lihat detail jalan"
+  }
+}

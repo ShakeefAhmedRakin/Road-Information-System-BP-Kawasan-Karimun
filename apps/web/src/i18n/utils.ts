@@ -1,4 +1,5 @@
-import { defaultLocale, Locale, storageKey, supportedLocales } from "./config";
+import { defaultLocale, storageKey, supportedLocales } from "./config";
+import type { Locale } from "./config";
 
 /**
  * Get the current locale from localStorage or return default
@@ -42,7 +43,8 @@ export function getNestedValue(
   obj: Record<string, any>,
   path: string
 ): string | undefined {
-  return path.split(".").reduce((current, key) => {
+  const result = path.split(".").reduce<any>((current, key) => {
     return current && typeof current === "object" ? current[key] : undefined;
   }, obj);
+  return typeof result === "string" ? result : undefined;
 }

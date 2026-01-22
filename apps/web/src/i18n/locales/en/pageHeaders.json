@@ -1,0 +1,22 @@
+{
+  "home": {
+    "title": "Home",
+    "description": "Overview of roads and reports"
+  },
+  "manageRoads": {
+    "title": "Manage Roads",
+    "description": "Manage your roads"
+  },
+  "manageUsers": {
+    "title": "Manage Users",
+    "description": "Manage your users"
+  },
+  "createRoad": {
+    "title": "Create Road",
+    "description": "Create a new road"
+  },
+  "roadDetails": {
+    "title": "Road Details",
+    "description": "View the details of a road"
+  }
+}

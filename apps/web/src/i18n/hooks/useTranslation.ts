@@ -13,12 +13,15 @@ import enAccount from "../locales/en/account.json";
 import idAccount from "../locales/id/account.json";
 import enBreadcrumbs from "../locales/en/breadcrumbs.json";
 import idBreadcrumbs from "../locales/id/breadcrumbs.json";
+import enPageHeaders from "../locales/en/pageHeaders.json";
+import idPageHeaders from "../locales/id/pageHeaders.json";
 
 type TranslationKeys = {
   auth: typeof enAuth;
   dashboard: typeof enDashboard;
   account: typeof enAccount;
   breadcrumbs: typeof enBreadcrumbs;
+  pageHeaders: typeof enPageHeaders;
 };
 
 const translations: Record<string, TranslationKeys> = {
@@ -27,12 +30,14 @@ const translations: Record<string, TranslationKeys> = {
     dashboard: enDashboard,
     account: enAccount,
     breadcrumbs: enBreadcrumbs,
+    pageHeaders: enPageHeaders,
   },
   id: {
     auth: idAuth,
     dashboard: idDashboard,
     account: idAccount,
     breadcrumbs: idBreadcrumbs,
+    pageHeaders: idPageHeaders,
   },
 };
 

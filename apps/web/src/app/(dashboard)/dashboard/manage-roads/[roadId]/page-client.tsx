@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { orpc } from "@/utils/orpc";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ReadRoadSegmentType } from "api/src/modules/segment/segment.schema";
@@ -45,6 +46,7 @@ const getSegmentIdFromValue = (value?: string | null) =>
   value?.startsWith("segment-") ? value.replace("segment-", "") : undefined;
 
 export default function RoadPageClient({ roadId }: RoadPageClientProps) {
+  const { t } = useTranslation("pageHeaders");
   const { data, isLoading, refetch } = useQuery(
     orpc.road.getRoadAndSegmentsByRoadId.queryOptions({
       input: { roadId },
@@ -254,7 +256,10 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
 
   if (isLoading) {
     return (
-      <PageLayout title="Road Details" description="View the details of a road">
+      <PageLayout
+        title={t("roadDetails.title")}
+        description={t("roadDetails.description")}
+      >
         <div className="flex min-h-64 flex-col items-center justify-center gap-y-2 p-2">
           <p className="text-muted-foreground text-sm">Loading segments...</p>
         </div>
@@ -264,7 +269,10 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
 
   if (!data?.road) {
     return (
-      <PageLayout title="Road Details" description="View the details of a road">
+      <PageLayout
+        title={t("roadDetails.title")}
+        description={t("roadDetails.description")}
+      >
         <div className="flex min-h-64 flex-col items-center justify-center gap-y-2 p-2">
           <h1 className="text-lg font-medium">Road not found</h1>
           <p className="text-muted-foreground text-sm">
@@ -276,7 +284,10 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
   }
 
   return (
-    <PageLayout title="Road Details" description="View the details of a road">
+    <PageLayout
+      title={t("roadDetails.title")}
+      description={t("roadDetails.description")}
+    >
       <SegmentSummaryDialog
         segments={segments}
         roadName={data.road.name}
