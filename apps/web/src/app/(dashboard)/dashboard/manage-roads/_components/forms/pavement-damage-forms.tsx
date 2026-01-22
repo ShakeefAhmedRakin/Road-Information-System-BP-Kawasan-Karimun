@@ -76,7 +76,7 @@ function DamageSelectField({
               disabled={disabled}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder={placeholder ?? `Select ${label}`} />
+                <SelectValue placeholder={placeholder ?? t("damageAssessment.fields.selectPlaceholder", { field: label })} />
               </SelectTrigger>
               <SelectContent>
                 {options.map((option) => (

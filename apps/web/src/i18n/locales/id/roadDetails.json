@@ -1,0 +1,170 @@
+{
+  "page": {
+    "loading": "Memuat segmen...",
+    "notFound": {
+      "title": "Jalan tidak ditemukan",
+      "description": "Jalan yang Anda cari tidak ada."
+    },
+    "roadNumber": "Nomor Jalan",
+    "totalLength": "Panjang Total",
+    "segmentsHeading": "Segmen ({{count}})",
+    "noSegments": "Tidak ada segmen untuk jalan ini.",
+    "segmentLabel": "Segmen {{number}}",
+    "copyFromPlaceholder": "Salin dari...",
+    "saveChanges": "Simpan Perubahan",
+    "saving": "Menyimpan...",
+    "discard": "Buang",
+    "actionsForSegment": "Aksi untuk segmen {{number}}",
+    "warningSaveOrDiscard": "Simpan atau buang perubahan Anda sebelum meninggalkan segmen ini."
+  },
+  "report": {
+    "generate": "Buat Laporan",
+    "regenerate": "Buat Ulang Laporan",
+    "generating": "Membuat...",
+    "regenerating": "Membuat ulang...",
+    "toasts": {
+      "generated": "Laporan berhasil dibuat",
+      "regenerated": "Laporan berhasil dibuat ulang",
+      "failed": "Gagal membuat laporan"
+    }
+  },
+  "updateRoad": {
+    "button": "Perbarui Jalan",
+    "title": "Perbarui Informasi Jalan",
+    "description": "Perbarui informasi jalan. Perubahan pada setiap bidang akan disimpan secara otomatis.",
+    "roadName": "Nama Jalan",
+    "roadNumber": "Nomor Jalan",
+    "roadLength": "Panjang Jalan (km)",
+    "modifyWip": "Ubah (WIP)",
+    "modifyWipTitle": "Fitur ini belum tersedia",
+    "close": "Tutup",
+    "lengthModal": {
+      "title": "Konfirmasi Perubahan Panjang Jalan",
+      "description": "Mengubah panjang jalan akan menghapus semua segmen yang ada dan membuat ulang berdasarkan data pembuatan jalan awal.",
+      "warningTitle": "Peringatan",
+      "warningDescription": "Semua segmen yang ada akan dihapus dan dibuat ulang berdasarkan data segmen dari pembuatan jalan awal. Tindakan ini tidak dapat dibatalkan.",
+      "lengthChange": "Perubahan Panjang",
+      "current": "Saat ini: {{value}} km",
+      "enterNew": "Masukkan panjang jalan baru di bawah.",
+      "newLabel": "Panjang Jalan Baru (km)",
+      "placeholder": "Masukkan total panjang",
+      "newLengthPreview": "Panjang baru: {{value}} km ({{diff}} km)",
+      "note": "Catatan: Ini akan menghapus semua data segmen saat ini secara permanen dan membuat segmen baru.",
+      "confirmButton": "Konfirmasi dan Buat Ulang Segmen",
+      "cancel": "Batal",
+      "loading": "Memuat...",
+      "updating": "Memperbarui dan Membuat Ulang..."
+    },
+    "toasts": {
+      "nameUpdated": "Nama jalan berhasil diperbarui",
+      "nameFailed": "Gagal memperbarui nama jalan",
+      "numberUpdated": "Nomor jalan berhasil diperbarui",
+      "numberFailed": "Gagal memperbarui nomor jalan",
+      "loadSegmentFailed": "Gagal memuat data segmen. Silakan coba lagi.",
+      "missingDamage": "Tidak dapat membuat ulang segmen: data penilaian kerusakan hilang. Hubungi dukungan.",
+      "lengthRequired": "Panjang jalan wajib diisi",
+      "lengthInvalid": "Panjang jalan harus berupa angka yang valid",
+      "lengthUnchanged": "Panjang jalan tidak berubah",
+      "validationFailed": "Validasi input gagal",
+      "lengthUpdated": "Panjang jalan diperbarui dan segmen berhasil dibuat ulang",
+      "regenerateFailed": "Gagal membuat ulang segmen. Silakan coba lagi.",
+      "updateLengthFailed": "Gagal memperbarui panjang jalan"
+    },
+    "validation": {
+      "lengthPositive": "Panjang total harus positif",
+      "invalidLength": "Panjang jalan tidak valid"
+    }
+  },
+  "segmentSummary": {
+    "buttonTitle": "Ringkasan Segmen",
+    "dialogTitle": "Ringkasan Segmen - {{roadName}}",
+    "dialogDescription": "Lihat semua data segmen dengan inventaris dan detail penilaian kerusakan.",
+    "segmentNo": "No. Segmen",
+    "from": "Dari",
+    "to": "Ke",
+    "lengthM": "Panjang (m)",
+    "pavementType": "Jenis Perkerasan",
+    "notPassableYes": "1 (Ya)",
+    "notPassableNo": "0 (Tidak)",
+    "inventory": {
+      "roadSideAttributesLeft": "Atribut Sisi Jalan (Kiri)",
+      "roadSideAttributesRight": "Atribut Sisi Jalan (Kanan)",
+      "pavementInventory": "Inventaris Perkerasan",
+      "shoulderType": "Jenis Bahu Jalan",
+      "shoulderWidth": "Lebar Bahu Jalan",
+      "pavementWidth": "Lebar Perkerasan (m)",
+      "carriagewayWidth": "Lebar Jalur Lalu Lintas (m)",
+      "rightOfWayWidth": "Lebar Ruang Milik Jalan (m)",
+      "terrain": "Medan",
+      "notPassable": "Tidak Dapat Dilewati",
+      "drainageLandUseLeft": "Drainase & Penggunaan Lahan (Kiri)",
+      "drainageLandUseRight": "Drainase & Penggunaan Lahan (Kanan)",
+      "drainageType": "Jenis Drainase",
+      "landUseType": "Jenis Penggunaan Lahan"
+    },
+    "damageAssessment": {
+      "roadCondition": "Kondisi Jalan - Perkerasan {{pavementType}}",
+      "leftEdge": "Tepi Kiri",
+      "rightEdge": "Tepi Kanan",
+      "avgCrackWidth": "Lebar Retak Rata-rata",
+      "otherCrackArea": "Area Retak Lainnya",
+      "numberOfPotholes": "Jumlah Lubang",
+      "potholeSize": "Ukuran Lubang",
+      "potholeArea": "Area Lubang",
+      "avgRutDepth": "Kedalaman Alur Rata-rata",
+      "crossfallCondition": "Kondisi Kemiringan"
+    }
+  },
+  "reportDialog": {
+    "viewReport": "Lihat Laporan",
+    "checking": "Memeriksa laporan...",
+    "loading": "Memuat detail laporan...",
+    "unableToLoad": "Tidak dapat memuat laporan untuk jalan ini.",
+    "retry": "Coba Lagi",
+    "title": "Laporan Kondisi Jalan",
+    "description": "Tinjau distribusi jenis permukaan dan TTI per segmen terbaru.",
+    "downloadPdf": "Unduh PDF",
+    "generatingPdf": "Membuat PDF...",
+    "ttiBySegment": "Indeks Pemicu Perawatan (TTI) per Segmen",
+    "roadId": "ID Jalan",
+    "roadName": "Nama Jalan",
+    "roadNumber": "Nomor Jalan",
+    "summaryTable": {
+      "roadNumber": "Nomor Jalan",
+      "roadName": "Nama Jalan",
+      "totalLength": "Panjang Total (km)",
+      "sectionWidth": "Lebar Bagian (m)",
+      "percentagesOfSurfaceType": "Persentase Jenis Permukaan",
+      "lengthByCondition": "Panjang berdasarkan Kondisi",
+      "condition": "Kondisi",
+      "tti": "TTI",
+      "conditions": {
+        "good": "Baik",
+        "fair": "Sedang",
+        "poor": "Buruk",
+        "bad": "Sangat Buruk"
+      },
+      "km": "km",
+      "percent": "%"
+    },
+    "resultGenerated": "Hasil Dibuat: {{date}}",
+    "pdfGenerated": "PDF Dibuat: {{date}}",
+    "pageOf": "Halaman {{current}} dari {{total}}",
+    "toasts": {
+      "contentUnavailable": "Konten laporan tidak tersedia",
+      "pdfSuccess": "PDF berhasil dibuat",
+      "pdfFailed": "Gagal membuat PDF"
+    }
+  },
+  "segmentForm": {
+    "toasts": {
+      "saving": "Menyimpan segmen {{number}}...",
+      "saved": "Segmen {{number}} disimpan",
+      "saveFailed": "Gagal menyimpan segmen",
+      "fixErrors": "Perbaiki kesalahan yang ditandai sebelum menyimpan.",
+      "discarded": "Perubahan untuk segmen {{number}} dibatalkan",
+      "sourceNotFound": "Segmen sumber tidak ditemukan",
+      "copied": "Data disalin dari Segmen {{source}} ke Segmen {{target}}"
+    }
+  }
+}

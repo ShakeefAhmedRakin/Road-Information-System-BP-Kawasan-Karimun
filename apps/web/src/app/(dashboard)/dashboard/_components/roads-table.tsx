@@ -13,6 +13,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { orpc } from "@/utils/orpc";
 import { PAVEMENT_TYPES, type PavementType } from "@repo/shared";
 import { useQuery } from "@tanstack/react-query";
@@ -39,22 +40,22 @@ const formatNumber = (
 const formatPercent = (value: number | null | undefined) =>
   value === null || value === undefined ? "-" : `${formatNumber(value, 2)}%`;
 
-const formatPavementLabel = (type: PavementType) =>
-  type.charAt(0).toUpperCase() + type.slice(1);
-
-const PENDING_LABEL = "Reports pending";
-
 export function RoadsTable() {
+  const { t } = useTranslation("manageRoads");
+  const { t: tCreateRoad } = useTranslation("createRoad");
   const { data, isLoading, isError, refetch } = useQuery(
     orpc.result.listRoadsWithReportSummary.queryOptions()
   );
+
+  const formatPavementLabel = (type: PavementType) =>
+    tCreateRoad(`enums.pavementType.${type}`);
 
   if (isLoading) {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-y-2">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         <p className="text-muted-foreground text-sm">
-          Loading roads and report summaries...
+          {t("roadsTable.loading")}
         </p>
       </div>
     );
@@ -64,14 +65,14 @@ export function RoadsTable() {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-y-2 text-center">
         <p className="text-muted-foreground text-sm">
-          Failed to load roads. Please try again.
+          {t("roadsTable.error.message")}
         </p>
         <button
           type="button"
           onClick={() => refetch()}
           className="text-primary underline underline-offset-2"
         >
-          Retry
+          {t("roadsTable.error.retry")}
         </button>
       </div>
     );
@@ -82,66 +83,63 @@ export function RoadsTable() {
   if (roads.length === 0) {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-y-2 text-center">
-        <p className="text-muted-foreground text-sm">No roads in the system.</p>
+        <p className="text-muted-foreground text-sm">{t("roadsTable.noRoads.message")}</p>
         <Link
           href={StaticRoutes.CREATE_ROAD}
           className={buttonVariants({ variant: "default" })}
         >
-          Create Road
+          {t("roadsTable.noRoads.createButton")}
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border thin-styled-scroll-container">
-      <Table>
+    <div className="w-full overflow-x-auto rounded-lg border thin-styled-scroll-container">
+      <Table className="min-w-full">
         <TableHeader>
           <TableRow>
-            <TableHead rowSpan={2} className="w-10 text-center align-middle">
-              No.
+            <TableHead rowSpan={2} className="w-10 min-w-[40px] text-center align-middle">
+              {t("roadsTable.headers.no")}
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle min-w-[120px] max-w-[200px]">
-              Road Number
+            <TableHead rowSpan={2} className="align-middle w-[50px] min-w-[50px]">
+              {t("roadsTable.headers.roadNumber")}
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle min-w-[150px] max-w-[200px]">
-              Road Name
+            <TableHead rowSpan={2} className="align-middle w-[100px] min-w-[100px]">
+              {t("roadsTable.headers.roadName")}
             </TableHead>
-            <TableHead rowSpan={2} className="text-right align-middle">
-              Total Length (km)
+            <TableHead rowSpan={2} className="w-[100px] min-w-[100px] text-right align-middle">
+              {t("roadsTable.headers.totalLength")}
             </TableHead>
-            <TableHead rowSpan={2} className="text-right align-middle">
-              Section Width (m)
+            <TableHead rowSpan={2} className="w-[100px] min-w-[100px] text-right align-middle">
+              {t("roadsTable.headers.sectionWidth")}
             </TableHead>
             <TableHead
               colSpan={PAVEMENT_TYPES.length}
-              className="!text-center"
+              className="!text-center whitespace-normal"
             >
-              Percentages of Surface Type
+              <div className="px-1 break-words">{t("roadsTable.headers.percentagesOfSurfaceType")}</div>
             </TableHead>
             <TableHead
               colSpan={CONDITION_ORDER.length * 2}
-              className="!text-center"
+              className="!text-center whitespace-normal"
             >
-              Length by Condition
-            </TableHead>
-            <TableHead rowSpan={2} className="text-right align-middle">
-              Actions
+              <div className="px-1 break-words">{t("roadsTable.headers.lengthByCondition")}</div>
             </TableHead>
           </TableRow>
           <TableRow>
             {PAVEMENT_TYPES.map((type) => (
-              <TableHead key={type} className="text-center">
+              <TableHead key={type} className="w-[70px] min-w-[70px] text-center">
                 {formatPavementLabel(type)}
               </TableHead>
             ))}
             {CONDITION_ORDER.map((condition) => (
               <TableHead
                 key={`${condition}-group`}
-                className="text-center"
+                className="w-[90px] min-w-[90px] text-center"
                 colSpan={2}
               >
-                {condition}
+                {t(`roadsTable.headers.conditions.${condition.toLowerCase()}`)}
               </TableHead>
             ))}
           </TableRow>
@@ -152,14 +150,14 @@ export function RoadsTable() {
             <TableHead />
             <TableHead />
             {PAVEMENT_TYPES.map((type) => (
-              <TableHead key={`${type}-percent`} className="text-center">
-                %
+              <TableHead key={`${type}-percent`} className="w-[70px] min-w-[70px] text-center">
+                {t("roadsTable.headers.percent")}
               </TableHead>
             ))}
             {CONDITION_ORDER.map((condition) => (
               <Fragment key={`${condition}-labels`}>
-                <TableHead className="text-center">km</TableHead>
-                <TableHead className="text-center">%</TableHead>
+                <TableHead className="w-[45px] min-w-[45px] text-center">{t("roadsTable.headers.km")}</TableHead>
+                <TableHead className="w-[45px] min-w-[45px] text-center">{t("roadsTable.headers.percent")}</TableHead>
               </Fragment>
             ))}
           </TableRow>
@@ -175,47 +173,39 @@ export function RoadsTable() {
                 <TableCell className="text-center font-medium">
                   {index + 1}
                 </TableCell>
-                <TableCell className="max-w-[200px]">
-                  {road.number.length > 20 ? (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="truncate cursor-help" title={road.number}>
-                          {road.number}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="max-w-xs break-words">{road.number}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    <div className="truncate">{road.number}</div>
-                  )}
+                <TableCell className="w-[50px] max-w-[50px] overflow-hidden">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="truncate cursor-help" title={road.number}>
+                        {road.number}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs break-words">{road.number}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </TableCell>
-                <TableCell className="max-w-[200px]">
-                  {road.name.length > 20 ? (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="truncate cursor-help" title={road.name}>
-                          {road.name}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="max-w-xs break-words">{road.name}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    <div className="truncate">{road.name}</div>
-                  )}
+                <TableCell className="w-[100px] max-w-[100px] overflow-hidden">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="truncate cursor-help" title={road.name}>
+                        {road.name}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs break-words">{road.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="w-[100px] min-w-[100px] text-right">
                   {formatNumber(totalLength)}
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="w-[100px] min-w-[100px] text-right">
                   {formatNumber(width)}
                 </TableCell>
                 {hasReport ? (
                   PAVEMENT_TYPES.map((type) => (
-                    <TableCell key={type} className="text-center">
+                    <TableCell key={type} className="w-[70px] min-w-[70px] text-center">
                       {formatPercent(
                         reportSummary.pavementTypePercentages[type] ?? 0
                       )}
@@ -226,19 +216,19 @@ export function RoadsTable() {
                     colSpan={PAVEMENT_TYPES.length}
                     className="text-center italic text-muted-foreground"
                   >
-                    {PENDING_LABEL}
+                    {t("roadsTable.pendingLabel")}
                   </TableCell>
                 )}
                 {hasReport ? (
                   CONDITION_ORDER.map((condition) => (
                     <Fragment key={`${condition}-value`}>
-                      <TableCell className="text-center">
+                      <TableCell className="w-[45px] min-w-[45px] text-center">
                         {formatNumber(
                           reportSummary.conditionLengthStats[condition]
                             ?.lengthKm ?? 0
                         )}
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="w-[45px] min-w-[45px] text-center">
                         {formatPercent(
                           reportSummary.conditionLengthStats[condition]
                             ?.percentage ?? 0
@@ -251,17 +241,9 @@ export function RoadsTable() {
                     colSpan={CONDITION_ORDER.length * 2}
                     className="text-center italic text-muted-foreground"
                   >
-                    {PENDING_LABEL}
+                    {t("roadsTable.pendingLabel")}
                   </TableCell>
                 )}
-                <TableCell className="text-right">
-                  <Link
-                    href={`${StaticRoutes.MANAGE_ROADS}/${road.id}`}
-                    className={buttonVariants({ variant: "outline", size: "sm" })}
-                  >
-                    View <ArrowBigRight className="ml-1 h-3 w-3" />
-                  </Link>
-                </TableCell>
               </TableRow>
             );
           })}

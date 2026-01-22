@@ -45,6 +45,7 @@ import {
 } from "@repo/shared";
 import { useQuery } from "@tanstack/react-query";
 import type { SegmentCondition } from "api/src/modules/results/results.schema";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import html2canvas from "html2canvas-pro";
 import { jsPDF } from "jspdf";
 import { Download, Loader2, View } from "lucide-react";
@@ -122,6 +123,8 @@ export function ReportDialogTrigger({
   disabled,
   isChecking,
 }: ReportDialogProps) {
+  const { t } = useTranslation("roadDetails");
+  const { t: tCreateRoad } = useTranslation("createRoad");
   const [open, setOpen] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -144,7 +147,7 @@ export function ReportDialogTrigger({
 
   const generatePDF = async () => {
     if (!contentRef.current || !reportQuery.data) {
-      toast.error("Report content not available");
+      toast.error(t("reportDialog.toasts.contentUnavailable"));
       return;
     }
 
@@ -152,7 +155,7 @@ export function ReportDialogTrigger({
     const toastId = "pdf-generation";
 
     try {
-      toast.loading("Generating PDF...", { id: toastId });
+      toast.loading(t("reportDialog.generatingPdf"), { id: toastId });
 
       const element = contentRef.current;
 
@@ -216,24 +219,24 @@ export function ReportDialogTrigger({
       let yPosition = topMargin;
 
       pdf.setFontSize(16);
-      pdf.text("Road Condition Report", margin, yPosition);
+      pdf.text(t("reportDialog.title"), margin, yPosition);
       yPosition += 8;
 
       pdf.setFontSize(10);
-      pdf.text(`Road Name: ${roadName}`, margin, yPosition);
+      pdf.text(`${t("reportDialog.roadName")}: ${roadName}`, margin, yPosition);
       yPosition += 5;
-      pdf.text(`Road Number: ${roadNumber}`, margin, yPosition);
+      pdf.text(`${t("reportDialog.roadNumber")}: ${roadNumber}`, margin, yPosition);
       yPosition += 5;
-      pdf.text(`Road ID: ${roadId}`, margin, yPosition);
+      pdf.text(`${t("reportDialog.roadId")}: ${roadId}`, margin, yPosition);
       yPosition += 5;
       pdf.text(
-        `Result Generated: ${reportQuery.data.report.updatedAt.toLocaleString()}`,
+        t("reportDialog.resultGenerated", { date: reportQuery.data.report.updatedAt.toLocaleString() }),
         margin,
         yPosition
       );
       yPosition += 5;
       pdf.text(
-        `PDF Generated: ${new Date().toLocaleString()}`,
+        t("reportDialog.pdfGenerated", { date: new Date().toLocaleString() }),
         margin,
         yPosition
       );
@@ -344,7 +347,7 @@ export function ReportDialogTrigger({
         pdf.setPage(i);
         pdf.setFontSize(8);
         pdf.setTextColor(128, 128, 128);
-        pdf.text(`Page ${i} of ${totalPages}`, pdfWidth / 2, pdfHeight - 8, {
+        pdf.text(t("reportDialog.pageOf", { current: i, total: totalPages }), pdfWidth / 2, pdfHeight - 8, {
           align: "center",
         });
       }
@@ -353,10 +356,10 @@ export function ReportDialogTrigger({
       const fileName = `Road_Report_${roadNumber}_${new Date().toISOString().split("T")[0]}.pdf`;
       pdf.save(fileName);
 
-      toast.success("PDF generated successfully", { id: toastId });
+      toast.success(t("reportDialog.toasts.pdfSuccess"), { id: toastId });
     } catch (error) {
       console.error("Error generating PDF:", error);
-      toast.error("Failed to generate PDF", { id: toastId });
+      toast.error(t("reportDialog.toasts.pdfFailed"), { id: toastId });
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -386,27 +389,27 @@ export function ReportDialogTrigger({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead rowSpan={2}>Road Number</TableHead>
-              <TableHead rowSpan={2}>Road Name</TableHead>
-              <TableHead rowSpan={2}>Total Length (km)</TableHead>
-              <TableHead rowSpan={2}>Section Width (m)</TableHead>
+              <TableHead rowSpan={2}>{t("reportDialog.summaryTable.roadNumber")}</TableHead>
+              <TableHead rowSpan={2}>{t("reportDialog.summaryTable.roadName")}</TableHead>
+              <TableHead rowSpan={2}>{t("reportDialog.summaryTable.totalLength")}</TableHead>
+              <TableHead rowSpan={2}>{t("reportDialog.summaryTable.sectionWidth")}</TableHead>
               <TableHead
                 colSpan={SURFACE_TYPES.length}
                 className="!text-center"
               >
-                Percentages of Surface Type
+                {t("reportDialog.summaryTable.percentagesOfSurfaceType")}
               </TableHead>
               <TableHead
                 colSpan={CONDITION_ORDER.length * 2}
                 className="!text-center"
               >
-                Length by Condition
+                {t("reportDialog.summaryTable.lengthByCondition")}
               </TableHead>
             </TableRow>
             <TableRow>
               {SURFACE_TYPES.map((type) => (
                 <TableHead key={type} className="text-center">
-                  {formatPavementLabel(type)}
+                  {tCreateRoad(`enums.pavementType.${type}`)}
                 </TableHead>
               ))}
               {CONDITION_ORDER.map((condition) => (
@@ -415,7 +418,7 @@ export function ReportDialogTrigger({
                   className="text-center"
                   colSpan={2}
                 >
-                  {condition}
+                  {t(`reportDialog.summaryTable.conditions.${condition.toLowerCase()}`)}
                 </TableHead>
               ))}
             </TableRow>
@@ -426,13 +429,13 @@ export function ReportDialogTrigger({
               <TableHead />
               {SURFACE_TYPES.map((type) => (
                 <TableHead key={`${type}-percent`} className="text-center">
-                  %
+                  {t("reportDialog.summaryTable.percent")}
                 </TableHead>
               ))}
               {CONDITION_ORDER.map((condition) => (
                 <Fragment key={`${condition}-labels`}>
-                  <TableHead className="text-center">km</TableHead>
-                  <TableHead className="text-center">%</TableHead>
+                  <TableHead className="text-center">{t("reportDialog.summaryTable.km")}</TableHead>
+                  <TableHead className="text-center">{t("reportDialog.summaryTable.percent")}</TableHead>
                 </Fragment>
               ))}
             </TableRow>
@@ -477,30 +480,30 @@ export function ReportDialogTrigger({
 
     return (
       <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Inventory</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{tCreateRoad("segmentForms.roadInventory.title")}</div>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead colSpan={2} className="bg-muted/30">
-                Road Side Attributes (Left)
+                {t("segmentSummary.inventory.roadSideAttributesLeft")}
               </TableHead>
               <TableHead colSpan={2} className="bg-muted/30">
-                Road Side Attributes (Right)
+                {t("segmentSummary.inventory.roadSideAttributesRight")}
               </TableHead>
               <TableHead colSpan={5} className="bg-muted/30">
-                Pavement Inventory
+                {tCreateRoad("segmentForms.roadInventory.title")}
               </TableHead>
             </TableRow>
             <TableRow>
-              <TableHead>Shoulder Type</TableHead>
-              <TableHead>Shoulder Width</TableHead>
-              <TableHead>Shoulder Type</TableHead>
-              <TableHead>Shoulder Width</TableHead>
-              <TableHead>Pavement Width (m)</TableHead>
-              <TableHead>Carriageway Width (m)</TableHead>
-              <TableHead>Right of Way Width (m)</TableHead>
-              <TableHead>Terrain</TableHead>
-              <TableHead>Not Passable</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.shoulderType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.shoulderWidth.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.shoulderType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.shoulderWidth.label")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.pavementWidth")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.carriagewayWidth")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.rightOfWayWidth")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.terrain")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.notPassable")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -513,17 +516,17 @@ export function ReportDialogTrigger({
               <TableCell>{formatNumber(inv.carriagewayWidthM)}</TableCell>
               <TableCell>{formatNumber(inv.rightOfWayWidthM)}</TableCell>
               <TableCell>{getIndex(inv.terrain, TERRAIN_TYPES)}</TableCell>
-              <TableCell>{inv.notPassable ? "1 (Yes)" : "0 (No)"}</TableCell>
+              <TableCell>{inv.notPassable ? t("segmentSummary.notPassableYes") : t("segmentSummary.notPassableNo")}</TableCell>
             </TableRow>
             <TableRow>
-              <TableHead colSpan={2} className="bg-muted/30">Drainage & Land Use (Left)</TableHead>
-              <TableHead colSpan={2} className="bg-muted/30">Drainage & Land Use (Right)</TableHead>
+              <TableHead colSpan={2} className="bg-muted/30">{t("segmentSummary.inventory.drainageLandUseLeft")}</TableHead>
+              <TableHead colSpan={2} className="bg-muted/30">{t("segmentSummary.inventory.drainageLandUseRight")}</TableHead>
             </TableRow>
             <TableRow>
-              <TableHead>Drainage Type</TableHead>
-              <TableHead>Land Use Type</TableHead>
-              <TableHead>Drainage Type</TableHead>
-              <TableHead>Land Use Type</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.drainageType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.landUseType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.drainageType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.landUseType.label")}</TableHead>
             </TableRow>
             <TableRow>
               <TableCell>{getIndex(inv.leftDrainageType, DRAINAGE_TYPES)}</TableCell>
@@ -547,41 +550,41 @@ export function ReportDialogTrigger({
       const asphalt = damage as any;
       return (
         <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Condition - Asphalt Pavement</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{t("segmentSummary.damageAssessment.roadCondition", { pavementType: tCreateRoad(`enums.pavementType.asphalt`) })}</div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead colSpan={3} className="bg-muted/40">
-                  Surface Condition
+                  {tCreateRoad("damageAssessment.sections.surfaceCondition")}
                 </TableHead>
                 <TableHead colSpan={4} className="bg-muted/40">
-                  Crack Damage
+                  {tCreateRoad("damageAssessment.sections.crackDamage")}
                 </TableHead>
                 <TableHead colSpan={3} className="bg-muted/40">
-                  Pothole Damage
+                  {tCreateRoad("damageAssessment.sections.potholeDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Rutting Damage
+                  {tCreateRoad("damageAssessment.sections.ruttingDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Edge Damage
+                  {tCreateRoad("damageAssessment.sections.edgeDamage")}
                 </TableHead>
               </TableRow>
               <TableRow>
-                <TableHead>Surface Condition</TableHead>
-                <TableHead>Bleeding</TableHead>
-                <TableHead>Disintegration</TableHead>
-                <TableHead>Crack Type</TableHead>
-                <TableHead>Avg Crack Width</TableHead>
-                <TableHead>Other Crack Area</TableHead>
-                <TableHead>Reflective Cracking</TableHead>
-                <TableHead>Number of Potholes</TableHead>
-                <TableHead>Pothole Size</TableHead>
-                <TableHead>Pothole Area</TableHead>
-                <TableHead>Rutting</TableHead>
-                <TableHead>Avg Rut Depth</TableHead>
-                <TableHead>Left Edge</TableHead>
-                <TableHead>Right Edge</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.surfaceCondition")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.bleeding")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.disintegration")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.crackType")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.avgCrackWidth")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.otherCrackArea")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.reflectiveCracking")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.numberOfPotholes")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeSize")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeArea")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.rutting")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.avgRutDepth")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.leftEdge")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.rightEdge")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -635,24 +638,24 @@ export function ReportDialogTrigger({
       const concrete = damage as any;
       return (
         <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Condition - Concrete Pavement</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{t("segmentSummary.damageAssessment.roadCondition", { pavementType: tCreateRoad(`enums.pavementType.concrete`) })}</div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead colSpan={4} className="bg-muted/40">
-                  Structural & Surface Damage
+                  {tCreateRoad("damageAssessment.sections.structuralSurfaceDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Water & Joint Damage
+                  {tCreateRoad("damageAssessment.sections.waterJointDamage")}
                 </TableHead>
               </TableRow>
               <TableRow>
-                <TableHead>Cracking</TableHead>
-                <TableHead>Spalling</TableHead>
-                <TableHead>Structural Cracking</TableHead>
-                <TableHead>Faulting</TableHead>
-                <TableHead>Pumping</TableHead>
-                <TableHead>Corner Break</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.cracking")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.spalling")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.structuralCracking")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.faulting")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.pumping")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.cornerBreak")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -680,27 +683,27 @@ export function ReportDialogTrigger({
       const block = damage as any;
       return (
         <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Condition - Block Pavement</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{t("segmentSummary.damageAssessment.roadCondition", { pavementType: tCreateRoad(`enums.pavementType.block`) })}</div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Surface Damage
+                  {tCreateRoad("damageAssessment.sections.surfaceDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Edge Damage
+                  {tCreateRoad("damageAssessment.sections.edgeDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Pothole & Deformation
+                  {tCreateRoad("damageAssessment.sections.potholeDeformation")}
                 </TableHead>
               </TableRow>
               <TableRow>
-                <TableHead>Reflective Cracking</TableHead>
-                <TableHead>Disintegration</TableHead>
-                <TableHead>Left Edge</TableHead>
-                <TableHead>Right Edge</TableHead>
-                <TableHead>Pothole Area</TableHead>
-                <TableHead>Rutting</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.reflectiveCracking")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.disintegration")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.leftEdge")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.rightEdge")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeArea")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.rutting")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -732,41 +735,41 @@ export function ReportDialogTrigger({
       const unpaved = damage as any;
       return (
         <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Condition - {formatPavementLabel(pavementType)} Pavement</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{t("segmentSummary.damageAssessment.roadCondition", { pavementType: tCreateRoad(`enums.pavementType.${pavementType}`) })}</div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Crossfall & Shape
+                  {tCreateRoad("damageAssessment.sections.crossfallShape")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Surface Failure
+                  {tCreateRoad("damageAssessment.sections.surfaceFailure")}
                 </TableHead>
                 <TableHead colSpan={4} className="bg-muted/40">
-                  Material Quality
+                  {tCreateRoad("damageAssessment.sections.materialQuality")}
                 </TableHead>
                 <TableHead colSpan={3} className="bg-muted/40">
-                  Corrugation & Deformation
+                  {tCreateRoad("damageAssessment.sections.corrugationDeformation")}
                 </TableHead>
                 <TableHead colSpan={3} className="bg-muted/40">
-                  Pothole Damage
+                  {tCreateRoad("damageAssessment.sections.potholeDamage")}
                 </TableHead>
               </TableRow>
               <TableRow>
-                <TableHead>Crossfall Condition</TableHead>
-                <TableHead>Area</TableHead>
-                <TableHead>Settlement</TableHead>
-                <TableHead>Erosion</TableHead>
-                <TableHead>Largest Particle Size</TableHead>
-                <TableHead>Gravel Thickness</TableHead>
-                <TableHead>Gravel Area</TableHead>
-                <TableHead>Gravel Distribution</TableHead>
-                <TableHead>Corrugation</TableHead>
-                <TableHead>Rutting</TableHead>
-                <TableHead>Avg Rut Depth</TableHead>
-                <TableHead>Number of Potholes</TableHead>
-                <TableHead>Pothole Size</TableHead>
-                <TableHead>Pothole Area</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.crossfallCondition")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.area")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.settlement")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.erosion")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.largestParticleSize")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.gravelThickness")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.gravelArea")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.gravelDistribution")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.corrugation")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.rutting")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.avgRutDepth")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.numberOfPotholes")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeSize")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeArea")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -863,13 +866,13 @@ export function ReportDialogTrigger({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Segment No.</TableHead>
-                    <TableHead>From</TableHead>
-                    <TableHead>To</TableHead>
-                    <TableHead>Length (m)</TableHead>
-                    <TableHead>Pavement Type</TableHead>
-                    <TableHead>TTI</TableHead>
-                    <TableHead>Condition</TableHead>
+                    <TableHead>{t("segmentSummary.segmentNo")}</TableHead>
+                    <TableHead>{t("segmentSummary.from")}</TableHead>
+                    <TableHead>{t("segmentSummary.to")}</TableHead>
+                    <TableHead>{t("segmentSummary.lengthM")}</TableHead>
+                    <TableHead>{t("segmentSummary.pavementType")}</TableHead>
+                    <TableHead>{t("reportDialog.summaryTable.tti")}</TableHead>
+                    <TableHead>{t("reportDialog.summaryTable.condition")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -885,7 +888,7 @@ export function ReportDialogTrigger({
                       {formatNumber(segment.segmentLengthM, 2, "-")}
                     </TableCell>
                     <TableCell>
-                      {formatPavementLabel(segment.pavementType)}
+                      {tCreateRoad(`enums.pavementType.${segment.pavementType}`)}
                     </TableCell>
                     <TableCell>{formatNumber(segment.tti)}</TableCell>
                     <TableCell>
@@ -898,7 +901,7 @@ export function ReportDialogTrigger({
                           "bg-red-600": segment.condition === "Bad",
                         })}
                       >
-                        {segment.condition}
+                        {t(`reportDialog.summaryTable.conditions.${segment.condition.toLowerCase()}`)}
                       </Badge>
                     </TableCell>
                   </TableRow>
@@ -933,14 +936,14 @@ export function ReportDialogTrigger({
       return (
         <div className="space-y-2 text-center">
           <p className="text-muted-foreground text-sm">
-            Unable to load the report for this road.
+            {t("reportDialog.unableToLoad")}
           </p>
           <Button
             variant="outline"
             onClick={() => reportQuery.refetch()}
             disabled={reportQuery.isFetching}
           >
-            Retry
+            {t("reportDialog.retry")}
           </Button>
         </div>
       );
@@ -966,11 +969,11 @@ export function ReportDialogTrigger({
           {isChecking ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Checking report...
+              {t("reportDialog.checking")}
             </>
           ) : (
             <>
-              View Report
+              {t("reportDialog.viewReport")}
               <View className="ml-2 h-4 w-4" />
             </>
           )}
@@ -979,7 +982,7 @@ export function ReportDialogTrigger({
       <DialogContent className="max-h-[90vh] w-[95vw] max-w-[95vw] min-w-[95vw] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="mr-5 flex items-center justify-between">
-            <span>Road Condition Report</span>
+            <span>{t("reportDialog.title")}</span>
             <Button
               size="sm"
               variant="outline"
@@ -994,31 +997,31 @@ export function ReportDialogTrigger({
               {isGeneratingPdf ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="hidden md:inline">Generating PDF...</span>
+                  <span className="hidden md:inline">{t("reportDialog.generatingPdf")}</span>
                 </>
               ) : (
                 <>
                   <Download className="h-4 w-4" />
-                  <span className="hidden md:inline">Download PDF</span>
+                  <span className="hidden md:inline">{t("reportDialog.downloadPdf")}</span>
                 </>
               )}
             </Button>
           </DialogTitle>
           <DialogDescription>
-            Review the latest surface type distribution and TTI per segment.
+            {t("reportDialog.description")}
           </DialogDescription>
         </DialogHeader>
         <div className="max-h-[75vh] overflow-y-auto pr-4">
           <div ref={contentRef}>
             <div className="bg-muted/30 mb-4 space-y-1 rounded-md border p-3">
               <p className="text-xs">
-                <strong>Road ID:</strong> {roadId}
+                <strong>{t("reportDialog.roadId")}:</strong> {roadId}
               </p>
               <p className="text-xs">
-                <strong>Road Name:</strong> {roadName}
+                <strong>{t("reportDialog.roadName")}:</strong> {roadName}
               </p>
               <p className="text-xs">
-                <strong>Road Number:</strong> {roadNumber}
+                <strong>{t("reportDialog.roadNumber")}:</strong> {roadNumber}
               </p>
             </div>
             {renderContent()}

@@ -25,7 +25,23 @@
       "signedOut": "Signed out!"
     },
     "error": {
-      "signOutFailed": "Failed to sign out. Please try again."
+      "signOutFailed": "Failed to sign out. Please try again.",
+      "generic": "Error: {{message}}",
+      "retry": "retry"
     }
+  },
+  "common": {
+    "error": {
+      "title": "An Error Occurred",
+      "message": "An error occurred while processing your request.",
+      "tryAgain": "Try Again"
+    },
+    "unauthorized": {
+      "title": "Access Denied",
+      "message": "You don't have permission to access this page. Please contact an administrator if you believe this is an error.",
+      "goBack": "Go Back"
+    },
+    "loading": "Loading...",
+    "retry": "Retry"
   }
 }

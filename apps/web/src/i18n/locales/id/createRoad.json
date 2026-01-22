@@ -99,11 +99,11 @@
       "rounded": "Dibulatkan"
     },
     "pavementType": {
-      "asphalt": "Perkerasan Aspal",
-      "concrete": "Perkerasan Beton",
-      "block": "Perkerasan Blok",
-      "gravel": "Perkerasan Kerikil",
-      "unpaved": "Jalan Tanpa Perkerasan"
+      "asphalt": "Aspal",
+      "concrete": "Beton",
+      "block": "Blok",
+      "gravel": "Kerikil",
+      "unpaved": "Tanpa Perkerasan"
     },
     "shoulderType": {
       "none": "Tidak Ada Bahu Jalan",

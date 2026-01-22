@@ -2,6 +2,7 @@
 
 import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -22,6 +23,7 @@ export default function ErrorCard({
   isRefetching?: boolean;
 }) {
   const router = useRouter();
+  const { t } = useTranslation("dashboard");
 
   return (
     <PageLayout
@@ -35,12 +37,12 @@ export default function ErrorCard({
             <AlertCircle className="text-destructive h-8 w-8" />
           </div>
           <CardTitle className="text-xl">
-            <Heading level="h4">An Error Occurred</Heading>
+            <Heading level="h4">{t("common.error.title")}</Heading>
           </CardTitle>
         </CardHeader>
         <CardContent className="text-center">
           <Paragraph className="text-muted-foreground" size="sm">
-            An error occurred while processing your request.
+            {t("common.error.message")}
           </Paragraph>
         </CardContent>
         <CardFooter>
@@ -50,7 +52,7 @@ export default function ErrorCard({
             className="w-full"
             variant="outline"
           >
-            {isRefetching ? <Spinner /> : "Try Again"}
+            {isRefetching ? <Spinner /> : t("common.error.tryAgain")}
           </Button>
         </CardFooter>
       </Card>

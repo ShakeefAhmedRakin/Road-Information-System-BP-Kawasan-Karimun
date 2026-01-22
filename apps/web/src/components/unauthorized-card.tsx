@@ -2,6 +2,7 @@
 
 import { ShieldX } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -15,6 +16,7 @@ import { Heading, Paragraph } from "./ui/typography";
 
 export default function UnauthorizedCard() {
   const router = useRouter();
+  const { t } = useTranslation("dashboard");
 
   return (
     <PageLayout
@@ -28,13 +30,12 @@ export default function UnauthorizedCard() {
             <ShieldX className="text-destructive h-8 w-8" />
           </div>
           <CardTitle className="text-xl">
-            <Heading level="h4">Access Denied</Heading>
+            <Heading level="h4">{t("common.unauthorized.title")}</Heading>
           </CardTitle>
         </CardHeader>
         <CardContent className="text-center">
           <Paragraph className="text-muted-foreground" size="sm">
-            You don't have permission to access this page. Please contact an
-            administrator if you believe this is an error.
+            {t("common.unauthorized.message")}
           </Paragraph>
         </CardContent>
         <CardFooter>
@@ -43,7 +44,7 @@ export default function UnauthorizedCard() {
             variant="outline"
             className="w-full"
           >
-            Go Back
+            {t("common.unauthorized.goBack")}
           </Button>
         </CardFooter>
       </Card>

@@ -32,5 +32,36 @@
       "success": "Jalan berhasil dihapus",
       "error": "Gagal menghapus jalan"
     }
+  },
+  "roadsTable": {
+    "loading": "Memuat jalan dan ringkasan laporan...",
+    "error": {
+      "message": "Gagal memuat jalan. Silakan coba lagi.",
+      "retry": "Coba Lagi"
+    },
+    "noRoads": {
+      "message": "Tidak ada jalan dalam sistem.",
+      "createButton": "Buat Jalan"
+    },
+    "headers": {
+      "no": "No.",
+      "roadNumber": "Nomor",
+      "roadName": "Nama",
+      "totalLength": "Panjang Total (km)",
+      "sectionWidth": "Lebar Bagian (m)",
+      "percentagesOfSurfaceType": "Persentase Jenis Permukaan",
+      "lengthByCondition": "Panjang berdasarkan Kondisi",
+      "actions": "Tindakan",
+      "percent": "%",
+      "km": "km",
+      "conditions": {
+        "good": "Baik",
+        "fair": "Sedang",
+        "poor": "Buruk",
+        "bad": "Sangat Buruk"
+      }
+    },
+    "pendingLabel": "Laporan tertunda",
+    "viewButton": "Lihat"
   }
 }

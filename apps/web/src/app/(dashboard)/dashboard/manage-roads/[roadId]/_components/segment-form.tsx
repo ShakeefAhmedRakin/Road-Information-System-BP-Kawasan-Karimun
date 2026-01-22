@@ -15,6 +15,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import SegmentForms from "../../../manage-roads/_components/forms/segment-forms";
 
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { getDefaultDamageAssessment } from "@/lib/damage-assessment";
 import { orpc } from "@/utils/orpc";
 import { useMutation } from "@tanstack/react-query";
@@ -84,6 +85,7 @@ export type SegmentFormHandle = {
 
 const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
   ({ segment, allSegments, onUpdateSuccess, onDirtyStateChange }, ref) => {
+    const { t } = useTranslation("roadDetails");
     const defaultValues = useMemo(
       () => buildSegmentFormValues(segment),
       [segment]
@@ -136,7 +138,7 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
 
     const submitSegment = async (values: UpdateSegmentFormData) => {
       const toastId = `segment-${segment.id}-save`;
-      toast.loading(`Saving segment ${segment.segmentNumber}...`, {
+      toast.loading(t("segmentForm.toasts.saving", { number: segment.segmentNumber }), {
         id: toastId,
       });
 
@@ -148,14 +150,14 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
 
         form.reset(values);
 
-        toast.success(`Segment ${segment.segmentNumber} saved`, {
+        toast.success(t("segmentForm.toasts.saved", { number: segment.segmentNumber }), {
           id: toastId,
         });
 
         onUpdateSuccess?.();
       } catch (error) {
         console.error("Error updating segment:", error);
-        toast.error("Failed to save segment", {
+        toast.error(t("segmentForm.toasts.saveFailed"), {
           id: toastId,
         });
         throw error;
@@ -174,7 +176,7 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
           },
           () => {
             validationFailed = true;
-            toast.error("Please fix the highlighted errors before saving.");
+            toast.error(t("segmentForm.toasts.fixErrors"));
           }
         )();
       } catch (error) {
@@ -188,13 +190,13 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
 
     const discardSegment = () => {
       form.reset();
-      toast.info(`Discarded changes for segment ${segment.segmentNumber}`);
+      toast.info(t("segmentForm.toasts.discarded", { number: segment.segmentNumber }));
     };
 
     const copyFromSegment = (sourceSegmentId: string) => {
       const sourceSegment = allSegments.find((s) => s.id === sourceSegmentId);
       if (!sourceSegment) {
-        toast.error("Source segment not found");
+        toast.error(t("segmentForm.toasts.sourceNotFound"));
         return;
       }
 
@@ -209,7 +211,10 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
       });
 
       toast.success(
-        `Copied data from Segment ${sourceSegment.segmentNumber} to Segment ${segment.segmentNumber}`
+        t("segmentForm.toasts.copied", {
+          source: sourceSegment.segmentNumber,
+          target: segment.segmentNumber,
+        })
       );
     };
 

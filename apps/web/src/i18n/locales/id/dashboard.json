@@ -25,7 +25,23 @@
       "signedOut": "Berhasil keluar!"
     },
     "error": {
-      "signOutFailed": "Gagal keluar. Silakan coba lagi."
+      "signOutFailed": "Gagal keluar. Silakan coba lagi.",
+      "generic": "Kesalahan: {{message}}",
+      "retry": "coba lagi"
     }
+  },
+  "common": {
+    "error": {
+      "title": "Terjadi Kesalahan",
+      "message": "Terjadi kesalahan saat memproses permintaan Anda.",
+      "tryAgain": "Coba Lagi"
+    },
+    "unauthorized": {
+      "title": "Akses Ditolak",
+      "message": "Anda tidak memiliki izin untuk mengakses halaman ini. Silakan hubungi administrator jika Anda yakin ini adalah kesalahan.",
+      "goBack": "Kembali"
+    },
+    "loading": "Memuat...",
+    "retry": "Coba Lagi"
   }
 }

@@ -46,7 +46,8 @@ const getSegmentIdFromValue = (value?: string | null) =>
   value?.startsWith("segment-") ? value.replace("segment-", "") : undefined;
 
 export default function RoadPageClient({ roadId }: RoadPageClientProps) {
-  const { t } = useTranslation("pageHeaders");
+  const { t: tPageHeaders } = useTranslation("pageHeaders");
+  const { t } = useTranslation("roadDetails");
   const { data, isLoading, refetch } = useQuery(
     orpc.road.getRoadAndSegmentsByRoadId.queryOptions({
       input: { roadId },
@@ -112,16 +113,16 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
   const isGenerating = generateReportMutation.isPending;
   const generateLabel = isGenerating
     ? hasReport
-      ? "Regenerating..."
-      : "Generating..."
+      ? t("report.regenerating")
+      : t("report.generating")
     : hasReport
-      ? "Regenerate Report"
-      : "Generate Report";
+      ? t("report.regenerate")
+      : t("report.generate");
 
   const handleGenerateReport = async () => {
     if (segments.length === 0 || isGenerating) return;
     const toastId = `road-${roadId}-report`;
-    toast.loading(hasReport ? "Regenerating report…" : "Generating report…", {
+    toast.loading(hasReport ? t("report.regenerating") : t("report.generating"), {
       id: toastId,
     });
     try {
@@ -130,14 +131,14 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
       });
       toast.success(
         hasReport
-          ? "Report regenerated successfully"
-          : "Report generated successfully",
+          ? t("report.toasts.regenerated")
+          : t("report.toasts.generated"),
         { id: toastId }
       );
       await refetchStatus();
     } catch (error) {
       console.error("Failed to generate report", error);
-      toast.error("Failed to generate report", { id: toastId });
+      toast.error(t("report.toasts.failed"), { id: toastId });
     }
   };
 
@@ -197,9 +198,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
       const hasPendingChanges = dirtySegments[currentSegmentId];
 
       if (hasPendingChanges && nextValue !== openItem) {
-        toast.warning(
-          "Save or discard your changes before leaving this segment."
-        );
+        toast.warning(t("page.warningSaveOrDiscard"));
         requestActionAttention(currentSegmentId);
         return;
       }
@@ -257,11 +256,11 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
   if (isLoading) {
     return (
       <PageLayout
-        title={t("roadDetails.title")}
-        description={t("roadDetails.description")}
+        title={tPageHeaders("roadDetails.title")}
+        description={tPageHeaders("roadDetails.description")}
       >
         <div className="flex min-h-64 flex-col items-center justify-center gap-y-2 p-2">
-          <p className="text-muted-foreground text-sm">Loading segments...</p>
+          <p className="text-muted-foreground text-sm">{t("page.loading")}</p>
         </div>
       </PageLayout>
     );
@@ -270,13 +269,13 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
   if (!data?.road) {
     return (
       <PageLayout
-        title={t("roadDetails.title")}
-        description={t("roadDetails.description")}
+        title={tPageHeaders("roadDetails.title")}
+        description={tPageHeaders("roadDetails.description")}
       >
         <div className="flex min-h-64 flex-col items-center justify-center gap-y-2 p-2">
-          <h1 className="text-lg font-medium">Road not found</h1>
+          <h1 className="text-lg font-medium">{t("page.notFound.title")}</h1>
           <p className="text-muted-foreground text-sm">
-            The road you are looking for does not exist.
+            {t("page.notFound.description")}
           </p>
         </div>
       </PageLayout>
@@ -285,8 +284,8 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
 
   return (
     <PageLayout
-      title={t("roadDetails.title")}
-      description={t("roadDetails.description")}
+      title={tPageHeaders("roadDetails.title")}
+      description={tPageHeaders("roadDetails.description")}
     >
       <SegmentSummaryDialog
         segments={segments}
@@ -296,10 +295,10 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold">{data.road.name}</h2>
           <p className="text-muted-foreground">
-            Road Number: {data.road.number}
+            {t("page.roadNumber")}: {data.road.number}
           </p>
           <p className="text-muted-foreground">
-            Total Length: {data.road.totalLengthKm} km
+            {t("page.totalLength")}: {data.road.totalLengthKm} km
           </p>
         </div>
 
@@ -307,7 +306,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
           <div className="flex flex-col items-start justify-between gap-x-2 gap-y-2 md:flex-row md:items-center">
             <h3 className="flex items-center gap-x-2 text-xl font-semibold">
               <InfoIcon className="h-4 w-4" />
-              Segments ({segments.length})
+              {t("page.segmentsHeading", { count: segments.length })}
             </h3>
             <div className="flex items-center gap-x-2 gap-y-2 flex-wrap">
               <ReportDialogTrigger
@@ -355,7 +354,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
    
           {segments.length === 0 ? (
             <p className="text-muted-foreground text-sm">
-              No segments found for this road.
+              {t("page.noSegments")}
             </p>
           ) : (
             <Accordion
@@ -384,7 +383,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                     <AccordionTrigger className="cursor-pointer items-center px-4 pr-4 md:pr-56">
                       <div className="flex flex-col text-left">
                         <span className="text-sm font-semibold">
-                          Segment {segment.segmentNumber}
+                          {t("page.segmentLabel", { number: segment.segmentNumber })}
                         </span>
                         <span className="text-muted-foreground text-xs">
                           {formatStationing(segment.stationingFromM)}m —{" "}
@@ -405,7 +404,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                       }}
                       tabIndex={-1}
                       role="group"
-                      aria-label={`Actions for segment ${segment.segmentNumber}`}
+                      aria-label={t("page.actionsForSegment", { number: segment.segmentNumber })}
                       className={cn(
                         "bg-background/95 pointer-events-auto mt-2 flex flex-wrap items-center gap-2 rounded-md border px-3 py-2 shadow-sm md:absolute md:top-2 md:right-3 md:mt-0",
                         isSegmentDirty
@@ -425,14 +424,14 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                       >
                         <SelectTrigger size="sm" className="w-auto">
                           <CopyIcon className="mr-2 h-4 w-4" />
-                          <SelectValue placeholder="Copy from..." />
+                          <SelectValue placeholder={t("page.copyFromPlaceholder")} />
                         </SelectTrigger>
                         <SelectContent>
                           {segments
                             .filter((s) => s.id !== segment.id)
                             .map((s) => (
                               <SelectItem key={s.id} value={s.id}>
-                                Segment {s.segmentNumber}
+                                {t("page.segmentLabel", { number: s.segmentNumber })}
                               </SelectItem>
                             ))}
                         </SelectContent>
@@ -445,10 +444,10 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                         {isSavingSegment ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Saving...
+                            {t("page.saving")}
                           </>
                         ) : (
-                          "Save Changes"
+                          t("page.saveChanges")
                         )}
                       </Button>
                       <Button
@@ -457,7 +456,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                         disabled={!isSegmentDirty || isSavingSegment}
                         onClick={() => handleDiscardClick(segment.id)}
                       >
-                        Discard
+                        {t("page.discard")}
                       </Button>
                     </div>
                     <AccordionContent className="bg-muted/20">

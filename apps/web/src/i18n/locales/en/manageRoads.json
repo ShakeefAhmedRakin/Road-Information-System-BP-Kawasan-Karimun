@@ -32,5 +32,36 @@
       "success": "Road deleted successfully",
       "error": "Failed to delete road"
     }
+  },
+  "roadsTable": {
+    "loading": "Loading roads and report summaries...",
+    "error": {
+      "message": "Failed to load roads. Please try again.",
+      "retry": "Retry"
+    },
+    "noRoads": {
+      "message": "No roads in the system.",
+      "createButton": "Create Road"
+    },
+    "headers": {
+      "no": "No.",
+      "roadNumber": "Number",
+      "roadName": "Name",
+      "totalLength": "Total Length (km)",
+      "sectionWidth": "Section Width (m)",
+      "percentagesOfSurfaceType": "Percentages of Surface Type",
+      "lengthByCondition": "Length by Condition",
+      "actions": "Actions",
+      "percent": "%",
+      "km": "km",
+      "conditions": {
+        "good": "Good",
+        "fair": "Fair",
+        "poor": "Poor",
+        "bad": "Bad"
+      }
+    },
+    "pendingLabel": "Reports pending",
+    "viewButton": "View"
   }
 }

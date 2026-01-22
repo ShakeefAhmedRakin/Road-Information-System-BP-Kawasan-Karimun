@@ -2,44 +2,45 @@
 
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { cn } from "@/lib/utils";
 import type { PavementType } from "@repo/shared";
 import {
-    CRACK_TYPES,
-    CRACK_WIDTH_TYPES,
-    CROSSFALL_CONDITIONS,
-    DAMAGE_PERCENTAGE_RANGES,
-    DRAINAGE_TYPES,
-    EDGE_DAMAGE_TYPES,
-    GRAVEL_DISTRIBUTION_TYPES,
-    GRAVEL_THICKNESS_TYPES,
-    LAND_USE_TYPES,
-    PARTICLE_SIZE_TYPES,
-    POTHOLE_AREA_PERCENTAGE_RANGES,
-    POTHOLE_COUNT_TYPES,
-    POTHOLE_SIZE_TYPES,
-    RUT_DEPTH_TYPES,
-    SHOULDER_TYPES,
-    SHOULDER_WIDTHS,
-    SURFACE_CONDITIONS,
-    TERRAIN_TYPES,
-    UNPAVED_RUT_DEPTH_TYPES,
-    YES_NO_TYPES,
+  CRACK_TYPES,
+  CRACK_WIDTH_TYPES,
+  CROSSFALL_CONDITIONS,
+  DAMAGE_PERCENTAGE_RANGES,
+  DRAINAGE_TYPES,
+  EDGE_DAMAGE_TYPES,
+  GRAVEL_DISTRIBUTION_TYPES,
+  GRAVEL_THICKNESS_TYPES,
+  LAND_USE_TYPES,
+  PARTICLE_SIZE_TYPES,
+  POTHOLE_AREA_PERCENTAGE_RANGES,
+  POTHOLE_COUNT_TYPES,
+  POTHOLE_SIZE_TYPES,
+  RUT_DEPTH_TYPES,
+  SHOULDER_TYPES,
+  SHOULDER_WIDTHS,
+  SURFACE_CONDITIONS,
+  TERRAIN_TYPES,
+  UNPAVED_RUT_DEPTH_TYPES,
+  YES_NO_TYPES,
 } from "@repo/shared";
 import type { ReadRoadSegmentType } from "api/src/modules/segment/segment.schema";
 import { List } from "lucide-react";
@@ -97,6 +98,8 @@ export default function SegmentSummaryDialog({
   segments,
   roadName,
 }: SegmentSummaryDialogProps) {
+  const { t } = useTranslation("roadDetails");
+  const { t: tCreateRoad } = useTranslation("createRoad");
   const [open, setOpen] = useState(false);
 
   const sortedSegments = [...segments].sort((a, b) => {
@@ -108,30 +111,30 @@ export default function SegmentSummaryDialog({
   const renderInventoryTable = (segment: ReadRoadSegmentType) => {
     return (
       <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-        <div className="p-2 text-sm font-semibold bg-muted/40">Road Inventory</div>
+        <div className="p-2 text-sm font-semibold bg-muted/40">{tCreateRoad("segmentForms.roadInventory.title")}</div>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead colSpan={2} className="bg-muted/30">
-                Road Side Attributes (Left)
+                {t("segmentSummary.inventory.roadSideAttributesLeft")}
               </TableHead>
               <TableHead colSpan={2} className="bg-muted/30">
-                Road Side Attributes (Right)
+                {t("segmentSummary.inventory.roadSideAttributesRight")}
               </TableHead>
               <TableHead colSpan={5} className="bg-muted/30">
-                Pavement Inventory
+                {tCreateRoad("segmentForms.roadInventory.title")}
               </TableHead>
             </TableRow>
             <TableRow>
-              <TableHead>Shoulder Type</TableHead>
-              <TableHead>Shoulder Width</TableHead>
-              <TableHead>Shoulder Type</TableHead>
-              <TableHead>Shoulder Width</TableHead>
-              <TableHead>Pavement Width (m)</TableHead>
-              <TableHead>Carriageway Width (m)</TableHead>
-              <TableHead>Right of Way Width (m)</TableHead>
-              <TableHead>Terrain</TableHead>
-              <TableHead>Not Passable</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.shoulderType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.shoulderWidth.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.shoulderType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.shoulderWidth.label")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.pavementWidth")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.carriagewayWidth")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.rightOfWayWidth")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.terrain")}</TableHead>
+              <TableHead>{t("segmentSummary.inventory.notPassable")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -147,14 +150,14 @@ export default function SegmentSummaryDialog({
               <TableCell>{segment.notPassable ? "1 (Yes)" : "0 (No)"}</TableCell>
             </TableRow>
             <TableRow>
-              <TableHead colSpan={2} className="bg-muted/30">Drainage & Land Use (Left)</TableHead>
-              <TableHead colSpan={2} className="bg-muted/30">Drainage & Land Use (Right)</TableHead>
+              <TableHead colSpan={2} className="bg-muted/30">{t("segmentSummary.inventory.drainageLandUseLeft")}</TableHead>
+              <TableHead colSpan={2} className="bg-muted/30">{t("segmentSummary.inventory.drainageLandUseRight")}</TableHead>
             </TableRow>
             <TableRow>
-              <TableHead>Drainage Type</TableHead>
-              <TableHead>Land Use Type</TableHead>
-              <TableHead>Drainage Type</TableHead>
-              <TableHead>Land Use Type</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.drainageType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.landUseType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.drainageType.label")}</TableHead>
+              <TableHead>{tCreateRoad("segmentForms.landUseType.label")}</TableHead>
             </TableRow>
             <TableRow>
               <TableCell>{getIndex(segment.leftDrainageType, DRAINAGE_TYPES)}</TableCell>
@@ -178,41 +181,41 @@ export default function SegmentSummaryDialog({
       const asphalt = damage as any;
       return (
         <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Condition - Asphalt Pavement</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{t("segmentSummary.damageAssessment.roadCondition", { pavementType: tCreateRoad(`enums.pavementType.asphalt`) })}</div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead colSpan={3} className="bg-muted/40">
-                  Surface Condition
+                  {tCreateRoad("damageAssessment.sections.surfaceCondition")}
                 </TableHead>
                 <TableHead colSpan={4} className="bg-muted/40">
-                  Crack Damage
+                  {tCreateRoad("damageAssessment.sections.crackDamage")}
                 </TableHead>
                 <TableHead colSpan={3} className="bg-muted/40">
-                  Pothole Damage
+                  {tCreateRoad("damageAssessment.sections.potholeDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Rutting Damage
+                  {tCreateRoad("damageAssessment.sections.ruttingDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Edge Damage
+                  {tCreateRoad("damageAssessment.sections.edgeDamage")}
                 </TableHead>
               </TableRow>
               <TableRow>
-                <TableHead>Surface Condition</TableHead>
-                <TableHead>Bleeding</TableHead>
-                <TableHead>Disintegration</TableHead>
-                <TableHead>Crack Type</TableHead>
-                <TableHead>Avg Crack Width</TableHead>
-                <TableHead>Other Crack Area</TableHead>
-                <TableHead>Reflective Cracking</TableHead>
-                <TableHead>Number of Potholes</TableHead>
-                <TableHead>Pothole Size</TableHead>
-                <TableHead>Pothole Area</TableHead>
-                <TableHead>Rutting</TableHead>
-                <TableHead>Avg Rut Depth</TableHead>
-                <TableHead>Left Edge</TableHead>
-                <TableHead>Right Edge</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.surfaceCondition")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.bleeding")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.disintegration")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.crackType")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.avgCrackWidth")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.otherCrackArea")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.reflectiveCracking")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.numberOfPotholes")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeSize")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeArea")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.rutting")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.avgRutDepth")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.leftEdge")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.rightEdge")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -266,24 +269,24 @@ export default function SegmentSummaryDialog({
       const concrete = damage as any;
       return (
         <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Condition - Concrete Pavement</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{t("segmentSummary.damageAssessment.roadCondition", { pavementType: tCreateRoad(`enums.pavementType.concrete`) })}</div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead colSpan={4} className="bg-muted/40">
-                  Structural & Surface Damage
+                  {tCreateRoad("damageAssessment.sections.structuralSurfaceDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Water & Joint Damage
+                  {tCreateRoad("damageAssessment.sections.waterJointDamage")}
                 </TableHead>
               </TableRow>
               <TableRow>
-                <TableHead>Cracking</TableHead>
-                <TableHead>Spalling</TableHead>
-                <TableHead>Structural Cracking</TableHead>
-                <TableHead>Faulting</TableHead>
-                <TableHead>Pumping</TableHead>
-                <TableHead>Corner Break</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.cracking")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.spalling")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.structuralCracking")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.faulting")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.pumping")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.cornerBreak")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -311,27 +314,27 @@ export default function SegmentSummaryDialog({
       const block = damage as any;
       return (
         <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Condition - Block Pavement</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{t("segmentSummary.damageAssessment.roadCondition", { pavementType: tCreateRoad(`enums.pavementType.block`) })}</div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Surface Damage
+                  {tCreateRoad("damageAssessment.sections.surfaceDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Edge Damage
+                  {tCreateRoad("damageAssessment.sections.edgeDamage")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Pothole & Deformation
+                  {tCreateRoad("damageAssessment.sections.potholeDeformation")}
                 </TableHead>
               </TableRow>
               <TableRow>
-                <TableHead>Reflective Cracking</TableHead>
-                <TableHead>Disintegration</TableHead>
-                <TableHead>Left Edge</TableHead>
-                <TableHead>Right Edge</TableHead>
-                <TableHead>Pothole Area</TableHead>
-                <TableHead>Rutting</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.reflectiveCracking")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.disintegration")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.leftEdge")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.rightEdge")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeArea")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.rutting")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -363,41 +366,41 @@ export default function SegmentSummaryDialog({
       const unpaved = damage as any;
       return (
         <div className="overflow-x-auto rounded-lg border bg-muted/20 thin-styled-scroll-container">
-          <div className="p-2 text-sm font-semibold bg-muted/40">Road Condition - {formatPavementLabel(pavementType)} Pavement</div>
+          <div className="p-2 text-sm font-semibold bg-muted/40">{t("segmentSummary.damageAssessment.roadCondition", { pavementType: tCreateRoad(`enums.pavementType.${pavementType}`) })}</div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Crossfall & Shape
+                  {tCreateRoad("damageAssessment.sections.crossfallShape")}
                 </TableHead>
                 <TableHead colSpan={2} className="bg-muted/40">
-                  Surface Failure
+                  {tCreateRoad("damageAssessment.sections.surfaceFailure")}
                 </TableHead>
                 <TableHead colSpan={4} className="bg-muted/40">
-                  Material Quality
+                  {tCreateRoad("damageAssessment.sections.materialQuality")}
                 </TableHead>
                 <TableHead colSpan={3} className="bg-muted/40">
-                  Corrugation & Deformation
+                  {tCreateRoad("damageAssessment.sections.corrugationDeformation")}
                 </TableHead>
                 <TableHead colSpan={3} className="bg-muted/40">
-                  Pothole Damage
+                  {tCreateRoad("damageAssessment.sections.potholeDamage")}
                 </TableHead>
               </TableRow>
               <TableRow>
-                <TableHead>Crossfall Condition</TableHead>
-                <TableHead>Area</TableHead>
-                <TableHead>Settlement</TableHead>
-                <TableHead>Erosion</TableHead>
-                <TableHead>Largest Particle Size</TableHead>
-                <TableHead>Gravel Thickness</TableHead>
-                <TableHead>Gravel Area</TableHead>
-                <TableHead>Gravel Distribution</TableHead>
-                <TableHead>Corrugation</TableHead>
-                <TableHead>Rutting</TableHead>
-                <TableHead>Avg Rut Depth</TableHead>
-                <TableHead>Number of Potholes</TableHead>
-                <TableHead>Pothole Size</TableHead>
-                <TableHead>Pothole Area</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.crossfallCondition")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.area")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.settlement")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.erosion")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.largestParticleSize")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.gravelThickness")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.gravelArea")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.gravelDistribution")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.corrugation")}</TableHead>
+                <TableHead>{tCreateRoad("damageAssessment.fields.rutting")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.avgRutDepth")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.numberOfPotholes")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeSize")}</TableHead>
+                <TableHead>{t("segmentSummary.damageAssessment.potholeArea")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -461,16 +464,16 @@ export default function SegmentSummaryDialog({
           className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg"
           size="icon"
           variant="default"
-          title="Segments Summary"
+          title={t("segmentSummary.buttonTitle")}
         >
           <List className="size-6" />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] w-[95vw] max-w-[95vw] min-w-[95vw] overflow-hidden">
         <DialogHeader>
-          <DialogTitle>Segment Summary - {roadName}</DialogTitle>
+          <DialogTitle>{t("segmentSummary.dialogTitle", { roadName })}</DialogTitle>
           <DialogDescription>
-            View all segment data with inventory and damage assessment details.
+            {t("segmentSummary.dialogDescription")}
           </DialogDescription>
         </DialogHeader>
         <div className="max-h-[75vh] overflow-y-auto pr-4 thin-styled-scroll-container">
@@ -505,11 +508,11 @@ export default function SegmentSummaryDialog({
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Segment No.</TableHead>
-                        <TableHead>From</TableHead>
-                        <TableHead>To</TableHead>
-                        <TableHead>Length (m)</TableHead>
-                        <TableHead>Pavement Type</TableHead>
+                        <TableHead>{t("segmentSummary.segmentNo")}</TableHead>
+                        <TableHead>{t("segmentSummary.from")}</TableHead>
+                        <TableHead>{t("segmentSummary.to")}</TableHead>
+                        <TableHead>{t("segmentSummary.lengthM")}</TableHead>
+                        <TableHead>{t("segmentSummary.pavementType")}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -525,7 +528,7 @@ export default function SegmentSummaryDialog({
                           {formatNumber(lengthM, 2, "-")}
                         </TableCell>
                         <TableCell>
-                          {formatPavementLabel(segment.pavementType)}
+                          {tCreateRoad(`enums.pavementType.${segment.pavementType}`)}
                         </TableCell>
                       </TableRow>
                     </TableBody>

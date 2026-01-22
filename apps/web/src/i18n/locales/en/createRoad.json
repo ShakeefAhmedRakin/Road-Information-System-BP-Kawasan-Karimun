@@ -99,11 +99,11 @@
       "rounded": "Rounded"
     },
     "pavementType": {
-      "asphalt": "Asphalt Pavement",
-      "concrete": "Concrete Pavement",
-      "block": "Block Pavement",
-      "gravel": "Gravel Pavement",
-      "unpaved": "Unpaved Road"
+      "asphalt": "Asphalt",
+      "concrete": "Concrete",
+      "block": "Block",
+      "gravel": "Gravel",
+      "unpaved": "Unpaved"
     },
     "shoulderType": {
       "none": "No Shoulder",

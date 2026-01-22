@@ -1,0 +1,170 @@
+{
+  "page": {
+    "loading": "Loading segments...",
+    "notFound": {
+      "title": "Road not found",
+      "description": "The road you are looking for does not exist."
+    },
+    "roadNumber": "Road Number",
+    "totalLength": "Total Length",
+    "segmentsHeading": "Segments ({{count}})",
+    "noSegments": "No segments found for this road.",
+    "segmentLabel": "Segment {{number}}",
+    "copyFromPlaceholder": "Copy from...",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "discard": "Discard",
+    "actionsForSegment": "Actions for segment {{number}}",
+    "warningSaveOrDiscard": "Save or discard your changes before leaving this segment."
+  },
+  "report": {
+    "generate": "Generate Report",
+    "regenerate": "Regenerate Report",
+    "generating": "Generating...",
+    "regenerating": "Regenerating...",
+    "toasts": {
+      "generated": "Report generated successfully",
+      "regenerated": "Report regenerated successfully",
+      "failed": "Failed to generate report"
+    }
+  },
+  "updateRoad": {
+    "button": "Update Road",
+    "title": "Update Road Information",
+    "description": "Update road information. Changes to individual fields will be saved automatically.",
+    "roadName": "Road Name",
+    "roadNumber": "Road Number",
+    "roadLength": "Road Length (km)",
+    "modifyWip": "Modify (WIP)",
+    "modifyWipTitle": "This feature is not available yet",
+    "close": "Close",
+    "lengthModal": {
+      "title": "Confirm Road Length Change",
+      "description": "Changing the road length will delete all existing segments and regenerate them based on the initial road creation data.",
+      "warningTitle": "Warning",
+      "warningDescription": "All existing segments will be deleted and regenerated based on the segment data from which the initial road was created. This action cannot be reversed.",
+      "lengthChange": "Length Change",
+      "current": "Current: {{value}} km",
+      "enterNew": "Enter the new road length below.",
+      "newLabel": "New Road Length (km)",
+      "placeholder": "Enter total length",
+      "newLengthPreview": "New length: {{value}} km ({{diff}} km)",
+      "note": "Note: This will permanently delete all current segment data and create new segments.",
+      "confirmButton": "Confirm and Regenerate Segments",
+      "cancel": "Cancel",
+      "loading": "Loading...",
+      "updating": "Updating and Regenerating..."
+    },
+    "toasts": {
+      "nameUpdated": "Road name updated successfully",
+      "nameFailed": "Failed to update road name",
+      "numberUpdated": "Road number updated successfully",
+      "numberFailed": "Failed to update road number",
+      "loadSegmentFailed": "Failed to load segment data. Please try again.",
+      "missingDamage": "Cannot regenerate segments: missing damage assessment data. Please contact support.",
+      "lengthRequired": "Road length is required",
+      "lengthInvalid": "Road length must be a valid number",
+      "lengthUnchanged": "Road length is unchanged",
+      "validationFailed": "Input validation failed",
+      "lengthUpdated": "Road length updated and segments regenerated successfully",
+      "regenerateFailed": "Failed to regenerate segments. Please try again.",
+      "updateLengthFailed": "Failed to update road length"
+    },
+    "validation": {
+      "lengthPositive": "Total length must be positive",
+      "invalidLength": "Invalid road length"
+    }
+  },
+  "segmentSummary": {
+    "buttonTitle": "Segments Summary",
+    "dialogTitle": "Segment Summary - {{roadName}}",
+    "dialogDescription": "View all segment data with inventory and damage assessment details.",
+    "segmentNo": "Segment No.",
+    "from": "From",
+    "to": "To",
+    "lengthM": "Length (m)",
+    "pavementType": "Pavement Type",
+    "notPassableYes": "1 (Yes)",
+    "notPassableNo": "0 (No)",
+    "inventory": {
+      "roadSideAttributesLeft": "Road Side Attributes (Left)",
+      "roadSideAttributesRight": "Road Side Attributes (Right)",
+      "pavementInventory": "Pavement Inventory",
+      "shoulderType": "Shoulder Type",
+      "shoulderWidth": "Shoulder Width",
+      "pavementWidth": "Pavement Width (m)",
+      "carriagewayWidth": "Carriageway Width (m)",
+      "rightOfWayWidth": "Right of Way Width (m)",
+      "terrain": "Terrain",
+      "notPassable": "Not Passable",
+      "drainageLandUseLeft": "Drainage & Land Use (Left)",
+      "drainageLandUseRight": "Drainage & Land Use (Right)",
+      "drainageType": "Drainage Type",
+      "landUseType": "Land Use Type"
+    },
+    "damageAssessment": {
+      "roadCondition": "Road Condition - {{pavementType}} Pavement",
+      "leftEdge": "Left Edge",
+      "rightEdge": "Right Edge",
+      "avgCrackWidth": "Avg Crack Width",
+      "otherCrackArea": "Other Crack Area",
+      "numberOfPotholes": "Number of Potholes",
+      "potholeSize": "Pothole Size",
+      "potholeArea": "Pothole Area",
+      "avgRutDepth": "Avg Rut Depth",
+      "crossfallCondition": "Crossfall Condition"
+    }
+  },
+  "reportDialog": {
+    "viewReport": "View Report",
+    "checking": "Checking report...",
+    "loading": "Loading report details...",
+    "unableToLoad": "Unable to load the report for this road.",
+    "retry": "Retry",
+    "title": "Road Condition Report",
+    "description": "Review the latest surface type distribution and TTI per segment.",
+    "downloadPdf": "Download PDF",
+    "generatingPdf": "Generating PDF...",
+    "ttiBySegment": "Treatment Trigger Index (TTI) by Segment",
+    "roadId": "Road ID",
+    "roadName": "Road Name",
+    "roadNumber": "Road Number",
+    "summaryTable": {
+      "roadNumber": "Road Number",
+      "roadName": "Road Name",
+      "totalLength": "Total Length (km)",
+      "sectionWidth": "Section Width (m)",
+      "percentagesOfSurfaceType": "Percentages of Surface Type",
+      "lengthByCondition": "Length by Condition",
+      "condition": "Condition",
+      "tti": "TTI",
+      "conditions": {
+        "good": "Good",
+        "fair": "Fair",
+        "poor": "Poor",
+        "bad": "Bad"
+      },
+      "km": "km",
+      "percent": "%"
+    },
+    "resultGenerated": "Result Generated: {{date}}",
+    "pdfGenerated": "PDF Generated: {{date}}",
+    "pageOf": "Page {{current}} of {{total}}",
+    "toasts": {
+      "contentUnavailable": "Report content not available",
+      "pdfSuccess": "PDF generated successfully",
+      "pdfFailed": "Failed to generate PDF"
+    }
+  },
+  "segmentForm": {
+    "toasts": {
+      "saving": "Saving segment {{number}}...",
+      "saved": "Segment {{number}} saved",
+      "saveFailed": "Failed to save segment",
+      "fixErrors": "Please fix the highlighted errors before saving.",
+      "discarded": "Discarded changes for segment {{number}}",
+      "sourceNotFound": "Source segment not found",
+      "copied": "Copied data from Segment {{source}} to Segment {{target}}"
+    }
+  }
+}

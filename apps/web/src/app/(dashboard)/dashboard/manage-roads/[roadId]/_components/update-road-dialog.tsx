@@ -25,17 +25,18 @@ import {
     ItemTitle,
 } from "@/components/ui/item";
 import { Label } from "@/components/ui/label";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { orpc } from "@/utils/orpc";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AlertCircleIcon, Edit, Ruler } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
 // Zod validation schemas - matches API endpoint validation exactly
-const roadLengthSchema = z.number().positive("Total length must be positive");
+// Note: Validation messages are translated in component using useMemo
 
 // Update road input schema - matches the API endpoint exactly
 const updateRoadInputSchema = z.object({
@@ -63,6 +64,11 @@ export default function UpdateRoadDialog({
   segmentGenerationMode: initialSegmentGenerationMode,
   onUpdate,
 }: UpdateRoadDialogProps) {
+  const { t, locale } = useTranslation("roadDetails");
+  const roadLengthSchema = useMemo(
+    () => z.number().positive(t("updateRoad.validation.lengthPositive")),
+    [t, locale]
+  );
   const [open, setOpen] = useState(false);
   const [showLengthWarning, setShowLengthWarning] = useState(false);
   const [newLengthValue, setNewLengthValue] = useState<number | null>(
@@ -125,11 +131,11 @@ export default function UpdateRoadDialog({
       { roadId, name: newName },
       {
         onSuccess: () => {
-          toast.success("Road name updated successfully");
+          toast.success(t("updateRoad.toasts.nameUpdated"));
           onUpdate?.();
         },
         onError: (error: Error) => {
-          toast.error(error.message || "Failed to update road name");
+          toast.error(error.message || t("updateRoad.toasts.nameFailed"));
           setName(initialRoadName);
         },
       }
@@ -143,11 +149,11 @@ export default function UpdateRoadDialog({
       { roadId, number: newNumber },
       {
         onSuccess: () => {
-          toast.success("Road number updated successfully");
+          toast.success(t("updateRoad.toasts.numberUpdated"));
           onUpdate?.();
         },
         onError: (error: Error) => {
-          toast.error(error.message || "Failed to update road number");
+          toast.error(error.message || t("updateRoad.toasts.numberFailed"));
           setNumber(initialRoadNumber);
         },
       }
@@ -176,7 +182,7 @@ export default function UpdateRoadDialog({
       setLengthError(null);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        setLengthError(error.issues[0]?.message || "Invalid road length");
+        setLengthError(error.issues[0]?.message || t("updateRoad.validation.invalidLength"));
       }
     }
   };
@@ -184,30 +190,28 @@ export default function UpdateRoadDialog({
   const handleConfirmLengthChange = async () => {
     if (!initialSegmentData || isLoadingSegmentData) {
       if (showLengthWarning && !initialSegmentData) {
-        toast.error("Failed to load segment data. Please try again.");
+        toast.error(t("updateRoad.toasts.loadSegmentFailed"));
       }
       return;
     }
 
     if (!initialSegmentData.damageAssessment) {
-      toast.error(
-        "Cannot regenerate segments: missing damage assessment data. Please contact support."
-      );
+      toast.error(t("updateRoad.toasts.missingDamage"));
       setShowLengthWarning(false);
       return;
     }
 
     // Validate length - check for null/undefined first
     if (newLengthValue === null || newLengthValue === undefined) {
-      setLengthError("Road length is required");
-      toast.error("Road length is required");
+      setLengthError(t("updateRoad.toasts.lengthRequired"));
+      toast.error(t("updateRoad.toasts.lengthRequired"));
       return;
     }
 
     // Check if it's a valid number
     if (Number.isNaN(newLengthValue) || !Number.isFinite(newLengthValue)) {
-      setLengthError("Road length must be a valid number");
-      toast.error("Road length must be a valid number");
+      setLengthError(t("updateRoad.toasts.lengthInvalid"));
+      toast.error(t("updateRoad.toasts.lengthInvalid"));
       return;
     }
 
@@ -217,18 +221,18 @@ export default function UpdateRoadDialog({
       validatedLength = roadLengthSchema.parse(newLengthValue);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const errorMessage = error.issues[0]?.message || "Invalid road length";
+        const errorMessage = error.issues[0]?.message || t("updateRoad.validation.invalidLength");
         setLengthError(errorMessage);
         toast.error(errorMessage);
       } else {
-        setLengthError("Invalid road length");
-        toast.error("Invalid road length");
+        setLengthError(t("updateRoad.validation.invalidLength"));
+        toast.error(t("updateRoad.validation.invalidLength"));
       }
       return;
     }
 
     if (validatedLength === initialRoadLength) {
-      toast.info("Road length is unchanged");
+      toast.info(t("updateRoad.toasts.lengthUnchanged"));
       setShowLengthWarning(false);
       return;
     }
@@ -246,12 +250,12 @@ export default function UpdateRoadDialog({
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorMessage =
-          error.issues[0]?.message || "Input validation failed";
+          error.issues[0]?.message || t("updateRoad.toasts.validationFailed");
         setLengthError(errorMessage);
         toast.error(errorMessage);
       } else {
-        setLengthError("Input validation failed");
-        toast.error("Input validation failed");
+        setLengthError(t("updateRoad.toasts.validationFailed"));
+        toast.error(t("updateRoad.toasts.validationFailed"));
       }
       return;
     }
@@ -288,17 +292,14 @@ export default function UpdateRoadDialog({
             },
             {
               onSuccess: () => {
-                toast.success(
-                  "Road length updated and segments regenerated successfully"
-                );
+                toast.success(t("updateRoad.toasts.lengthUpdated"));
                 setShowLengthWarning(false);
                 setLengthError(null);
                 onUpdate?.();
               },
               onError: (error: Error) => {
                 toast.error(
-                  error.message ||
-                    "Failed to regenerate segments. Please try again."
+                  error.message || t("updateRoad.toasts.regenerateFailed")
                 );
                 setNewLengthValue(initialRoadLength);
                 setLengthError(null);
@@ -309,7 +310,7 @@ export default function UpdateRoadDialog({
         onError: (error: Error) => {
           console.error("Update road error:", error);
           const errorMessage =
-            error.message || "Failed to update road length";
+            error.message || t("updateRoad.toasts.updateLengthFailed");
           toast.error(errorMessage);
           // Check if it's a validation error
           if (errorMessage.toLowerCase().includes("validation")) {
@@ -346,26 +347,25 @@ export default function UpdateRoadDialog({
         <DialogTrigger asChild>
           <Button variant="outline">
             <Edit className="mr-2 h-4 w-4" />
-            Update Road
+            {t("updateRoad.button")}
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Edit className="size-5" /> Update Road Information
+              <Edit className="size-5" /> {t("updateRoad.title")}
             </DialogTitle>
           </DialogHeader>
           <Separator />
 
           <DialogDescription>
-            Update road information. Changes to individual fields will be saved
-            automatically.
+            {t("updateRoad.description")}
           </DialogDescription>
 
           <div className="space-y-4">
             {/* Road Name */}
             <div className="space-y-2">
-              <Label htmlFor="road-name">Road Name</Label>
+              <Label htmlFor="road-name">{t("updateRoad.roadName")}</Label>
               <InputGroup>
                 <InputGroupAddon>
                   <Edit className="size-3.5" />
@@ -403,7 +403,7 @@ export default function UpdateRoadDialog({
 
             {/* Road Number */}
             <div className="space-y-2">
-              <Label htmlFor="road-number">Road Number</Label>
+              <Label htmlFor="road-number">{t("updateRoad.roadNumber")}</Label>
               <InputGroup>
                 <InputGroupAddon>
                   <Edit className="size-3.5" />
@@ -441,7 +441,7 @@ export default function UpdateRoadDialog({
 
             {/* Road Length - Read-only with Modify button */}
             <div className="space-y-2">
-              <Label htmlFor="road-length">Road Length (km)</Label>
+              <Label htmlFor="road-length">{t("updateRoad.roadLength")}</Label>
               <div className="flex items-center gap-2">
                 <InputGroup className="flex-1">
                   <InputGroupAddon>
@@ -459,11 +459,11 @@ export default function UpdateRoadDialog({
                   type="button"
                   variant="outline"
                   onClick={handleModifyLength}
-                  title="This feature is not available yet"
+                  title={t("updateRoad.modifyWipTitle")}
                   // WIP
                   disabled={true}
                 >
-                  Modify (WIP)
+                  {t("updateRoad.modifyWip")}
                 </Button>
               </div>
             </div>
@@ -471,7 +471,7 @@ export default function UpdateRoadDialog({
 
           <div className="flex w-full flex-col gap-2">
             <Button variant="outline" onClick={() => setOpen(false)}>
-              Close
+              {t("updateRoad.close")}
             </Button>
           </div>
         </DialogContent>
@@ -482,15 +482,14 @@ export default function UpdateRoadDialog({
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <AlertCircleIcon className="text-destructive size-5" />{" "}
-              Confirm Road Length Change
+              <AlertCircleIcon className="text-destructive size-5" />
+              {t("updateRoad.lengthModal.title")}
             </DialogTitle>
           </DialogHeader>
           <Separator />
 
           <DialogDescription>
-            Changing the road length will delete all existing segments and
-            regenerate them based on the initial road creation data.
+            {t("updateRoad.lengthModal.description")}
           </DialogDescription>
 
           <Item variant="destructive">
@@ -498,32 +497,32 @@ export default function UpdateRoadDialog({
               <AlertCircleIcon className="text-destructive size-5" />
             </ItemMedia>
             <ItemContent>
-              <ItemTitle className="text-destructive">Warning</ItemTitle>
+              <ItemTitle className="text-destructive">
+                {t("updateRoad.lengthModal.warningTitle")}
+              </ItemTitle>
               <ItemDescription>
-                All existing segments will be deleted and regenerated based on
-                the segment data from which the initial road was created. This
-                action cannot be reversed.
+                {t("updateRoad.lengthModal.warningDescription")}
               </ItemDescription>
             </ItemContent>
           </Item>
 
           <Item variant="outline">
             <ItemHeader className="flex w-full items-center justify-between gap-2">
-              <span className="whitespace-nowrap">Length Change</span>
+              <span className="whitespace-nowrap">{t("updateRoad.lengthModal.lengthChange")}</span>
             </ItemHeader>
             <ItemSeparator />
             <ItemContent>
               <div className="space-y-3">
                 <div>
                   <ItemTitle>
-                    Current: {initialRoadLength.toFixed(2)} km
+                    {t("updateRoad.lengthModal.current", { value: initialRoadLength.toFixed(2) })}
                   </ItemTitle>
                   <ItemDescription>
-                    Enter the new road length below.
+                    {t("updateRoad.lengthModal.enterNew")}
                   </ItemDescription>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="new-road-length">New Road Length (km)</Label>
+                  <Label htmlFor="new-road-length">{t("updateRoad.lengthModal.newLabel")}</Label>
                   <InputGroup>
                     <InputGroupAddon>
                       <Ruler className="size-3.5" />
@@ -531,7 +530,7 @@ export default function UpdateRoadDialog({
                     <InputGroupInput
                       id="new-road-length"
                       type="number"
-                      placeholder="Enter total length"
+                      placeholder={t("updateRoad.lengthModal.placeholder")}
                       value={newLengthValue ?? ""}
                       onChange={(e) => {
                         const numValue = parseFloat(e.target.value);
@@ -558,17 +557,17 @@ export default function UpdateRoadDialog({
                     newLengthValue > 0 &&
                     newLengthValue !== initialRoadLength && (
                       <p className="text-muted-foreground text-xs">
-                        New length: {newLengthValue.toFixed(2)} km (
-                        {newLengthValue > initialRoadLength ? "+" : ""}
-                        {(newLengthValue - initialRoadLength).toFixed(2)} km)
+                        {t("updateRoad.lengthModal.newLengthPreview", {
+                          value: newLengthValue.toFixed(2),
+                          diff: `${newLengthValue > initialRoadLength ? "+" : ""}${(newLengthValue - initialRoadLength).toFixed(2)}`
+                        })}
                       </p>
                     )}
                 </div>
               </div>
             </ItemContent>
             <ItemFooter className="text-muted-foreground text-xs font-bold">
-              Note: This will permanently delete all current segment data and
-              create new segments.
+              {t("updateRoad.lengthModal.note")}
             </ItemFooter>
           </Item>
 
@@ -582,11 +581,11 @@ export default function UpdateRoadDialog({
                 <>
                   <Spinner className="mr-2" />
                   {isLoadingSegmentData
-                    ? "Loading..."
-                    : "Updating and Regenerating..."}
+                    ? t("updateRoad.lengthModal.loading")
+                    : t("updateRoad.lengthModal.updating")}
                 </>
               ) : (
-                "Confirm and Regenerate Segments"
+                t("updateRoad.lengthModal.confirmButton")
               )}
             </Button>
             <Button
@@ -594,7 +593,7 @@ export default function UpdateRoadDialog({
               onClick={handleCancelLengthChange}
               disabled={isUpdating || isLoadingSegmentData}
             >
-              Cancel
+              {t("updateRoad.lengthModal.cancel")}
             </Button>
           </div>
         </DialogContent>
