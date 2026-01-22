@@ -1,6 +1,6 @@
 "use client";
 
-import { AppLogo } from "@/components/branding/app-logo";
+import { AppLogoWithTranslation } from "@/components/branding/app-logo-with-translation";
 import {
   Card,
   CardContent,
@@ -22,7 +22,7 @@ export default function SignInPage() {
       <Card className="mx-auto w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="flex items-center justify-between gap-2">
-            <AppLogo logoSize="size-8 md:size-16" className="!flex-1" />
+            <AppLogoWithTranslation logoSize="size-8 md:size-16" className="!flex-1" />
             <div className="ml-auto flex items-center gap-2">
               <LanguageSwitcher />
               <ThemeToggleButton />

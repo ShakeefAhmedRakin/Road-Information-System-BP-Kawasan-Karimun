@@ -1,0 +1,31 @@
+{
+  "app": {
+    "logo": {
+      "title": "Road Information System",
+      "subtitle": "BP Kawasan Karimun",
+      "homePage": "Home Page"
+    }
+  },
+  "navigation": {
+    "routes": {
+      "home": "Home",
+      "account": "Account",
+      "manageRoads": "Manage Roads",
+      "manageUsers": "Manage Users"
+    },
+    "mobile": {
+      "toggleMenu": "Toggle menu"
+    }
+  },
+  "user": {
+    "signOut": "Sign Out"
+  },
+  "messages": {
+    "success": {
+      "signedOut": "Signed out!"
+    },
+    "error": {
+      "signOutFailed": "Failed to sign out. Please try again."
+    }
+  }
+}

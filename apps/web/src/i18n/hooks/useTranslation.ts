@@ -7,17 +7,22 @@ import { getNestedValue } from "../utils";
 // Import translation files
 import enAuth from "../locales/en/auth.json";
 import idAuth from "../locales/id/auth.json";
+import enDashboard from "../locales/en/dashboard.json";
+import idDashboard from "../locales/id/dashboard.json";
 
 type TranslationKeys = {
   auth: typeof enAuth;
+  dashboard: typeof enDashboard;
 };
 
 const translations: Record<string, TranslationKeys> = {
   en: {
     auth: enAuth,
+    dashboard: enDashboard,
   },
   id: {
     auth: idAuth,
+    dashboard: idDashboard,
   },
 };
 

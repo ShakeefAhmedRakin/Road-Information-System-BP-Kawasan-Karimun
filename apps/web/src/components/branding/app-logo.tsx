@@ -68,14 +68,21 @@ export function AppLogo({
   label,
   className,
   textColor,
-  logoSize = "size-10",
+  logoSize = "size-8",
+  title,
+  subtitle,
 }: {
   href?: string;
   className?: string;
   label?: string;
   textColor?: string;
   logoSize?: string;
+  title?: string;
+  subtitle?: string;
 }) {
+  const displayTitle = title ?? "Sistem Informasi Jalan";
+  const displaySubtitle = subtitle ?? "BP Kawasan Karimun";
+
   return (
     <Link
       aria-label={label ?? "Home Page"}
@@ -89,7 +96,7 @@ export function AppLogo({
           className: cn("font-medium whitespace-nowrap", className),
         })}
       >
-        Sistem Informasi Jalan <br /> BP Kawasan Karimun
+        {displayTitle} <br /> {displaySubtitle}
       </h1>
     </Link>
   );

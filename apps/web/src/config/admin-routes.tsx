@@ -3,7 +3,7 @@ import { Users } from "lucide-react";
 
 export const AdminRoutes = [
   {
-    title: "Manage Users",
+    titleKey: "navigation.routes.manageUsers",
     path: StaticRoutes.MANAGE_USERS,
     icon: <Users />,
   },

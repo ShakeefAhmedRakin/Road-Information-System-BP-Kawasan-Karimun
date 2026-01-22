@@ -1,0 +1,31 @@
+{
+  "app": {
+    "logo": {
+      "title": "Sistem Informasi Jalan",
+      "subtitle": "BP Kawasan Karimun",
+      "homePage": "Halaman Beranda"
+    }
+  },
+  "navigation": {
+    "routes": {
+      "home": "Beranda",
+      "account": "Akun",
+      "manageRoads": "Kelola Jalan",
+      "manageUsers": "Kelola Pengguna"
+    },
+    "mobile": {
+      "toggleMenu": "Buka/tutup menu"
+    }
+  },
+  "user": {
+    "signOut": "Keluar"
+  },
+  "messages": {
+    "success": {
+      "signedOut": "Berhasil keluar!"
+    },
+    "error": {
+      "signOutFailed": "Gagal keluar. Silakan coba lagi."
+    }
+  }
+}

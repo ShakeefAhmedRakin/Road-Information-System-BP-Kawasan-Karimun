@@ -1,5 +1,5 @@
 import SignOutButton from "@/app/(dashboard)/_components/sign-out-button";
-import { AppLogo } from "@/components/branding/app-logo";
+import { AppLogoClient } from "@/components/branding/app-logo-client";
 import { Separator } from "@/components/ui/separator";
 import { type UserRole } from "api/src/modules/auth/auth.constants";
 import type { User } from "better-auth";
@@ -25,7 +25,7 @@ export default function DashboardDesktopNavigation({
       className="flex h-full flex-col gap-y-3"
     >
       <div className="flex items-center justify-between gap-2 pt-3 pl-3">
-        <AppLogo />
+        <AppLogoClient />
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
           <ThemeToggleButton />
@@ -36,7 +36,7 @@ export default function DashboardDesktopNavigation({
 
       <ul className="flex w-full flex-col gap-2">
         {getRoutesForRole(userRole).map((route) => (
-          <DashboardNavigationItem key={route.title} {...route} />
+          <DashboardNavigationItem key={route.titleKey || route.path} {...route} />
         ))}
       </ul>
 

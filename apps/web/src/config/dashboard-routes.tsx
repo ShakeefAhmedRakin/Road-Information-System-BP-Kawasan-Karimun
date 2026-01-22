@@ -3,12 +3,12 @@ import { LayoutDashboardIcon, UserIcon } from "lucide-react";
 
 export const DashboardRoutes = [
   {
-    title: "Home",
+    titleKey: "navigation.routes.home",
     path: StaticRoutes.DASHBOARD,
     icon: <LayoutDashboardIcon />,
   },
   {
-    title: "Account",
+    titleKey: "navigation.routes.account",
     path: StaticRoutes.ACCOUNTS,
     icon: <UserIcon />,
   },

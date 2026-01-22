@@ -1,7 +1,7 @@
 import type { User } from "better-auth";
 import DashboardDesktopNavigation from "./dashboard-desktop-navigation";
 
-import { AppLogo } from "@/components/branding/app-logo";
+import { AppLogoClient } from "@/components/branding/app-logo-client";
 import type { UserRole } from "api/src/modules/auth/auth.constants";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggleButton } from "../../../components/theme-toggle";
@@ -17,7 +17,7 @@ export default function DashboardNavigation({
   return (
     <nav>
       <div className="bg-background/50 flex items-center justify-between border-b p-3 backdrop-blur-lg xl:hidden">
-        <AppLogo />
+        <AppLogoClient />
 
         <span className="flex items-center gap-2">
           <DashboardMobileNavigation user={user} userRole={userRole} />

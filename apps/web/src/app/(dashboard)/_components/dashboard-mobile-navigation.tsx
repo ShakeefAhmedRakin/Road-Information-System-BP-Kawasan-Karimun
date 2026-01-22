@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { AppLogo } from "@/components/branding/app-logo";
+  import { AppLogoWithTranslation } from "@/components/branding/app-logo-with-translation";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -12,6 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import type { UserRole } from "api/src/modules/auth/auth.constants";
 import type { User } from "better-auth";
 import { Menu, X } from "lucide-react";
@@ -29,6 +30,7 @@ export function DashboardMobileNavigation({
   userRole: UserRole | null;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation("dashboard");
 
   const handleClose = () => {
     setTimeout(() => setIsOpen(false), 200);
@@ -39,7 +41,7 @@ export function DashboardMobileNavigation({
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" onClick={() => setIsOpen(true)}>
           {isOpen ? <X /> : <Menu />}
-          <span className="sr-only">Toggle menu</span>
+          <span className="sr-only">{t("navigation.mobile.toggleMenu")}</span>
         </Button>
       </SheetTrigger>
       <SheetContent
@@ -48,7 +50,7 @@ export function DashboardMobileNavigation({
       >
         <SheetHeader className="-mb-3 -ml-5">
           <SheetTitle className="w-fit">
-            <AppLogo />
+            <AppLogoWithTranslation />
           </SheetTitle>
         </SheetHeader>
 
@@ -56,7 +58,7 @@ export function DashboardMobileNavigation({
         <ul className="flex w-full flex-col gap-2">
           {getRoutesForRole(userRole).map((route) => (
             <DashboardNavigationItem
-              key={route.title}
+              key={route.titleKey || route.path}
               {...route}
               onClick={handleClose}
             />
