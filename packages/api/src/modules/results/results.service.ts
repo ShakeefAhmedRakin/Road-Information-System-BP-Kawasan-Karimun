@@ -219,6 +219,18 @@ class ResultService {
     };
   }
 
+  async getReportSummaryByRoadId(roadId: string): Promise<{
+    pavementTypePercentages: PavementTypePercentages;
+    conditionLengthStats: ConditionLengthStats;
+  } | null> {
+    const existing = await this.getResultRecordByRoadId(roadId);
+    if (!existing) return null;
+    return {
+      pavementTypePercentages: existing.pavementTypePercentages,
+      conditionLengthStats: existing.conditionLengthStats,
+    };
+  }
+
   async getReportByRoadId(roadId: string) {
     const roadRecord = await this.fetchRoadSummary(roadId);
 
