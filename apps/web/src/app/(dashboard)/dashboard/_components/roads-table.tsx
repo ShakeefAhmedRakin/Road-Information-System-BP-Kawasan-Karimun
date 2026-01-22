@@ -8,6 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { orpc } from "@/utils/orpc";
 import { PAVEMENT_TYPES, type PavementType } from "@repo/shared";
 import { useQuery } from "@tanstack/react-query";
@@ -96,10 +101,10 @@ export function RoadsTable() {
             <TableHead rowSpan={2} className="w-10 text-center align-middle">
               No.
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle">
+            <TableHead rowSpan={2} className="align-middle min-w-[120px] max-w-[200px]">
               Road Number
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle">
+            <TableHead rowSpan={2} className="align-middle min-w-[150px] max-w-[300px]">
               Road Name
             </TableHead>
             <TableHead rowSpan={2} className="text-right align-middle">
@@ -170,8 +175,38 @@ export function RoadsTable() {
                 <TableCell className="text-center font-medium">
                   {index + 1}
                 </TableCell>
-                <TableCell>{road.number}</TableCell>
-                <TableCell>{road.name}</TableCell>
+                <TableCell className="max-w-[200px]">
+                  {road.number.length > 20 ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="truncate cursor-help" title={road.number}>
+                          {road.number}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="max-w-xs break-words">{road.number}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <div className="truncate">{road.number}</div>
+                  )}
+                </TableCell>
+                <TableCell className="max-w-[300px]">
+                  {road.name.length > 30 ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="truncate cursor-help" title={road.name}>
+                          {road.name}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="max-w-xs break-words">{road.name}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <div className="truncate">{road.name}</div>
+                  )}
+                </TableCell>
                 <TableCell className="text-right">
                   {formatNumber(totalLength)}
                 </TableCell>

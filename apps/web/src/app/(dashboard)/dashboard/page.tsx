@@ -5,21 +5,26 @@ import { hasMinimumRole, useAuthServer } from "../../../hooks/auth/useAuthServer
 import { RoadsTable } from "./_components/roads-table";
 
 export default async function Home() {
-  const allowedAccess = await hasMinimumRole(USER_ROLES.OPERATOR);
   const { user } = await useAuthServer();
 
-  if (!allowedAccess || !user) {
+  if (!user) {
     return <UnauthorizedCard />;
   }
 
+  const isOperatorOrAbove = await hasMinimumRole(USER_ROLES.OPERATOR);
+
   return (
     <PageLayout
-      title="Roads"
-      description='Road inventory with surface types and condition by length. Roads without reports show "Reports pending".'
+      title="Home"
+      description="Overview of roads and reports"
     >
-      <div className="space-y-4">
-        <RoadsTable />
-      </div>
+      {isOperatorOrAbove ? (
+        <div className="space-y-4">
+          <RoadsTable />
+        </div>
+      ) : (
+        <h1>Pending</h1>
+      )}
     </PageLayout>
   );
 }
