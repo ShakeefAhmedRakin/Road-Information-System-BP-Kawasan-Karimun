@@ -14,12 +14,19 @@ A comprehensive **Road Information System** for BP Kawasan Karimun, designed to 
 
 **Key Features:**
 
-- 📊 **Road Inventory Management** - Comprehensive road and segment data entry (3 forms)
-- 🛣️ **Pavement Condition Assessment** - Support for 5 pavement types (Asphalt, Concrete, Block, Gravel, Unpaved)
-- 🧮 **TTI Calculation Engine** - Automated Traffic Tolerance Index computation based on PKRMS standards
-- 📈 **Reporting & Export** - Excel export capabilities for analysis and reporting
-- 👥 **Role-Based Access** - Admin, Operator, and Visitor roles with hierarchical permissions
+- 📊 **Road Inventory Management** - Comprehensive road and segment data entry with auto-segment generation
+- 🛣️ **Pavement Condition Assessment** - Support for 5 pavement types (Asphalt, Concrete, Block, Gravel, Unpaved) with detailed damage schemas
+- 🧮 **TTI Calculation Engine** - Automated Traffic Tolerance Index computation based on PKRMS Manual (SE 22/2022)
+- 📈 **PDF Report Generation** - Client-side PDF export with comprehensive road condition reports
+- 📊 **Data Analytics** - Segment-based analysis with condition statistics and pavement type percentages
+- 👥 **Role-Based Access Control** - Admin, Operator, and Visitor roles with hierarchical permissions
 - 🔐 **Admin-Controlled Access** - No public sign-ups, full admin control over user management
+- 🌐 **Internationalization** - Multi-language support (English & Indonesian)
+- 🎨 **Theme Support** - Dark/light mode with system preference detection
+- 📱 **Responsive Design** - Mobile-first design optimized for all screen sizes
+- ✅ **Form Validation** - Real-time validation with React Hook Form + Zod schemas
+- 🔄 **Auto-Segment Generation** - Automatic road segmentation based on interval and generation mode
+- 👁️ **Visitor Visibility Controls** - Granular control over which roads visitors can access
 
 **Built For:**
 
@@ -29,28 +36,62 @@ A comprehensive **Road Information System** for BP Kawasan Karimun, designed to 
 
 **Technical Foundation:**
 
-- ✅ **Modern tech stack** - Next.js 15, TypeScript, Tailwind CSS v4, shadcn/ui
-- ✅ **Type-safe APIs** - Full-stack type safety with oRPC
-- ✅ **Production-ready auth** - Secure authentication with Better Auth
-- ✅ **Responsive design** - Mobile and desktop optimized
-- ✅ **Database migrations** - Managed with Drizzle ORM
-- ✅ **Monorepo setup** - Turborepo for optimized builds
+- ✅ **Modern tech stack** - Next.js 15, React 19, TypeScript, Tailwind CSS v4, shadcn/ui
+- ✅ **Type-safe APIs** - Full-stack type safety with oRPC (end-to-end TypeScript)
+- ✅ **Production-ready auth** - Secure authentication with Better Auth (session-based)
+- ✅ **Responsive design** - Mobile-first, optimized for all devices
+- ✅ **Database migrations** - Automated migrations with Drizzle ORM & GitHub Actions
+- ✅ **Monorepo setup** - Turborepo for optimized builds and task orchestration
+- ✅ **Form management** - Type-safe forms with React Hook Form + Zod validation
+- ✅ **State management** - TanStack Query for server state & caching
+- ✅ **Internationalization** - Built-in i18n support (English & Indonesian)
+- ✅ **Theme system** - Dark/light mode with persistent user preferences
+- ✅ **PDF reports** - Client-side PDF generation with html2canvas & jsPDF
+- ✅ **CI/CD pipeline** - Automated testing, migrations, and deployment
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Category           | Technology           | Purpose                         |
-| ------------------ | -------------------- | ------------------------------- |
-| **Frontend**       | Next.js 15           | React framework with App Router |
-| **Styling**        | Tailwind CSS v4      | Utility-first CSS framework     |
-| **UI Components**  | shadcn/ui            | Pre-built accessible components |
-| **Backend**        | oRPC                 | Type-safe API with OpenAPI      |
-| **Database**       | PostgreSQL + Drizzle | Type-safe database operations   |
-| **Authentication** | Better Auth          | Secure auth with sessions       |
-| **Deployment**     | Vercel + Neon        | Serverless hosting              |
-| **Monorepo**       | Turborepo            | Optimized build system          |
-| **Language**       | TypeScript           | End-to-end type safety          |
+### Frontend Technologies
+
+| Category           | Technology                    | Purpose                                      |
+| ------------------ | ----------------------------- | -------------------------------------------- |
+| **Framework**      | Next.js 15                    | React framework with App Router & Turbopack  |
+| **UI Library**     | React 19                      | Latest React with concurrent features        |
+| **Styling**        | Tailwind CSS v4               | Utility-first CSS framework                  |
+| **UI Components**  | shadcn/ui (Radix UI)          | Accessible, customizable component library   |
+| **Forms**          | React Hook Form + Zod         | Type-safe form validation & management       |
+| **Data Fetching**  | TanStack Query (React Query)  | Server state management & caching            |
+| **Animations**     | Motion (Framer Motion)        | Smooth UI animations & transitions          |
+| **Icons**          | Lucide React                  | Modern icon library                           |
+| **Notifications**  | Sonner                        | Toast notification system                     |
+| **Theming**        | next-themes                   | Dark/light mode support                      |
+| **PDF Generation** | jsPDF + html2canvas-pro       | Client-side PDF report generation            |
+| **i18n**           | Custom i18n system            | English & Indonesian language support       |
+
+### Backend Technologies
+
+| Category           | Technology                    | Purpose                                      |
+| ------------------ | ----------------------------- | -------------------------------------------- |
+| **API Framework**  | oRPC                          | Type-safe RPC with full-stack TypeScript     |
+| **Database ORM**   | Drizzle ORM                   | Type-safe database queries & migrations     |
+| **Database**       | PostgreSQL                    | Relational database                          |
+| **Production DB**  | Neon Serverless               | Serverless PostgreSQL for production        |
+| **Auth**           | Better Auth                   | Secure authentication & session management  |
+| **Validation**     | Zod                           | Runtime type validation & schemas           |
+
+### DevOps & Infrastructure
+
+| Category           | Technology                    | Purpose                                      |
+| ------------------ | ----------------------------- | -------------------------------------------- |
+| **Monorepo**       | Turborepo                    | Optimized build system & task orchestration |
+| **Package Manager**| pnpm                         | Fast, disk-efficient package management     |
+| **CI/CD**          | GitHub Actions               | Automated testing & deployment               |
+| **Hosting**        | Vercel                       | Serverless hosting for Next.js              |
+| **Database Host**  | Neon                         | Serverless PostgreSQL hosting               |
+| **Code Quality**   | Prettier                     | Automated code formatting                    |
+| **Type Checking**  | TypeScript 5                  | Static type checking                         |
 
 ## 🚀 Quick Start
 
@@ -263,34 +304,254 @@ sistem-informasi-jalan/
 │       └── package.json
 │
 └── packages/
-    └── api/                           # oRPC backend API
-        ├── src/
-        │   ├── modules/
-        │   │   ├── admin/             # Admin management logic
-        │   │   ├── auth/              # Authentication & authorization
-        │   │   ├── operator/          # Operator-specific features
-        │   │   └── routers.ts         # API route definitions
-        │   └── lib/
-        │       ├── db.ts              # Database schema & connection
-        │       ├── orpc.ts            # oRPC configuration
-        │       └── context.ts         # Request context
-        ├── migrations/                # Database migrations
-        ├── .env.development           # Dev database config
-        ├── .env.production            # Prod database config
-        └── package.json
+    ├── api/                           # oRPC backend API
+    │   ├── src/
+    │   │   ├── modules/
+    │   │   │   ├── admin/             # Admin management (user CRUD, ban/unban)
+    │   │   │   ├── auth/              # Authentication & authorization
+    │   │   │   ├── road/              # Road management (CRUD operations)
+    │   │   │   ├── segment/           # Segment management & generation
+    │   │   │   ├── results/            # TTI calculation & report generation
+    │   │   │   ├── shared/            # Shared schemas & enums
+    │   │   │   └── routers.ts         # API route definitions
+    │   │   └── lib/
+    │   │       ├── db.ts              # Database schema & connection
+    │   │       ├── orpc.ts            # oRPC configuration
+    │   │       └── context.ts        # Request context
+    │   ├── migrations/                # Database migrations (Drizzle)
+    │   ├── .env.development           # Dev database config
+    │   ├── .env.production            # Prod database config
+    │   └── package.json
+    └── shared/                        # Shared types & schemas
+        └── src/
+            ├── damage-assessment.ts   # Damage assessment schemas (Zod)
+            ├── enums.ts               # Shared enums (pavement types, etc.)
+            ├── road-schema.ts         # Road-related types
+            └── index.ts
 ```
 
 ## 🔐 Role-Based Access Control
 
 The system includes three built-in roles with hierarchical permissions:
 
-| Role         | Permissions                                                  |
-| ------------ | ------------------------------------------------------------ |
-| **Admin**    | Full access: manage users, road data, and system permissions |
-| **Operator** | Manage road inventory and pavement data, view all reports    |
-| **Visitor**  | View-only access to road data, reports, and account settings |
+| Role         | Permissions                                                                 |
+| ------------ | --------------------------------------------------------------------------- |
+| **Admin**    | Full system access: manage users (create, update, ban/unban, role assignment), manage all road data, view all reports, system configuration |
+| **Operator** | Manage road inventory (create, update, delete roads), manage segments and pavement data, generate TTI reports, view all reports |
+| **Visitor**  | View-only access to visible roads (controlled by `isVisibleByVisitors` flag), view reports for accessible roads, manage own account settings |
+
+**Additional Security Features:**
+- 🔒 **User Banning System** - Admins can ban users temporarily or permanently with expiration dates
+- 🔄 **Session Management** - Admins can revoke user sessions for security
+- 👁️ **Visibility Controls** - Per-road visibility settings for visitor access
+- 🛡️ **Route Protection** - Middleware-based route protection with role verification
+- 🔐 **Password Management** - Admin-controlled password setting for new users
 
 Routes automatically display based on user role. See `apps/web/src/config/` for route configuration.
+
+---
+
+## 🎯 Technical Features
+
+### Backend Features
+
+#### API Architecture
+- **oRPC Framework** - Type-safe RPC calls with automatic TypeScript inference
+- **Modular Router System** - Organized by domain (admin, auth, road, segment, results)
+- **Procedure Types** - `adminProcedure`, `operatorProcedure`, `visitorProcedure` for role-based endpoints
+- **Context Management** - Request context with user session and role information
+
+#### Road Management
+- **Road CRUD Operations** - Create, read, update, delete roads
+- **Auto-Segment Generation** - Automatic segment creation based on:
+  - Total road length (km)
+  - Segment interval (meters)
+  - Generation mode (full segments only, or include remainder)
+- **Segment Management** - Individual segment updates with pavement inventory
+- **Visibility Controls** - Per-road visitor visibility settings
+
+#### Damage Assessment System
+- **5 Pavement Types Supported:**
+  - **Asphalt** - 12 damage parameters (bleeding, disintegration, cracks, potholes, rutting, edge damage)
+  - **Concrete** - 6 damage parameters (cracking, spalling, structural cracking, faulting, pumping, corner break)
+  - **Block** - 6 damage parameters (reflective cracking, disintegration, edge damage, potholes, rutting)
+  - **Gravel/Unpaved** - 10 damage parameters (crossfall, settlement, erosion, particle size, gravel properties, corrugation, potholes, rutting)
+- **Type-Safe Schemas** - Zod discriminated unions for pavement-specific validation
+- **Damage Percentage Ranges** - Standardized ranges (0-5%, 5-10%, 10-20%, etc.)
+
+#### TTI Calculation Engine
+- **Automated Calculation** - Based on PKRMS Manual (SE 22/2022)
+- **Weighted Distress Calculation** - Component-based distress area computation
+- **Condition Mapping** - TTI to condition mapping (Good, Fair, Poor, Bad)
+- **Segment-Level Analysis** - Individual segment TTI and condition assessment
+- **Road-Level Statistics** - Aggregated statistics:
+  - Pavement type percentages
+  - Condition length statistics
+  - Overall road condition summary
+- **Special Handling** - Unpaved roads have fixed TTI of 150
+
+#### Results & Reporting
+- **Report Generation** - Comprehensive road condition reports
+- **Report Summaries** - Quick status checks without full report generation
+- **Historical Results** - Multiple result versions per road
+- **Visitor-Specific Endpoints** - Filtered reports based on visibility settings
+
+#### User Management (Admin)
+- **User CRUD** - Create, read, update, delete users
+- **Role Management** - Assign/update user roles
+- **Ban System** - Temporary or permanent user bans with expiration dates
+- **Session Management** - Revoke user sessions
+- **Password Management** - Admin-set passwords for new users
+- **Advanced Filtering** - Search, filter by role, ban status, sorting
+
+#### Database
+- **Drizzle ORM** - Type-safe database queries
+- **Migration System** - Version-controlled migrations
+- **Environment-Based Config** - Separate dev/prod database connections
+- **Neon Serverless** - Production database with serverless PostgreSQL
+- **Connection Pooling** - Optimized for both development and production
+
+### Frontend Features
+
+#### UI/UX
+- **Responsive Design** - Mobile-first approach with breakpoint optimization
+- **Dark/Light Theme** - System preference detection with manual toggle
+- **Accessible Components** - shadcn/ui components built on Radix UI primitives
+- **Loading States** - Skeleton loaders and loading indicators
+- **Error Handling** - User-friendly error messages with toast notifications
+- **Form Validation** - Real-time validation with error messages
+- **Internationalization** - English & Indonesian language support
+
+#### Forms & Validation
+- **React Hook Form** - Performant form management
+- **Zod Integration** - Type-safe validation schemas
+- **Multi-Step Forms** - Complex road creation with 3 main sections:
+  1. Road & Segment Identification
+  2. Segment Attributes (pavement inventory, shoulders, drainage, land use)
+  3. Damage Assessment (pavement-type specific)
+- **Dynamic Forms** - Forms that adapt based on pavement type selection
+- **Form State Management** - Dirty state tracking, validation states
+
+#### Data Management
+- **TanStack Query** - Server state management with:
+  - Automatic caching
+  - Background refetching
+  - Optimistic updates
+  - Query invalidation
+- **Type-Safe API Calls** - Full TypeScript inference from oRPC
+- **Optimistic Updates** - Immediate UI updates with rollback on error
+
+#### Report Generation
+- **PDF Export** - Client-side PDF generation using:
+  - `html2canvas-pro` - HTML to canvas conversion
+  - `jsPDF` - PDF document creation
+- **High-Quality Rendering** - 2x scale for crisp PDF output
+- **Responsive PDF Layout** - Fixed-width desktop layout for consistent rendering
+- **Comprehensive Reports** - Includes:
+  - Road information
+  - Segment-by-segment analysis
+  - TTI calculations
+  - Condition statistics
+  - Pavement type breakdown
+
+#### Navigation & Routing
+- **Role-Based Navigation** - Dynamic menu based on user role
+- **Protected Routes** - Middleware-based route protection
+- **Breadcrumbs** - Contextual navigation breadcrumbs
+- **Mobile Navigation** - Responsive mobile menu
+- **Desktop Sidebar** - Persistent sidebar navigation
+
+#### State Management
+- **Server Components** - Next.js 15 server components for data fetching
+- **Client Components** - Interactive UI with React hooks
+- **Context API** - Language context for i18n
+- **Local State** - React hooks for component-level state
+
+### DevOps & Infrastructure
+
+#### CI/CD Pipeline
+- **GitHub Actions Workflows:**
+  - **Migration Checks** - Validates schema changes are committed
+  - **Production Migrations** - Automated migration execution on main branch
+  - **Deployment** - Vercel auto-deployment on push to main
+- **Environment Management** - Separate dev/prod configurations
+- **Secret Management** - GitHub Secrets for sensitive data
+
+#### Build System
+- **Turborepo** - Monorepo build orchestration
+- **Task Caching** - Intelligent build caching
+- **Parallel Execution** - Concurrent task execution
+- **Dependency Graph** - Automatic dependency resolution
+
+#### Code Quality
+- **TypeScript** - End-to-end type safety
+- **Prettier** - Automated code formatting
+- **ESLint** - Code linting (via Next.js)
+- **Type Checking** - Separate type check script
+
+#### Deployment
+- **Vercel** - Serverless Next.js hosting
+- **Neon** - Serverless PostgreSQL database
+- **Environment Variables** - Secure environment configuration
+- **Build Optimization** - Turbopack for fast development builds
+
+### Damage Assessment Details
+
+#### Asphalt Pavement Assessment
+- **Surface Condition** - Good/Rough evaluation
+- **Bleeding** - Percentage range assessment
+- **Disintegration** - Surface breakdown percentage
+- **Crack Analysis** - Type (none, interconnected wide/narrow), width (<1mm, 1-5mm, >5mm), area coverage
+- **Pothole Assessment** - Count, size (small/large, shallow/deep), area percentage
+- **Rutting** - Percentage and depth (<1cm, 1-3cm, >3cm)
+- **Edge Damage** - Left and right edge condition (none, light 0-30%, severe >30%)
+
+#### Concrete Pavement Assessment
+- **Cracking** - Percentage range
+- **Spalling** - Surface deterioration percentage
+- **Structural Cracking** - Load-bearing crack assessment
+- **Faulting** - Slab elevation differences
+- **Pumping** - Yes/No assessment
+- **Corner Break** - Yes/No assessment
+
+#### Block Pavement Assessment
+- **Reflective Cracking** - Percentage range
+- **Disintegration** - Block breakdown percentage
+- **Edge Damage** - Left and right edge condition
+- **Pothole Area** - Percentage range
+- **Rutting** - Percentage range
+
+#### Gravel/Unpaved Assessment
+- **Crossfall** - Condition (>5%, 3-5%, flat, concave) and area percentage
+- **Settlement** - Percentage range
+- **Erosion** - Percentage range
+- **Particle Size** - Largest particle size (<1cm, 1-5cm, >5cm, not uniform)
+- **Gravel Properties** - Thickness (<5cm, 5-10cm, 10-20cm, >20cm), area, distribution (even, uneven, longitudinal windrow)
+- **Corrugation** - Percentage range
+- **Pothole Assessment** - Count, size, area percentage
+- **Rutting** - Percentage and depth (<5cm, 5-15cm, >15cm)
+
+### TTI Calculation Methodology
+
+The Traffic Tolerance Index (TTI) is calculated based on the PKRMS Manual (SE 22/2022):
+
+1. **Distress Area Calculation** - Each damage component is weighted and its area calculated
+2. **Weighted Distress** - Sum of all weighted distress components for the segment
+3. **TTI Formula** - `TTI = (Weighted Distress / Section Area) × 100`
+4. **Condition Mapping:**
+   - **Good**: TTI < 25
+   - **Fair**: 25 ≤ TTI < 50
+   - **Poor**: 50 ≤ TTI < 75
+   - **Bad**: TTI ≥ 75
+5. **Special Cases:**
+   - Unpaved roads: Fixed TTI of 150
+   - Zero area segments: TTI = 0
+
+The calculation engine supports detailed breakdowns including:
+- Individual distress component areas
+- Weighted component values
+- Section area calculations
+- Segment-level and road-level aggregations
 
 ---
 
