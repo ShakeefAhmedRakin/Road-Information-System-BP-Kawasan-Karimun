@@ -15,16 +15,16 @@ import {
 } from "@/components/ui/input-group";
 import { Spinner } from "@/components/ui/spinner";
 import { StaticRoutes } from "@/config/static-routes";
+import { useLanguage } from "@/i18n/context/LanguageContext";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "lucide-react";
-import { useState, useMemo, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useTranslation } from "@/i18n/hooks/useTranslation";
-import { useLanguage } from "@/i18n/context/LanguageContext";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +35,7 @@ export default function SignInForm() {
   const SignInSchema = useMemo(
     () =>
       z.object({
-        email: z.string().email(t("messages.validation.email.invalid")),
+        email: z.email(t("messages.validation.email.invalid")),
         password: z
           .string()
           .min(8, t("messages.validation.password.minLength")),

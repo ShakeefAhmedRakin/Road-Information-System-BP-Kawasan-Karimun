@@ -3,6 +3,7 @@ import DashboardDesktopNavigation from "./dashboard-desktop-navigation";
 
 import { AppLogo } from "@/components/branding/app-logo";
 import type { UserRole } from "api/src/modules/auth/auth.constants";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggleButton } from "../../../components/theme-toggle";
 import { DashboardMobileNavigation } from "./dashboard-mobile-navigation";
 
@@ -18,8 +19,9 @@ export default function DashboardNavigation({
       <div className="bg-background/50 flex items-center justify-between border-b p-3 backdrop-blur-lg xl:hidden">
         <AppLogo />
 
-        <span>
+        <span className="flex items-center gap-2">
           <DashboardMobileNavigation user={user} userRole={userRole} />
+          <LanguageSwitcher />
           <ThemeToggleButton />
         </span>
       </div>

@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { Heading, paragraphVariants } from "../ui/typography";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { paragraphVariants } from "../ui/typography";
 
 function LogoImage({
   className,
@@ -68,7 +68,7 @@ export function AppLogo({
   label,
   className,
   textColor,
-  logoSize = "size-10 xl:size-14",
+  logoSize = "size-10",
 }: {
   href?: string;
   className?: string;

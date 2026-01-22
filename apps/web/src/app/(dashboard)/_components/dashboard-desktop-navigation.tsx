@@ -3,6 +3,7 @@ import { AppLogo } from "@/components/branding/app-logo";
 import { Separator } from "@/components/ui/separator";
 import { type UserRole } from "api/src/modules/auth/auth.constants";
 import type { User } from "better-auth";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggleButton } from "../../../components/theme-toggle";
 import { Card, CardContent, CardFooter } from "../../../components/ui/card";
 import { getRoutesForRole } from "../../../config/route-helpers";
@@ -25,7 +26,10 @@ export default function DashboardDesktopNavigation({
     >
       <div className="flex items-center justify-between gap-2 pt-3 pl-3">
         <AppLogo />
-        <ThemeToggleButton />
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+          <ThemeToggleButton />
+        </div>
       </div>
 
       <Separator />
