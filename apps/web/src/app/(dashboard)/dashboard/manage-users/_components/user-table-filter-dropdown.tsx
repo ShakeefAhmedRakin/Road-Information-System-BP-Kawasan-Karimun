@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { USER_ROLES } from "api/src/modules/auth/auth.constants";
 import { Filter, ShieldCheck, User } from "lucide-react";
 import { Checkbox } from "../../../../../components/ui/checkbox";
@@ -32,6 +35,7 @@ export default function UserTableFilterDropdown({
     }
   };
 
+  const { t } = useTranslation("manageUsers");
   const handleBannedFilterChange = (banned: boolean) => {
     if (bannedFilter === banned) {
       setBannedFilter(undefined);
@@ -52,13 +56,13 @@ export default function UserTableFilterDropdown({
       <DropdownMenuTrigger asChild>
         <Button variant="outline" disabled={isLoading}>
           <Filter className="h-4 w-4" />
-          <span className="hidden md:flex">Filters</span>
+          <span className="hidden md:flex">{t("table.filters.title")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" align="end">
         <DropdownMenuLabel className="flex items-center gap-2 text-xs">
           <User className="size-3.5" />
-          Role
+          {t("table.filters.role")}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -91,7 +95,7 @@ export default function UserTableFilterDropdown({
 
         <DropdownMenuLabel className="flex items-center gap-2 text-xs">
           <ShieldCheck className="size-3.5" />
-          Status
+          {t("table.filters.status")}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -100,7 +104,7 @@ export default function UserTableFilterDropdown({
             handleBannedFilterChange(true);
           }}
         >
-          {renderMenuRow("Banned", bannedFilter === true)}
+          {renderMenuRow(t("table.filters.banned"), bannedFilter === true)}
         </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={(e) => {
@@ -108,7 +112,7 @@ export default function UserTableFilterDropdown({
             handleBannedFilterChange(false);
           }}
         >
-          {renderMenuRow("Active", bannedFilter === false)}
+          {renderMenuRow(t("table.filters.active"), bannedFilter === false)}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

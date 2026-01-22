@@ -24,24 +24,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import type { UsersAdminUserType } from "@/hooks/admin/useUsersAdmin";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, BanIcon, UserXIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
 // Helper function to format ban expiration as countdown
-const formatBanExpiration = (banExpires: Date | string): string => {
+const formatBanExpiration = (
+  banExpires: Date | string,
+  t: (key: string) => string
+): string => {
   const now = new Date();
   const expirationDate = new Date(banExpires);
   const diff = expirationDate.getTime() - now.getTime();
 
-  if (diff <= 0) return "Expired";
+  if (diff <= 0) return t("table.status.expired");
 
   const totalSeconds = Math.floor(diff / 1000);
   const totalMinutes = Math.floor(totalSeconds / 60);
@@ -74,10 +78,6 @@ const formatBanExpirationDate = (banExpires: Date | string): string => {
   });
 };
 
-const banUserSchema = z.object({
-  banReason: z.string().min(5, "Ban reason must be at least 5 characters"),
-  banDuration: z.enum(["1hour", "1day", "1week", "1month", "permanent"]),
-});
 
 const getBanDurationInSeconds = (duration: string): number | undefined => {
   switch (duration) {
@@ -113,6 +113,16 @@ export default function UserActionsBanManagement({
   setIsUnbanning: (value: boolean) => void;
   onSuccess: () => void;
 }) {
+  const { t, locale } = useTranslation("manageUsers");
+  const banUserSchema = useMemo(
+    () =>
+      z.object({
+        banReason: z.string().min(5, t("banManagement.banReason.minLength")),
+        banDuration: z.enum(["1hour", "1day", "1week", "1month", "permanent"]),
+      }),
+    [t]
+  );
+
   const form = useForm<z.infer<typeof banUserSchema>>({
     resolver: zodResolver(banUserSchema),
     defaultValues: {
@@ -125,9 +135,14 @@ export default function UserActionsBanManagement({
     form.reset({ banReason: "", banDuration: "1week" });
   }, [form]);
 
+  useEffect(() => {
+    form.clearErrors();
+    form.trigger();
+  }, [locale, form]);
+
   const handleBanUser = async (values: z.infer<typeof banUserSchema>) => {
     if (isCurrentUser) {
-      toast.error("You cannot ban yourself");
+      toast.error(t("banManagement.toasts.cannotBanSelf"));
       return;
     }
 
@@ -141,10 +156,10 @@ export default function UserActionsBanManagement({
         banExpiresIn,
       });
 
-      toast.success("User banned successfully");
+      toast.success(t("banManagement.toasts.success"));
       onSuccess();
     } catch (error) {
-      toast.error("Failed to ban user");
+      toast.error(t("banManagement.toasts.error"));
     } finally {
       setIsBanning(false);
     }
@@ -157,10 +172,10 @@ export default function UserActionsBanManagement({
         userId: user.id,
       });
 
-      toast.success("User unbanned successfully");
+      toast.success(t("banManagement.toasts.unbanSuccess"));
       onSuccess();
     } catch (error) {
-      toast.error("Failed to unban user");
+      toast.error(t("banManagement.toasts.unbanError"));
     } finally {
       setIsUnbanning(false);
     }
@@ -170,10 +185,10 @@ export default function UserActionsBanManagement({
     <div className="space-y-4">
       <div>
         <h3 className="flex items-center gap-2 text-sm font-semibold">
-          <BanIcon className="size-4" /> Ban Management
+          <BanIcon className="size-4" /> {t("banManagement.title")}
         </h3>
         <DialogDescription className="mt-1.5 text-xs">
-          Ban or unban this user
+          {t("banManagement.description")}
         </DialogDescription>
       </div>
 
@@ -184,10 +199,10 @@ export default function UserActionsBanManagement({
           </ItemMedia>
           <ItemContent>
             <ItemTitle className="text-destructive">
-              Cannot Ban Yourself
+              {t("banManagement.cannotBanSelf.title")}
             </ItemTitle>
             <ItemDescription>
-              You cannot ban yourself for security reasons.
+              {t("banManagement.cannotBanSelf.description")}
             </ItemDescription>
           </ItemContent>
         </Item>
@@ -198,28 +213,39 @@ export default function UserActionsBanManagement({
               <UserXIcon className="text-destructive size-5" />
             </ItemMedia>
             <ItemContent>
-              <ItemTitle className="text-destructive">User is Banned</ItemTitle>
+              <ItemTitle className="text-destructive">
+                {t("banManagement.userBanned.title")}
+              </ItemTitle>
               <ItemDescription className="line-clamp-none space-y-1">
                 {user.banReason && (
                   <span className="block">
-                    <span className="font-semibold">Reason:</span>{" "}
+                    <span className="font-semibold">
+                      {t("banManagement.userBanned.reason")}:
+                    </span>{" "}
                     {user.banReason}
                   </span>
                 )}
                 {user.banExpires ? (
                   <>
                     <span className="block">
-                      <span className="font-semibold">Expires in:</span>{" "}
-                      {formatBanExpiration(user.banExpires)}
+                      <span className="font-semibold">
+                        {t("banManagement.userBanned.expiresIn")}:
+                      </span>{" "}
+                      {formatBanExpiration(user.banExpires, t)}
                     </span>
                     <span className="block">
-                      <span className="font-semibold">Expires on:</span>{" "}
+                      <span className="font-semibold">
+                        {t("banManagement.userBanned.expiresOn")}:
+                      </span>{" "}
                       {formatBanExpirationDate(user.banExpires)}
                     </span>
                   </>
                 ) : (
                   <span className="block">
-                    <span className="font-semibold">Duration:</span> Permanent
+                    <span className="font-semibold">
+                      {t("banManagement.userBanned.duration")}:
+                    </span>{" "}
+                    {t("banManagement.banDuration.permanent")}
                   </span>
                 )}
               </ItemDescription>
@@ -232,7 +258,7 @@ export default function UserActionsBanManagement({
             className="w-full"
           >
             {isUnbanning && <Spinner />}
-            Unban User
+            {t("banManagement.unbanButton")}
           </Button>
         </div>
       ) : (
@@ -246,10 +272,10 @@ export default function UserActionsBanManagement({
               name="banReason"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Ban Reason</FormLabel>
+                  <FormLabel>{t("banManagement.banReason.label")}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Enter reason for banning this user"
+                      placeholder={t("banManagement.banReason.placeholder")}
                       disabled={isBanning}
                       rows={3}
                       {...field}
@@ -264,7 +290,7 @@ export default function UserActionsBanManagement({
               name="banDuration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Ban Duration</FormLabel>
+                  <FormLabel>{t("banManagement.banDuration.label")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -272,15 +298,27 @@ export default function UserActionsBanManagement({
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select duration" />
+                        <SelectValue
+                          placeholder={t("banManagement.banDuration.placeholder")}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="1hour">1 Hour</SelectItem>
-                      <SelectItem value="1day">1 Day</SelectItem>
-                      <SelectItem value="1week">1 Week</SelectItem>
-                      <SelectItem value="1month">1 Month</SelectItem>
-                      <SelectItem value="permanent">Permanent</SelectItem>
+                      <SelectItem value="1hour">
+                        {t("banManagement.banDuration.1hour")}
+                      </SelectItem>
+                      <SelectItem value="1day">
+                        {t("banManagement.banDuration.1day")}
+                      </SelectItem>
+                      <SelectItem value="1week">
+                        {t("banManagement.banDuration.1week")}
+                      </SelectItem>
+                      <SelectItem value="1month">
+                        {t("banManagement.banDuration.1month")}
+                      </SelectItem>
+                      <SelectItem value="permanent">
+                        {t("banManagement.banDuration.permanent")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -296,7 +334,7 @@ export default function UserActionsBanManagement({
               className="w-full"
             >
               {isBanning && <Spinner />}
-              Ban User
+              {t("banManagement.button")}
             </Button>
           </form>
         </Form>

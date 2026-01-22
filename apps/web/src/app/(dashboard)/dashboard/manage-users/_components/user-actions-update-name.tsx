@@ -18,19 +18,16 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Spinner } from "@/components/ui/spinner";
 import type { UsersAdminUserType } from "@/hooks/admin/useUsersAdmin";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, UserIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
-const updateNameSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-});
 
 export default function UserActionsUpdateName({
   user,
@@ -45,6 +42,15 @@ export default function UserActionsUpdateName({
   setIsUpdating: (value: boolean) => void;
   onSuccess: () => void;
 }) {
+  const { t, locale } = useTranslation("manageUsers");
+  const updateNameSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().min(2, t("updateName.toasts.cannotUpdateSelf")),
+      }),
+    [t]
+  );
+
   const form = useForm<z.infer<typeof updateNameSchema>>({
     resolver: zodResolver(updateNameSchema),
     defaultValues: { name: user.name },
@@ -54,9 +60,14 @@ export default function UserActionsUpdateName({
     form.reset({ name: user.name });
   }, [user.name, form]);
 
+  useEffect(() => {
+    form.clearErrors();
+    form.trigger();
+  }, [locale, form]);
+
   const handleUpdateName = async (values: z.infer<typeof updateNameSchema>) => {
     if (isCurrentUser) {
-      toast.error("You cannot update your own name");
+      toast.error(t("updateName.toasts.cannotUpdateSelf"));
       return;
     }
 
@@ -68,14 +79,14 @@ export default function UserActionsUpdateName({
       });
 
       if (error) {
-        toast.error(error.message || "Failed to update name");
+        toast.error(error.message || t("updateName.toasts.error"));
         return;
       }
 
-      toast.success("Name updated successfully");
+      toast.success(t("updateName.toasts.success"));
       onSuccess();
     } catch (error) {
-      toast.error("Failed to update name");
+      toast.error(t("updateName.toasts.error"));
     } finally {
       setIsUpdating(false);
     }
@@ -85,10 +96,10 @@ export default function UserActionsUpdateName({
     <div className="space-y-4">
       <div>
         <h3 className="flex items-center gap-2 text-sm font-semibold">
-          <UserIcon className="size-4" /> Update Name
+          <UserIcon className="size-4" /> {t("updateName.title")}
         </h3>
         <DialogDescription className="mt-1.5 text-xs">
-          Change the user's display name
+          {t("updateName.description")}
         </DialogDescription>
       </div>
       {isCurrentUser ? (
@@ -98,11 +109,10 @@ export default function UserActionsUpdateName({
           </ItemMedia>
           <ItemContent>
             <ItemTitle className="text-destructive">
-              Cannot Update Own Name
+              {t("updateName.cannotUpdateSelf.title")}
             </ItemTitle>
             <ItemDescription>
-              You cannot update your own name through this dialog for security
-              reasons.
+              {t("updateName.cannotUpdateSelf.description")}
             </ItemDescription>
           </ItemContent>
         </Item>
@@ -117,10 +127,10 @@ export default function UserActionsUpdateName({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t("updateName.label")}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter name"
+                      placeholder={t("updateName.placeholder")}
                       disabled={isUpdating}
                       {...field}
                     />
@@ -137,7 +147,7 @@ export default function UserActionsUpdateName({
               className="w-full"
             >
               {isUpdating && <Spinner />}
-              Update Name
+              {t("updateName.button")}
             </Button>
           </form>
         </Form>

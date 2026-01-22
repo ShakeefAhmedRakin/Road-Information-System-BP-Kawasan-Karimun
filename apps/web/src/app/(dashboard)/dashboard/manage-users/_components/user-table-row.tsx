@@ -1,3 +1,5 @@
+"use client";
+
 import { TableCell, TableRow } from "@/components/ui/table";
 import {
   Tooltip,
@@ -5,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import type { UsersAdminUserType } from "@/hooks/admin/useUsersAdmin";
 import { USER_ROLES } from "api/src/modules/auth/auth.constants";
 import {
@@ -20,12 +23,15 @@ import UserTableDeleteDialog from "./user-table-delete-dialog";
 const rowHeight = "h-[63.5px]";
 
 // Helper function to format ban expiration as countdown
-const formatBanExpiration = (banExpires: Date | string): string => {
+const formatBanExpiration = (
+  banExpires: Date | string,
+  t: (key: string, params?: Record<string, string | number>) => string
+): string => {
   const now = new Date();
   const expirationDate = new Date(banExpires);
   const diff = expirationDate.getTime() - now.getTime();
 
-  if (diff <= 0) return "Expired";
+  if (diff <= 0) return t("table.status.expired");
 
   const totalSeconds = Math.floor(diff / 1000);
   const totalMinutes = Math.floor(totalSeconds / 60);
@@ -42,7 +48,8 @@ const formatBanExpiration = (banExpires: Date | string): string => {
   if (hours > 0) parts.push(`${hours}h`);
   if (minutes > 0) parts.push(`${minutes}m`);
 
-  return parts.length > 0 ? parts.join(" ") : "< 1m";
+  const timeStr = parts.length > 0 ? parts.join(" ") : "< 1m";
+  return t("table.status.banExpiresIn", { time: timeStr });
 };
 
 export default function UserTableRow({
@@ -64,6 +71,7 @@ export default function UserTableRow({
   };
   refetch: () => void;
 }) {
+  const { t } = useTranslation("manageUsers");
   return (
     <TableRow
       key={u.id}
@@ -141,15 +149,15 @@ export default function UserTableRow({
           {u.banned ? (
             <span className="text-destructive dark:text-destructive/60 text-[9px] whitespace-normal md:text-xs xl:text-[10px]">
               {u.banExpires
-                ? "Ban expires in " + formatBanExpiration(u.banExpires)
-                : "Banned Permanently"}
+                ? formatBanExpiration(u.banExpires, t)
+                : t("table.status.bannedPermanently")}
             </span>
           ) : (
             <Badge
               variant="outline"
               className={"text-[8px] font-bold uppercase xl:text-[10px]"}
             >
-              Active
+              {t("table.status.active")}
             </Badge>
           )}
         </TableCell>

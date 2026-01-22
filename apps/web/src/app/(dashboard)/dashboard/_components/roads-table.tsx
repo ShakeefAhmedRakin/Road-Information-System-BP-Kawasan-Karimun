@@ -104,7 +104,7 @@ export function RoadsTable() {
             <TableHead rowSpan={2} className="align-middle min-w-[120px] max-w-[200px]">
               Road Number
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle min-w-[150px] max-w-[300px]">
+            <TableHead rowSpan={2} className="align-middle min-w-[150px] max-w-[200px]">
               Road Name
             </TableHead>
             <TableHead rowSpan={2} className="text-right align-middle">
@@ -191,8 +191,8 @@ export function RoadsTable() {
                     <div className="truncate">{road.number}</div>
                   )}
                 </TableCell>
-                <TableCell className="max-w-[300px]">
-                  {road.name.length > 30 ? (
+                <TableCell className="max-w-[200px]">
+                  {road.name.length > 20 ? (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div className="truncate cursor-help" title={road.name}>

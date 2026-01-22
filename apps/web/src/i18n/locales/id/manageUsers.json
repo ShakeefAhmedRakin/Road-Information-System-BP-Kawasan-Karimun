@@ -1,0 +1,234 @@
+{
+  "table": {
+    "headers": {
+      "nameId": "Nama - ID",
+      "email": "Email",
+      "role": "Peran",
+      "status": "Status",
+      "created": "Dibuat",
+      "updated": "Diperbarui",
+      "actions": "Tindakan"
+    },
+    "search": {
+      "placeholder": "Cari berdasarkan nama atau email"
+    },
+    "pagination": {
+      "showing": "Menampilkan {{from}} hingga {{to}} dari {{total}} pengguna",
+      "pageOf": "{{current}} dari {{total}}"
+    },
+    "status": {
+      "active": "Aktif",
+      "banned": "Dilarang",
+      "bannedPermanently": "Dilarang Permanen",
+      "banExpiresIn": "Larangan berakhir dalam {{time}}",
+      "expired": "Kedaluwarsa"
+    },
+    "columns": {
+      "name": "Nama",
+      "email": "Email",
+      "role": "Peran",
+      "status": "Status",
+      "created": "Dibuat",
+      "updated": "Diperbarui",
+      "actions": "Tindakan"
+    },
+    "filters": {
+      "title": "Filter",
+      "role": "Peran",
+      "status": "Status",
+      "banned": "Dilarang",
+      "active": "Aktif"
+    }
+  },
+  "buttons": {
+    "createUser": "Buat Pengguna",
+    "columns": "Kolom",
+    "filters": "Filter",
+    "previous": "Sebelumnya",
+    "next": "Selanjutnya",
+    "cancel": "Batal",
+    "save": "Simpan",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "update": "Perbarui",
+    "generate": "Generate",
+    "show": "Tampilkan",
+    "hide": "Sembunyikan"
+  },
+  "addUser": {
+    "title": "Buat Pengguna",
+    "form": {
+      "name": {
+        "label": "Nama",
+        "placeholder": "John Doe",
+        "required": "Nama wajib diisi",
+        "minLength": "Nama harus minimal 2 karakter"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "nama@contoh.com"
+      },
+      "password": {
+        "label": "Kata Sandi",
+        "placeholder": "********",
+        "generate": "Generate kata sandi",
+        "show": "Tampilkan kata sandi",
+        "hide": "Sembunyikan kata sandi"
+      },
+      "role": {
+        "label": "Peran",
+        "placeholder": "Pilih peran"
+      }
+    },
+    "toasts": {
+      "success": "Pengguna berhasil dibuat",
+      "error": "Gagal membuat pengguna. Silakan coba lagi.",
+      "passwordGenerated": "Kata sandi berhasil dibuat dan disalin ke clipboard!"
+    }
+  },
+  "deleteUser": {
+    "title": "Hapus Pengguna",
+    "description": "Tindakan ini tidak dapat dibatalkan. Ini akan menghapus pengguna secara permanen.",
+    "userInfo": "Informasi Pengguna",
+    "note": "Catatan: Data terkait pengguna tidak akan dihapus",
+    "deleting": "Menghapus...",
+    "deleteButton": "Hapus Pengguna",
+    "toasts": {
+      "success": "Pengguna berhasil dihapus",
+      "error": "Gagal menghapus pengguna",
+      "cannotDeleteSelf": "Anda tidak dapat menghapus diri sendiri",
+      "userIdCopied": "ID Pengguna disalin ke clipboard",
+      "userIdCopyFailed": "Gagal menyalin ID Pengguna"
+    }
+  },
+  "manageUser": {
+    "title": "Kelola Pengguna",
+    "userInfo": "Informasi Pengguna",
+    "you": "Anda",
+    "tabs": {
+      "name": "Nama",
+      "role": "Peran",
+      "password": "Kata Sandi",
+      "ban": "Larangan",
+      "sessions": "Sesi"
+    },
+    "toasts": {
+      "userIdCopied": "ID Pengguna disalin ke clipboard",
+      "userIdCopyFailed": "Gagal menyalin ID Pengguna"
+    }
+  },
+  "updateName": {
+    "title": "Perbarui Nama",
+    "description": "Ubah nama tampilan pengguna",
+    "label": "Nama",
+    "placeholder": "Masukkan nama",
+    "button": "Perbarui Nama",
+    "cannotUpdateSelf": {
+      "title": "Tidak Dapat Memperbarui Nama Sendiri",
+      "description": "Anda tidak dapat memperbarui nama sendiri melalui dialog ini karena alasan keamanan."
+    },
+    "toasts": {
+      "success": "Nama berhasil diperbarui",
+      "error": "Gagal memperbarui nama",
+      "cannotUpdateSelf": "Anda tidak dapat memperbarui nama sendiri"
+    }
+  },
+  "updateRole": {
+    "title": "Perbarui Peran",
+    "description": "Ubah tingkat akses pengguna",
+    "label": "Peran",
+    "placeholder": "Pilih peran",
+    "button": "Perbarui Peran",
+    "cannotChangeSelf": {
+      "title": "Tidak Dapat Mengubah Peran Sendiri",
+      "description": "Anda tidak dapat mengubah peran sendiri karena alasan keamanan."
+    },
+    "toasts": {
+      "success": "Peran berhasil diperbarui",
+      "error": "Gagal memperbarui peran",
+      "alreadySet": "Peran sudah diatur ke {{role}}"
+    }
+  },
+  "setPassword": {
+    "title": "Atur Kata Sandi Baru",
+    "description": "Atur kata sandi baru untuk pengguna ini",
+    "label": "Kata Sandi Baru",
+    "placeholder": "Masukkan kata sandi baru",
+    "descriptionText": "Kata sandi harus minimal 8 karakter.",
+    "button": "Atur Kata Sandi",
+    "generate": "Generate kata sandi",
+    "show": "Tampilkan kata sandi",
+    "hide": "Sembunyikan kata sandi",
+    "cannotChangeSelf": {
+      "title": "Tidak Dapat Mengubah Kata Sandi Sendiri",
+      "description": "Anda tidak dapat mengubah kata sandi sendiri melalui dialog ini. Gunakan pengaturan akun Anda sebagai gantinya."
+    },
+    "toasts": {
+      "success": "Kata sandi berhasil diatur",
+      "error": "Gagal mengatur kata sandi",
+      "cannotChangeSelf": "Anda tidak dapat mengubah kata sandi sendiri melalui dialog ini",
+      "passwordGenerated": "Kata sandi berhasil dibuat dan disalin ke clipboard!"
+    }
+  },
+  "banManagement": {
+    "title": "Manajemen Larangan",
+    "description": "Larang atau batalkan larangan pengguna ini",
+    "banReason": {
+      "label": "Alasan Larangan",
+      "placeholder": "Masukkan alasan untuk melarang pengguna ini",
+      "minLength": "Alasan larangan harus minimal 5 karakter"
+    },
+    "banDuration": {
+      "label": "Durasi Larangan",
+      "placeholder": "Pilih durasi",
+      "1hour": "1 Jam",
+      "1day": "1 Hari",
+      "1week": "1 Minggu",
+      "1month": "1 Bulan",
+      "permanent": "Permanen"
+    },
+    "button": "Larang Pengguna",
+    "unbanButton": "Batalkan Larangan Pengguna",
+    "userBanned": {
+      "title": "Pengguna Dilarang",
+      "reason": "Alasan",
+      "expiresIn": "Berakhir dalam",
+      "expiresOn": "Berakhir pada",
+      "duration": "Durasi"
+    },
+    "cannotBanSelf": {
+      "title": "Tidak Dapat Melarang Diri Sendiri",
+      "description": "Anda tidak dapat melarang diri sendiri karena alasan keamanan."
+    },
+    "toasts": {
+      "success": "Pengguna berhasil dilarang",
+      "unbanSuccess": "Larangan pengguna berhasil dibatalkan",
+      "error": "Gagal melarang pengguna",
+      "unbanError": "Gagal membatalkan larangan pengguna",
+      "cannotBanSelf": "Anda tidak dapat melarang diri sendiri"
+    }
+  },
+  "revokeSessions": {
+    "title": "Manajemen Sesi",
+    "description": "Cabut semua sesi aktif untuk pengguna ini",
+    "button": "Cabut Semua Sesi",
+    "warning": {
+      "title": "Peringatan",
+      "description": "Ini akan segera mengeluarkan pengguna dari semua perangkat dan meminta mereka masuk lagi."
+    },
+    "cannotRevokeSelf": {
+      "title": "Tidak Dapat Mencabut Sesi Sendiri",
+      "description": "Anda tidak dapat mencabut sesi sendiri. Ini akan mengeluarkan Anda segera."
+    },
+    "toasts": {
+      "success": "Semua sesi pengguna berhasil dicabut",
+      "error": "Gagal mencabut sesi",
+      "cannotRevokeSelf": "Anda tidak dapat mencabut sesi sendiri"
+    }
+  },
+  "roles": {
+    "visitor": "Pengunjung",
+    "operator": "Operator",
+    "admin": "Admin"
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "table": {
+    "headers": {
+      "nameId": "Name - ID",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "created": "Created",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "search": {
+      "placeholder": "Search by name or email"
+    },
+    "pagination": {
+      "showing": "Showing {{from}} to {{to}} of {{total}} users",
+      "pageOf": "{{current}} of {{total}}"
+    },
+    "status": {
+      "active": "Active",
+      "banned": "Banned",
+      "bannedPermanently": "Banned Permanently",
+      "banExpiresIn": "Ban expires in {{time}}",
+      "expired": "Expired"
+    },
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "created": "Created",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "filters": {
+      "title": "Filters",
+      "role": "Role",
+      "status": "Status",
+      "banned": "Banned",
+      "active": "Active"
+    }
+  },
+  "buttons": {
+    "createUser": "Create User",
+    "columns": "Columns",
+    "filters": "Filters",
+    "previous": "Previous",
+    "next": "Next",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "update": "Update",
+    "generate": "Generate",
+    "show": "Show",
+    "hide": "Hide"
+  },
+  "addUser": {
+    "title": "Create User",
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "John Doe",
+        "required": "Name is required",
+        "minLength": "Name must be at least 2 characters"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "name@example.com"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "********",
+        "generate": "Generate password",
+        "show": "Show password",
+        "hide": "Hide password"
+      },
+      "role": {
+        "label": "Role",
+        "placeholder": "Select a role"
+      }
+    },
+    "toasts": {
+      "success": "User created successfully",
+      "error": "Failed to create user. Please try again.",
+      "passwordGenerated": "Password generated and copied to clipboard!"
+    }
+  },
+  "deleteUser": {
+    "title": "Delete User",
+    "description": "This action cannot be undone. This will permanently delete the user.",
+    "userInfo": "User Information",
+    "note": "Note: The user related data will not be deleted",
+    "deleting": "Deleting...",
+    "deleteButton": "Delete User",
+    "toasts": {
+      "success": "User deleted successfully",
+      "error": "Failed to delete user",
+      "cannotDeleteSelf": "You cannot delete yourself",
+      "userIdCopied": "User ID copied to clipboard",
+      "userIdCopyFailed": "Failed to copy User ID"
+    }
+  },
+  "manageUser": {
+    "title": "Manage User",
+    "userInfo": "User Information",
+    "you": "You",
+    "tabs": {
+      "name": "Name",
+      "role": "Role",
+      "password": "Password",
+      "ban": "Ban",
+      "sessions": "Sessions"
+    },
+    "toasts": {
+      "userIdCopied": "User ID copied to clipboard",
+      "userIdCopyFailed": "Failed to copy User ID"
+    }
+  },
+  "updateName": {
+    "title": "Update Name",
+    "description": "Change the user's display name",
+    "label": "Name",
+    "placeholder": "Enter name",
+    "button": "Update Name",
+    "cannotUpdateSelf": {
+      "title": "Cannot Update Own Name",
+      "description": "You cannot update your own name through this dialog for security reasons."
+    },
+    "toasts": {
+      "success": "Name updated successfully",
+      "error": "Failed to update name",
+      "cannotUpdateSelf": "You cannot update your own name"
+    }
+  },
+  "updateRole": {
+    "title": "Update Role",
+    "description": "Change the user's access level",
+    "label": "Role",
+    "placeholder": "Select a role",
+    "button": "Update Role",
+    "cannotChangeSelf": {
+      "title": "Cannot Change Own Role",
+      "description": "You cannot change your own role for security reasons."
+    },
+    "toasts": {
+      "success": "Role updated successfully",
+      "error": "Failed to update role",
+      "alreadySet": "Role is already set to {{role}}"
+    }
+  },
+  "setPassword": {
+    "title": "Set New Password",
+    "description": "Set a new password for this user",
+    "label": "New Password",
+    "placeholder": "Enter new password",
+    "descriptionText": "Password must be at least 8 characters long.",
+    "button": "Set Password",
+    "generate": "Generate password",
+    "show": "Show password",
+    "hide": "Hide password",
+    "cannotChangeSelf": {
+      "title": "Cannot Change Own Password",
+      "description": "You cannot change your own password through this dialog. Use your account settings instead."
+    },
+    "toasts": {
+      "success": "Password set successfully",
+      "error": "Failed to set password",
+      "cannotChangeSelf": "You cannot change your own password through this dialog",
+      "passwordGenerated": "Password generated and copied to clipboard!"
+    }
+  },
+  "banManagement": {
+    "title": "Ban Management",
+    "description": "Ban or unban this user",
+    "banReason": {
+      "label": "Ban Reason",
+      "placeholder": "Enter reason for banning this user",
+      "minLength": "Ban reason must be at least 5 characters"
+    },
+    "banDuration": {
+      "label": "Ban Duration",
+      "placeholder": "Select duration",
+      "1hour": "1 Hour",
+      "1day": "1 Day",
+      "1week": "1 Week",
+      "1month": "1 Month",
+      "permanent": "Permanent"
+    },
+    "button": "Ban User",
+    "unbanButton": "Unban User",
+    "userBanned": {
+      "title": "User is Banned",
+      "reason": "Reason",
+      "expiresIn": "Expires in",
+      "expiresOn": "Expires on",
+      "duration": "Duration"
+    },
+    "cannotBanSelf": {
+      "title": "Cannot Ban Yourself",
+      "description": "You cannot ban yourself for security reasons."
+    },
+    "toasts": {
+      "success": "User banned successfully",
+      "unbanSuccess": "User unbanned successfully",
+      "error": "Failed to ban user",
+      "unbanError": "Failed to unban user",
+      "cannotBanSelf": "You cannot ban yourself"
+    }
+  },
+  "revokeSessions": {
+    "title": "Session Management",
+    "description": "Revoke all active sessions for this user",
+    "button": "Revoke All Sessions",
+    "warning": {
+      "title": "Warning",
+      "description": "This will immediately log out the user from all devices and require them to sign in again."
+    },
+    "cannotRevokeSelf": {
+      "title": "Cannot Revoke Own Sessions",
+      "description": "You cannot revoke your own sessions. This would log you out immediately."
+    },
+    "toasts": {
+      "success": "All user sessions revoked successfully",
+      "error": "Failed to revoke sessions",
+      "cannotRevokeSelf": "You cannot revoke your own sessions"
+    }
+  },
+  "roles": {
+    "visitor": "Visitor",
+    "operator": "Operator",
+    "admin": "Admin"
+  }
+}

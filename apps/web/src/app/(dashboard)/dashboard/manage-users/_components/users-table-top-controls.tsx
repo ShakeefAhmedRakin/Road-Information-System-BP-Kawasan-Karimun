@@ -1,9 +1,12 @@
+"use client";
+
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Spinner } from "../../../../../components/ui/spinner";
@@ -51,6 +54,7 @@ export default function UsersTableTopControls({
   }) => void;
   refetch: () => void;
 }) {
+  const { t } = useTranslation("manageUsers");
   const [localValue, setLocalValue] = useState(searchValue);
   const debounceMs = 300;
 
@@ -75,7 +79,7 @@ export default function UsersTableTopControls({
           <Search />
         </InputGroupAddon>
         <InputGroupInput
-          placeholder="Search by name or email"
+          placeholder={t("table.search.placeholder")}
           className="!text-xs"
           value={localValue}
           onChange={(e) => setLocalValue(e.target.value)}

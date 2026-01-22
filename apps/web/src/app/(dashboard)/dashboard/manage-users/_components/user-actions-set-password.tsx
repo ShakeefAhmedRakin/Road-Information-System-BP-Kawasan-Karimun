@@ -23,6 +23,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Spinner } from "@/components/ui/spinner";
 import type { UsersAdminUserType } from "@/hooks/admin/useUsersAdmin";
 import { authClient } from "@/lib/auth-client";
@@ -82,6 +83,7 @@ export default function UserActionsSetPassword({
   setIsUpdating: (value: boolean) => void;
   onSuccess: () => void;
 }) {
+  const { t, locale } = useTranslation("manageUsers");
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof setPasswordSchema>>({
@@ -94,11 +96,16 @@ export default function UserActionsSetPassword({
     setShowPassword(false);
   }, [form]);
 
+  useEffect(() => {
+    form.clearErrors();
+    form.trigger();
+  }, [locale, form]);
+
   const handleSetPassword = async (
     values: z.infer<typeof setPasswordSchema>
   ) => {
     if (isCurrentUser) {
-      toast.error("You cannot change your own password through this dialog");
+      toast.error(t("setPassword.toasts.cannotChangeSelf"));
       return;
     }
 
@@ -110,14 +117,14 @@ export default function UserActionsSetPassword({
       });
 
       if (error) {
-        toast.error(error.message || "Failed to set password");
+        toast.error(error.message || t("setPassword.toasts.error"));
         return;
       }
 
-      toast.success("Password set successfully");
+      toast.success(t("setPassword.toasts.success"));
       onSuccess();
     } catch (error) {
-      toast.error("Failed to set password");
+      toast.error(t("setPassword.toasts.error"));
     } finally {
       setIsUpdating(false);
     }
@@ -129,7 +136,7 @@ export default function UserActionsSetPassword({
       shouldValidate: true,
       shouldDirty: true,
     });
-    toast.success("Password generated and copied to clipboard!");
+    toast.success(t("setPassword.toasts.passwordGenerated"));
     navigator.clipboard.writeText(newPassword);
   };
 
@@ -137,10 +144,10 @@ export default function UserActionsSetPassword({
     <div className="space-y-4">
       <div>
         <h3 className="flex items-center gap-2 text-sm font-semibold">
-          <KeyIcon className="size-4" /> Set New Password
+          <KeyIcon className="size-4" /> {t("setPassword.title")}
         </h3>
         <DialogDescription className="mt-1.5 text-xs">
-          Set a new password for this user
+          {t("setPassword.description")}
         </DialogDescription>
       </div>
       {isCurrentUser ? (
@@ -150,11 +157,10 @@ export default function UserActionsSetPassword({
           </ItemMedia>
           <ItemContent>
             <ItemTitle className="text-destructive">
-              Cannot Change Own Password
+              {t("setPassword.cannotChangeSelf.title")}
             </ItemTitle>
             <ItemDescription>
-              You cannot change your own password through this dialog. Use your
-              account settings instead.
+              {t("setPassword.cannotChangeSelf.description")}
             </ItemDescription>
           </ItemContent>
         </Item>
@@ -169,14 +175,14 @@ export default function UserActionsSetPassword({
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Password</FormLabel>
+                  <FormLabel>{t("setPassword.label")}</FormLabel>
                   <FormControl>
                     <InputGroup>
                       <InputGroupAddon>
                         <LockIcon className="size-3.5" />
                       </InputGroupAddon>
                       <InputGroupInput
-                        placeholder="Enter new password"
+                        placeholder={t("setPassword.placeholder")}
                         type={showPassword ? "text" : "password"}
                         disabled={isUpdating}
                         {...field}
@@ -188,7 +194,7 @@ export default function UserActionsSetPassword({
                           disabled={isUpdating}
                           variant="ghost"
                           size="icon-sm"
-                          title="Generate password"
+                          title={t("setPassword.generate")}
                         >
                           <RefreshCwIcon className="size-3.5" />
                         </Button>
@@ -199,7 +205,9 @@ export default function UserActionsSetPassword({
                           variant="ghost"
                           size="icon-sm"
                           title={
-                            showPassword ? "Hide password" : "Show password"
+                            showPassword
+                              ? t("setPassword.hide")
+                              : t("setPassword.show")
                           }
                         >
                           {showPassword ? (
@@ -213,7 +221,7 @@ export default function UserActionsSetPassword({
                   </FormControl>
                   <FormMessage />
                   <FormDescription className="text-xs">
-                    Password must be at least 8 characters long.
+                    {t("setPassword.descriptionText")}
                   </FormDescription>
                 </FormItem>
               )}
@@ -226,7 +234,7 @@ export default function UserActionsSetPassword({
               className="w-full"
             >
               {isUpdating && <Spinner />}
-              Set Password
+              {t("setPassword.button")}
             </Button>
           </form>
         </Form>

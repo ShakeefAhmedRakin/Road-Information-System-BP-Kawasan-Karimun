@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Spinner } from "@/components/ui/spinner";
 import type { UsersAdminUserType } from "@/hooks/admin/useUsersAdmin";
 import { authClient } from "@/lib/auth-client";
@@ -38,6 +39,7 @@ export default function UserActionsUpdateRole({
   setIsUpdating: (value: boolean) => void;
   onSuccess: () => void;
 }) {
+  const { t } = useTranslation("manageUsers");
   const [selectedRole, setSelectedRole] = useState(user.role);
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function UserActionsUpdateRole({
 
   const handleUpdateRole = async () => {
     if (selectedRole === user.role) {
-      toast.info("Role is already set to " + selectedRole);
+      toast.info(t("updateRole.toasts.alreadySet", { role: selectedRole }));
       return;
     }
 
@@ -58,14 +60,14 @@ export default function UserActionsUpdateRole({
       });
 
       if (error) {
-        toast.error(error.message || "Failed to update role");
+        toast.error(error.message || t("updateRole.toasts.error"));
         return;
       }
 
-      toast.success("Role updated successfully");
+      toast.success(t("updateRole.toasts.success"));
       onSuccess();
     } catch (error) {
-      toast.error("Failed to update role");
+      toast.error(t("updateRole.toasts.error"));
     } finally {
       setIsUpdating(false);
     }
@@ -75,10 +77,10 @@ export default function UserActionsUpdateRole({
     <div className="space-y-4">
       <div>
         <h3 className="flex items-center gap-2 text-sm font-semibold">
-          <ShieldIcon className="size-4" /> Update Role
+          <ShieldIcon className="size-4" /> {t("updateRole.title")}
         </h3>
         <DialogDescription className="mt-1.5 text-xs">
-          Change the user's access level
+          {t("updateRole.description")}
         </DialogDescription>
       </div>
       {isCurrentUser ? (
@@ -88,17 +90,17 @@ export default function UserActionsUpdateRole({
           </ItemMedia>
           <ItemContent>
             <ItemTitle className="text-destructive">
-              Cannot Change Own Role
+              {t("updateRole.cannotChangeSelf.title")}
             </ItemTitle>
             <ItemDescription>
-              You cannot change your own role for security reasons.
+              {t("updateRole.cannotChangeSelf.description")}
             </ItemDescription>
           </ItemContent>
         </Item>
       ) : (
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-xs">Role</Label>
+            <Label className="text-xs">{t("updateRole.label")}</Label>
             <Select
               value={selectedRole}
               onValueChange={(value) =>
@@ -112,12 +114,18 @@ export default function UserActionsUpdateRole({
               disabled={isUpdating}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a role" />
+                <SelectValue placeholder={t("updateRole.placeholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={USER_ROLES.VISITOR}>Visitor</SelectItem>
-                <SelectItem value={USER_ROLES.OPERATOR}>Operator</SelectItem>
-                <SelectItem value={USER_ROLES.ADMIN}>Admin</SelectItem>
+                <SelectItem value={USER_ROLES.VISITOR}>
+                  {t("roles.visitor")}
+                </SelectItem>
+                <SelectItem value={USER_ROLES.OPERATOR}>
+                  {t("roles.operator")}
+                </SelectItem>
+                <SelectItem value={USER_ROLES.ADMIN}>
+                  {t("roles.admin")}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -127,7 +135,7 @@ export default function UserActionsUpdateRole({
             className="w-full"
           >
             {isUpdating && <Spinner />}
-            Update Role
+            {t("updateRole.button")}
           </Button>
         </div>
       )}

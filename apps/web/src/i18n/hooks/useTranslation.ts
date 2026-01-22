@@ -15,6 +15,8 @@ import enBreadcrumbs from "../locales/en/breadcrumbs.json";
 import idBreadcrumbs from "../locales/id/breadcrumbs.json";
 import enPageHeaders from "../locales/en/pageHeaders.json";
 import idPageHeaders from "../locales/id/pageHeaders.json";
+import enManageUsers from "../locales/en/manageUsers.json";
+import idManageUsers from "../locales/id/manageUsers.json";
 
 type TranslationKeys = {
   auth: typeof enAuth;
@@ -22,6 +24,7 @@ type TranslationKeys = {
   account: typeof enAccount;
   breadcrumbs: typeof enBreadcrumbs;
   pageHeaders: typeof enPageHeaders;
+  manageUsers: typeof enManageUsers;
 };
 
 const translations: Record<string, TranslationKeys> = {
@@ -31,6 +34,7 @@ const translations: Record<string, TranslationKeys> = {
     account: enAccount,
     breadcrumbs: enBreadcrumbs,
     pageHeaders: enPageHeaders,
+    manageUsers: enManageUsers,
   },
   id: {
     auth: idAuth,
@@ -38,6 +42,7 @@ const translations: Record<string, TranslationKeys> = {
     account: idAccount,
     breadcrumbs: idBreadcrumbs,
     pageHeaders: idPageHeaders,
+    manageUsers: idManageUsers,
   },
 };
 

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -5,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import type { UsersAdminUserType } from "@/hooks/admin/useUsersAdmin";
 import type { User } from "better-auth";
 import { SortAsc, SortDesc } from "lucide-react";
@@ -39,6 +42,7 @@ export default function UserTable({
   toggleSort: (column: "name" | "createdAt" | "updatedAt") => void;
   refetch: () => void;
 }) {
+  const { t } = useTranslation("manageUsers");
   const currentUserId = user.id;
 
   return (
@@ -58,7 +62,7 @@ export default function UserTable({
             {visibleCols.name && (
               <TableHead className="text-xs">
                 <div className="flex items-center gap-1">
-                  Name - ID
+                  {t("table.headers.nameId")}
                   <Button
                     variant="secondary"
                     size="icon-xs"
@@ -74,18 +78,18 @@ export default function UserTable({
               </TableHead>
             )}
             {visibleCols.email && (
-              <TableHead className="text-xs">Email</TableHead>
+              <TableHead className="text-xs">{t("table.headers.email")}</TableHead>
             )}
             {visibleCols.role && (
-              <TableHead className="text-xs">Role</TableHead>
+              <TableHead className="text-xs">{t("table.headers.role")}</TableHead>
             )}
             {visibleCols.status && (
-              <TableHead className="text-xs">Status</TableHead>
+              <TableHead className="text-xs">{t("table.headers.status")}</TableHead>
             )}
             {visibleCols.created && (
               <TableHead className="text-xs">
                 <div className="flex items-center gap-1">
-                  Created
+                  {t("table.headers.created")}
                   <Button
                     variant="secondary"
                     size="icon-xs"
@@ -103,7 +107,7 @@ export default function UserTable({
             {visibleCols.updated && (
               <TableHead className="text-xs">
                 <div className="flex items-center gap-1">
-                  Updated
+                  {t("table.headers.updated")}
                   <Button
                     variant="secondary"
                     size="icon-xs"
@@ -119,7 +123,7 @@ export default function UserTable({
               </TableHead>
             )}
             {visibleCols.actions && (
-              <TableHead className="text-right text-xs">Actions</TableHead>
+              <TableHead className="text-right text-xs">{t("table.headers.actions")}</TableHead>
             )}
           </TableRow>
         </TableHeader>

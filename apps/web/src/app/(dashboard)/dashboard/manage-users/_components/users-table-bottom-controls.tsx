@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -7,6 +9,7 @@ import { ButtonGroupText } from "@/components/ui/button-group";
 
 import { ButtonGroup } from "@/components/ui/button-group";
 
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Paragraph } from "@/components/ui/typography";
 import { Skeleton } from "../../../../../components/ui/skeleton";
 import { Spinner } from "../../../../../components/ui/spinner";
@@ -34,14 +37,18 @@ export default function UsersTableBottomControls({
   prevPage: () => void;
   nextPage: () => void;
 }) {
+  const { t } = useTranslation("manageUsers");
   return (
     <div className="flex items-center justify-between gap-x-2">
       {isLoading ? (
         <Skeleton className="h-4 w-36" />
       ) : (
         <Paragraph className="text-muted-foreground font-semibold" size="xs">
-          Showing {offset + 1} to {Math.min(offset + limit, total)} of {total}{" "}
-          users
+          {t("table.pagination.showing", {
+            from: offset + 1,
+            to: Math.min(offset + limit, total),
+            total: total,
+          })}
         </Paragraph>
       )}
       <div className="flex items-center space-x-2">
@@ -60,7 +67,10 @@ export default function UsersTableBottomControls({
               <Spinner />
             ) : (
               <>
-                {currentPage} of {totalPages}
+                {t("table.pagination.pageOf", {
+                  current: currentPage,
+                  total: totalPages,
+                })}
               </>
             )}
           </ButtonGroupText>

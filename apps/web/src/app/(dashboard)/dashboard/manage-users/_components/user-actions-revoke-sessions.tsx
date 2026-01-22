@@ -9,6 +9,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Spinner } from "@/components/ui/spinner";
 import type { UsersAdminUserType } from "@/hooks/admin/useUsersAdmin";
 import { authClient } from "@/lib/auth-client";
@@ -28,9 +29,10 @@ export default function UserActionsRevokeSessions({
   setIsRevoking: (value: boolean) => void;
   onSuccess: () => void;
 }) {
+  const { t } = useTranslation("manageUsers");
   const handleRevokeSessions = async () => {
     if (isCurrentUser) {
-      toast.error("You cannot revoke your own sessions");
+      toast.error(t("revokeSessions.toasts.cannotRevokeSelf"));
       return;
     }
 
@@ -41,14 +43,14 @@ export default function UserActionsRevokeSessions({
       });
 
       if (error) {
-        toast.error(error.message || "Failed to revoke sessions");
+        toast.error(error.message || t("revokeSessions.toasts.error"));
         return;
       }
 
-      toast.success("All user sessions revoked successfully");
+      toast.success(t("revokeSessions.toasts.success"));
       onSuccess();
     } catch (error) {
-      toast.error("Failed to revoke sessions");
+      toast.error(t("revokeSessions.toasts.error"));
     } finally {
       setIsRevoking(false);
     }
@@ -58,10 +60,10 @@ export default function UserActionsRevokeSessions({
     <div className="space-y-4">
       <div>
         <h3 className="flex items-center gap-2 text-sm font-semibold">
-          <LockIcon className="size-4" /> Session Management
+          <LockIcon className="size-4" /> {t("revokeSessions.title")}
         </h3>
         <DialogDescription className="mt-1.5 text-xs">
-          Revoke all active sessions for this user
+          {t("revokeSessions.description")}
         </DialogDescription>
       </div>
       {isCurrentUser ? (
@@ -71,11 +73,10 @@ export default function UserActionsRevokeSessions({
           </ItemMedia>
           <ItemContent>
             <ItemTitle className="text-destructive">
-              Cannot Revoke Own Sessions
+              {t("revokeSessions.cannotRevokeSelf.title")}
             </ItemTitle>
             <ItemDescription>
-              You cannot revoke your own sessions. This would log you out
-              immediately.
+              {t("revokeSessions.cannotRevokeSelf.description")}
             </ItemDescription>
           </ItemContent>
         </Item>
@@ -86,10 +87,11 @@ export default function UserActionsRevokeSessions({
               <AlertCircleIcon className="text-warning size-5" />
             </ItemMedia>
             <ItemContent>
-              <ItemTitle className="text-warning-foreground">Warning</ItemTitle>
+              <ItemTitle className="text-warning-foreground">
+                {t("revokeSessions.warning.title")}
+              </ItemTitle>
               <ItemDescription>
-                This will immediately log out the user from all devices and
-                require them to sign in again.
+                {t("revokeSessions.warning.description")}
               </ItemDescription>
             </ItemContent>
           </Item>
@@ -100,7 +102,7 @@ export default function UserActionsRevokeSessions({
             className="w-full"
           >
             {isRevoking && <Spinner />}
-            Revoke All Sessions
+            {t("revokeSessions.button")}
           </Button>
         </>
       )}

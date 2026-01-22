@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { emailSchema, passwordSchema } from "@/schemas/auth";
@@ -44,17 +45,10 @@ import {
   UserIcon,
   UserPlus2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
-const userAddSchema = z.object({
-  name: z.string().min(2, "Name is required"),
-  email: emailSchema,
-  password: passwordSchema,
-  role: z.enum([USER_ROLES.VISITOR, USER_ROLES.OPERATOR, USER_ROLES.ADMIN]),
-});
 
 // Generate a secure random password
 const generatePassword = (length: number = 12): string => {
@@ -90,8 +84,24 @@ export default function UserTableAddUserDialog({
   isLoading: boolean;
   refetch: () => void;
 }) {
+  const { t, locale } = useTranslation("manageUsers");
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const userAddSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().min(2, t("addUser.form.name.minLength")),
+        email: emailSchema,
+        password: passwordSchema,
+        role: z.enum([
+          USER_ROLES.VISITOR,
+          USER_ROLES.OPERATOR,
+          USER_ROLES.ADMIN,
+        ]),
+      }),
+    [t]
+  );
 
   const form = useForm<z.infer<typeof userAddSchema>>({
     resolver: zodResolver(userAddSchema),
@@ -104,13 +114,18 @@ export default function UserTableAddUserDialog({
     },
   });
 
+  useEffect(() => {
+    form.clearErrors();
+    form.trigger();
+  }, [locale, form]);
+
   const handleGeneratePassword = () => {
     const newPassword = generatePassword();
     form.setValue("password", newPassword, {
       shouldValidate: true,
       shouldDirty: true,
     });
-    toast.success("Password generated and copied to clipboard!");
+    toast.success(t("addUser.toasts.passwordGenerated"));
     navigator.clipboard.writeText(newPassword);
   };
 
@@ -135,14 +150,14 @@ export default function UserTableAddUserDialog({
       },
       {
         onSuccess: () => {
-          toast.success("User created successfully");
+          toast.success(t("addUser.toasts.success"));
           setOpen(false);
           refetch();
         },
         onError: (error) => {
           console.error("Create user error:", error);
           toast.error(
-            error.error?.message || "Failed to create user. Please try again."
+            error.error?.message || t("addUser.toasts.error")
           );
         },
       }
@@ -154,13 +169,13 @@ export default function UserTableAddUserDialog({
       <DialogTrigger asChild>
         <Button variant="outline" disabled={isLoading || isSubmitting}>
           <UserPlus2 />
-          <span className="hidden md:flex">Create User</span>
+          <span className="hidden md:flex">{t("buttons.createUser")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <UserPlus2 className="size-5" /> Create User
+            <UserPlus2 className="size-5" /> {t("addUser.title")}
           </DialogTitle>
         </DialogHeader>
         <Separator />
@@ -176,7 +191,7 @@ export default function UserTableAddUserDialog({
                       !form.getFieldState("name").isDirty && "!text-foreground"
                     )}
                   >
-                    Name
+                    {t("addUser.form.name.label")}
                   </FormLabel>
                   <FormControl>
                     <InputGroup>
@@ -184,7 +199,7 @@ export default function UserTableAddUserDialog({
                         <UserIcon className="size-3.5" />
                       </InputGroupAddon>
                       <InputGroupInput
-                        placeholder="John Doe"
+                        placeholder={t("addUser.form.name.placeholder")}
                         disabled={isSubmitting}
                         {...field}
                       />
@@ -208,7 +223,7 @@ export default function UserTableAddUserDialog({
                       !form.getFieldState("email").isDirty && "!text-foreground"
                     )}
                   >
-                    Email
+                    {t("addUser.form.email.label")}
                   </FormLabel>
                   <FormControl>
                     <InputGroup>
@@ -216,7 +231,7 @@ export default function UserTableAddUserDialog({
                         <MailIcon className="size-3.5" />
                       </InputGroupAddon>
                       <InputGroupInput
-                        placeholder="name@example.com"
+                        placeholder={t("addUser.form.email.placeholder")}
                         type="email"
                         autoComplete="email"
                         disabled={isSubmitting}
@@ -243,7 +258,7 @@ export default function UserTableAddUserDialog({
                         "!text-foreground"
                     )}
                   >
-                    Password
+                    {t("addUser.form.password.label")}
                   </FormLabel>
                   <FormControl>
                     <InputGroup>
@@ -251,7 +266,7 @@ export default function UserTableAddUserDialog({
                         <LockIcon className="size-3.5" />
                       </InputGroupAddon>
                       <InputGroupInput
-                        placeholder="********"
+                        placeholder={t("addUser.form.password.placeholder")}
                         type={showPassword ? "text" : "password"}
                         autoComplete="new-password"
                         disabled={isSubmitting}
@@ -264,7 +279,7 @@ export default function UserTableAddUserDialog({
                           disabled={isSubmitting}
                           variant="ghost"
                           size="icon-sm"
-                          title="Generate password"
+                          title={t("addUser.form.password.generate")}
                         >
                           <RefreshCwIcon className="size-3.5" />
                         </Button>
@@ -275,7 +290,9 @@ export default function UserTableAddUserDialog({
                           variant="ghost"
                           size="icon-sm"
                           title={
-                            showPassword ? "Hide password" : "Show password"
+                            showPassword
+                              ? t("addUser.form.password.hide")
+                              : t("addUser.form.password.show")
                           }
                         >
                           {showPassword ? (
@@ -305,7 +322,7 @@ export default function UserTableAddUserDialog({
                       !form.getFieldState("role").isDirty && "!text-foreground"
                     )}
                   >
-                    Role
+                    {t("addUser.form.role.label")}
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -314,17 +331,19 @@ export default function UserTableAddUserDialog({
                   >
                     <FormControl className="w-full">
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
+                        <SelectValue placeholder={t("addUser.form.role.placeholder")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value={USER_ROLES.VISITOR}>
-                        Visitor
+                        {t("roles.visitor")}
                       </SelectItem>
                       <SelectItem value={USER_ROLES.OPERATOR}>
-                        Operator
+                        {t("roles.operator")}
                       </SelectItem>
-                      <SelectItem value={USER_ROLES.ADMIN}>Admin</SelectItem>
+                      <SelectItem value={USER_ROLES.ADMIN}>
+                        {t("roles.admin")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage
@@ -341,14 +360,14 @@ export default function UserTableAddUserDialog({
                 disabled={isSubmitting || !isValid || !isDirty}
               >
                 {isSubmitting && <Spinner />}
-                Create User
+                {t("buttons.createUser")}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => setOpen(false)}
                 disabled={isSubmitting}
               >
-                Cancel
+                {t("buttons.cancel")}
               </Button>
             </div>
           </form>

@@ -17,6 +17,7 @@ import {
   ItemSeparator,
   ItemTitle,
 } from "@/components/ui/item";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import type { UsersAdminUserType } from "@/hooks/admin/useUsersAdmin";
@@ -61,6 +62,7 @@ export default function UserTableActionsDialog({
   const [isRevokingSessions, setIsRevokingSessions] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
 
+  const { t } = useTranslation("manageUsers");
   const isCurrentUser = user.id === currentUserId;
 
   const handleSuccess = () => {
@@ -72,9 +74,9 @@ export default function UserTableActionsDialog({
     setIsCopying(true);
     try {
       await navigator.clipboard.writeText(user.id);
-      toast.success("User ID copied to clipboard");
+      toast.success(t("manageUser.toasts.userIdCopied"));
     } catch (error) {
-      toast.error("Failed to copy User ID");
+      toast.error(t("manageUser.toasts.userIdCopyFailed"));
     } finally {
       setIsCopying(false);
     }
@@ -90,7 +92,7 @@ export default function UserTableActionsDialog({
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Pencil className="size-5" /> Manage User
+            <Pencil className="size-5" /> {t("manageUser.title")}
           </DialogTitle>
         </DialogHeader>
         <Separator />
@@ -98,7 +100,7 @@ export default function UserTableActionsDialog({
         {/* User Info Card */}
         <Item variant="outline">
           <ItemHeader className="flex w-full items-center justify-between gap-2">
-            <span className="whitespace-nowrap">User Information</span>
+            <span className="whitespace-nowrap">{t("manageUser.userInfo")}</span>
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground line-clamp-1 max-w-20 text-xs break-all">
                 {user.id}
@@ -125,7 +127,7 @@ export default function UserTableActionsDialog({
                   <ItemTitle className="line-clamp-1">{user.name}</ItemTitle>
                   {isCurrentUser && (
                     <Badge variant="default" className="text-[8px] uppercase">
-                      You
+                      {t("manageUser.you")}
                     </Badge>
                   )}
                 </div>

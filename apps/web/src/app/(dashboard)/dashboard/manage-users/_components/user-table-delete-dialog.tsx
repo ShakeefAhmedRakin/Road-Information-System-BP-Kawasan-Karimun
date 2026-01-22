@@ -21,6 +21,7 @@ import {
   ItemSeparator,
   ItemTitle,
 } from "@/components/ui/item";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Spinner } from "@/components/ui/spinner";
 import { authClient } from "@/lib/auth-client";
 import { USER_ROLES } from "api/src/modules/auth/auth.constants";
@@ -38,6 +39,7 @@ export default function UserTableDeleteDialog({
   refetch: () => void;
   currentUserId: string;
 }) {
+  const { t } = useTranslation("manageUsers");
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
@@ -46,9 +48,9 @@ export default function UserTableDeleteDialog({
     setIsCopying(true);
     try {
       await navigator.clipboard.writeText(user.id);
-      toast.success("User ID copied to clipboard");
+      toast.success(t("deleteUser.toasts.userIdCopied"));
     } catch (error) {
-      toast.error("Failed to copy User ID");
+      toast.error(t("deleteUser.toasts.userIdCopyFailed"));
     } finally {
       setIsCopying(false);
     }
@@ -56,7 +58,7 @@ export default function UserTableDeleteDialog({
 
   const handleDelete = async () => {
     if (user.id === currentUserId) {
-      toast.error("You cannot delete yourself");
+      toast.error(t("deleteUser.toasts.cannotDeleteSelf"));
       return;
     }
     setIsDeleting(true);
@@ -66,15 +68,15 @@ export default function UserTableDeleteDialog({
       });
 
       if (error) {
-        toast.error(error.message || "Failed to delete user");
+        toast.error(error.message || t("deleteUser.toasts.error"));
         return;
       }
 
-      toast.success("User deleted successfully");
+      toast.success(t("deleteUser.toasts.success"));
       setOpen(false);
       refetch();
     } catch (error) {
-      toast.error("Failed to delete user");
+      toast.error(t("deleteUser.toasts.error"));
     } finally {
       setIsDeleting(false);
     }
@@ -95,18 +97,18 @@ export default function UserTableDeleteDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <AlertCircleIcon className="text-destructive size-5" /> Delete User
+            <AlertCircleIcon className="text-destructive size-5" /> {t("deleteUser.title")}
           </DialogTitle>
         </DialogHeader>
         <Separator />
 
         <DialogDescription>
-          This action cannot be undone. This will permanently delete the user.
+          {t("deleteUser.description")}
         </DialogDescription>
 
         <Item variant="outline">
           <ItemHeader className="flex w-full items-center justify-between gap-2">
-            <span className="whitespace-nowrap">User Information</span>
+            <span className="whitespace-nowrap">{t("deleteUser.userInfo")}</span>
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground line-clamp-1 max-w-20 text-xs break-all">
                 {user.id}
@@ -145,7 +147,7 @@ export default function UserTableDeleteDialog({
             <ItemDescription>{user.email}</ItemDescription>
           </ItemContent>
           <ItemFooter className="text-muted-foreground text-xs font-bold">
-            Note: The user related data will not be deleted
+            {t("deleteUser.note")}
           </ItemFooter>
         </Item>
         <div className="flex w-full flex-col gap-2">
@@ -157,10 +159,10 @@ export default function UserTableDeleteDialog({
             {isDeleting ? (
               <>
                 <Spinner className="mr-2" />
-                Deleting...
+                {t("deleteUser.deleting")}
               </>
             ) : (
-              "Delete User"
+              t("deleteUser.deleteButton")
             )}
           </Button>
           <Button
@@ -168,7 +170,7 @@ export default function UserTableDeleteDialog({
             onClick={() => setOpen(false)}
             disabled={isDeleting}
           >
-            Cancel
+            {t("buttons.cancel")}
           </Button>
         </div>
       </DialogContent>

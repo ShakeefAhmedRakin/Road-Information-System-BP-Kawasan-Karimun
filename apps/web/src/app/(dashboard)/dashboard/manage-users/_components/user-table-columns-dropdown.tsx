@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { Columns } from "lucide-react";
 import { Checkbox } from "../../../../../components/ui/checkbox";
 
@@ -35,6 +38,7 @@ export default function UserTableColumnsDropdown({
     actions: boolean;
   }) => void;
 }) {
+  const { t } = useTranslation("manageUsers");
   const protectedKeys: Array<keyof typeof visibleCols> = ["name", "actions"];
   const toggle = (key: keyof typeof visibleCols) => {
     if (protectedKeys.includes(key)) return; // Name and Actions are always visible
@@ -72,22 +76,22 @@ export default function UserTableColumnsDropdown({
       <DropdownMenuTrigger asChild>
         <Button variant="outline" disabled={isLoading}>
           <Columns />
-          <span className="hidden md:flex">Columns</span>
+          <span className="hidden md:flex">{t("buttons.columns")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" align="end">
         <DropdownMenuLabel className="flex items-center gap-2 text-xs">
           <Columns className="size-3.5" />
-          Columns
+          {t("buttons.columns")}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Row keyName="name" label="Name" />
-        <Row keyName="email" label="Email" />
-        <Row keyName="role" label="Role" />
-        <Row keyName="status" label="Status" />
-        <Row keyName="created" label="Created" />
-        <Row keyName="updated" label="Updated" />
-        <Row keyName="actions" label="Actions" />
+        <Row keyName="name" label={t("table.columns.name")} />
+        <Row keyName="email" label={t("table.columns.email")} />
+        <Row keyName="role" label={t("table.columns.role")} />
+        <Row keyName="status" label={t("table.columns.status")} />
+        <Row keyName="created" label={t("table.columns.created")} />
+        <Row keyName="updated" label={t("table.columns.updated")} />
+        <Row keyName="actions" label={t("table.columns.actions")} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
