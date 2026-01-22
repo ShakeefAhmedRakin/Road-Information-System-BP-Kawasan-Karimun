@@ -8,6 +8,7 @@ import {
   ItemDescription,
   ItemTitle,
 } from "@/components/ui/item";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import type { Session } from "better-auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,10 +19,10 @@ import { paragraphVariants } from "../../../../../components/ui/typography";
 import { authClient } from "../../../../../lib/auth-client";
 import { cn } from "../../../../../lib/utils";
 
-function parseUserAgent(userAgent: string) {
+function parseUserAgent(userAgent: string, t: (key: string) => string) {
   // Simple parser for common browsers and OS
-  let browser = "Unknown Browser";
-  let os = "Unknown OS";
+  let browser = t("sessions.unknownBrowser");
+  let os = t("sessions.unknownOS");
 
   // Detect browser
   if (userAgent.includes("Chrome") && !userAgent.includes("Edg")) {
@@ -50,17 +51,17 @@ function parseUserAgent(userAgent: string) {
   return { browser, os };
 }
 
-function formatDate(date: Date) {
+function formatDate(date: Date, t: (key: string, params?: Record<string, number>) => string) {
   const now = new Date();
   const diff = now.getTime() - date.getTime();
   const minutes = Math.floor(diff / 60000);
   const hours = Math.floor(diff / 3600000);
   const days = Math.floor(diff / 86400000);
 
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  if (hours < 24) return `${hours}h ago`;
-  if (days < 7) return `${days}d ago`;
+  if (minutes < 1) return t("sessions.justNow");
+  if (minutes < 60) return t("sessions.minutesAgo", { minutes });
+  if (hours < 24) return t("sessions.hoursAgo", { hours });
+  if (days < 7) return t("sessions.daysAgo", { days });
 
   return date.toLocaleDateString();
 }
@@ -73,8 +74,9 @@ function SessionItem({
   isCurrentSession: boolean;
 }) {
   const router = useRouter();
+  const { t } = useTranslation("account");
   const [isRevoking, setIsRevoking] = useState(false);
-  const { browser, os } = parseUserAgent(session.userAgent || "");
+  const { browser, os } = parseUserAgent(session.userAgent || "", t);
 
   const handleRevoke = async () => {
     try {
@@ -83,9 +85,9 @@ function SessionItem({
         token: session.token,
       });
       router.refresh();
-      toast.success("Session revoked");
+      toast.success(t("messages.success.sessionRevoked"));
     } catch (error) {
-      toast.error("Failed to revoke session");
+      toast.error(t("messages.error.sessionRevokeFailed"));
     } finally {
       setIsRevoking(false);
     }
@@ -103,11 +105,11 @@ function SessionItem({
       <ItemContent className="gap-1.5">
         <div className="flex items-center gap-2">
           <ItemTitle className="!text-xs font-medium">
-            {browser} on {os}
+            {browser} {t("sessions.on")} {os}
           </ItemTitle>
           {isCurrentSession && (
             <Badge variant="secondary" className="px-1.5 !text-[9px]">
-              Current
+              {t("sessions.current")}
             </Badge>
           )}
         </div>
@@ -116,12 +118,12 @@ function SessionItem({
         >
           {session.ipAddress && (
             <>
-              IP: {session.ipAddress}
+              {t("sessions.ip")}: {session.ipAddress}
               <br />
             </>
           )}
           {session.updatedAt && (
-            <>Last active: {formatDate(new Date(session.updatedAt))}</>
+            <>{t("sessions.lastActive")}: {formatDate(new Date(session.updatedAt), t)}</>
           )}
         </ItemDescription>
       </ItemContent>
@@ -134,12 +136,12 @@ function SessionItem({
           disabled={isRevoking || isCurrentSession}
           title={
             isCurrentSession
-              ? "Cannot revoke current session"
-              : "Revoke this session"
+              ? t("sessions.cannotRevokeCurrent")
+              : t("sessions.revokeThisSession")
           }
         >
           {isRevoking && <Spinner className="mr-1" />}
-          {isCurrentSession ? "Active" : "Revoke"}
+          {isCurrentSession ? t("sessions.active") : t("sessions.revoke")}
         </Button>
       </ItemActions>
     </Item>
@@ -153,6 +155,7 @@ export default function AccountsSessions({
   sessions: Session[];
   currentSession: Session;
 }) {
+  const { t } = useTranslation("account");
   const sortedSessions = [...sessions].sort((a, b) => {
     if (a.id === currentSession.id) return -1;
     if (b.id === currentSession.id) return 1;
@@ -168,7 +171,7 @@ export default function AccountsSessions({
             className: "font-semibold",
           })}
         >
-          Active Sessions
+          {t("sessions.title")}
         </h2>
         <p
           className={cn(
@@ -176,7 +179,7 @@ export default function AccountsSessions({
             "text-muted-foreground mt-0.5"
           )}
         >
-          Manage your active sessions across all devices
+          {t("sessions.description")}
         </p>
       </div>
       <div className="flex flex-col gap-2.5">

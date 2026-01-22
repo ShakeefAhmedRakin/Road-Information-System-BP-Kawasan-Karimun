@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { toast } from "sonner";
@@ -11,6 +12,7 @@ export default function ButtonClearAvatar(
   props: React.ComponentProps<typeof Button>
 ) {
   const { disabled, ...rest } = props;
+  const { t } = useTranslation("account");
   const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
   const handleClear = async () => {
@@ -20,9 +22,9 @@ export default function ButtonClearAvatar(
       // Refetch the session to update the cached user data
       await authClient.getSession();
       router.refresh();
-      toast.success("Avatar cleared");
+      toast.success(t("messages.success.avatarCleared"));
     } catch (err) {
-      toast.error("Failed to clear avatar");
+      toast.error(t("messages.error.avatarClearFailed"));
     } finally {
       setIsLoading(false);
     }
@@ -37,7 +39,7 @@ export default function ButtonClearAvatar(
       {...rest}
     >
       {isLoading ? <Spinner /> : null}
-      Clear Avatar
+      {t("userCard.clearAvatar")}
     </Button>
   );
 }

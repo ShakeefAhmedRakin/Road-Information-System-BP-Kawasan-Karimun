@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Item,
   ItemContent,
@@ -6,9 +8,12 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { Paragraph, paragraphVariants } from "@/components/ui/typography";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { InfoIcon } from "lucide-react";
 
 export default function PasswordInfoCard() {
+  const { t } = useTranslation("account");
+
   return (
     <div className="space-y-2">
       <div>
@@ -18,10 +23,10 @@ export default function PasswordInfoCard() {
             className: "font-semibold",
           })}
         >
-          Password Management
+          {t("password.title")}
         </h2>
         <Paragraph size="xs" className="text-muted-foreground mt-0.5">
-          Manage your password information
+          {t("password.description")}
         </Paragraph>
       </div>
       <Item variant="destructive" size={"sm"}>
@@ -30,11 +35,10 @@ export default function PasswordInfoCard() {
         </ItemMedia>
         <ItemContent>
           <ItemTitle className="text-warning-foreground !text-xs">
-            Password Change Disabled
+            {t("password.changeDisabled")}
           </ItemTitle>
           <ItemDescription className="!text-xs">
-            To change your password, please contact your administrator. This
-            helps maintain security and ensures proper access control.
+            {t("password.changeDisabledDescription")}
           </ItemDescription>
         </ItemContent>
       </Item>

@@ -14,6 +14,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,13 +30,18 @@ import {
   paragraphVariants,
 } from "../../../../../components/ui/typography";
 
-const updateNameSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-});
-
 export default function AccountsNameUpdate({ user }: { user: User }) {
   const router = useRouter();
+  const { t, locale } = useTranslation("account");
   const [shouldResetOnBlur, setShouldResetOnBlur] = React.useState(true);
+
+  const updateNameSchema = React.useMemo(
+    () =>
+      z.object({
+        name: z.string().min(2, t("messages.validation.nameMinLength")),
+      }),
+    [t, locale]
+  );
 
   const form = useForm<z.infer<typeof updateNameSchema>>({
     resolver: zodResolver(updateNameSchema),
@@ -47,15 +53,24 @@ export default function AccountsNameUpdate({ user }: { user: User }) {
     form.reset({ name: user.name });
   }, [user.name, form]);
 
+  // Update resolver when language changes
+  React.useEffect(() => {
+    form.clearErrors();
+    if (form.formState.isDirty) {
+      form.trigger();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
+
   const { isSubmitting, isValid, isDirty } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof updateNameSchema>) => {
     try {
       await authClient.updateUser({ name: values.name });
       router.refresh();
-      toast.success("Name updated successfully");
+      toast.success(t("messages.success.nameUpdated"));
     } catch (error) {
-      toast.error("Failed to update name");
+      toast.error(t("messages.error.nameUpdateFailed"));
     }
   };
 
@@ -109,10 +124,10 @@ export default function AccountsNameUpdate({ user }: { user: User }) {
                     className: "font-semibold",
                   })}
                 >
-                  Full Name
+                  {t("nameUpdate.title")}
                 </h2>
                 <Paragraph size="xs" className="text-muted-foreground mt-0.5">
-                  Update your full name
+                  {t("nameUpdate.description")}
                 </Paragraph>
               </div>
               <FormControl>
@@ -121,7 +136,7 @@ export default function AccountsNameUpdate({ user }: { user: User }) {
                     <UserIcon className="size-3.5" />
                   </InputGroupAddon>
                   <InputGroupInput
-                    placeholder="Enter your full name"
+                    placeholder={t("nameUpdate.placeholder")}
                     disabled={isSubmitting}
                     {...field}
                     onBlur={(e) => {
@@ -149,7 +164,7 @@ export default function AccountsNameUpdate({ user }: { user: User }) {
               onMouseLeave={handleButtonMouseUp}
             >
               {isSubmitting && <Spinner />}
-              Save
+              {t("nameUpdate.save")}
             </Button>
           )}
           {isDirty && (
@@ -164,7 +179,7 @@ export default function AccountsNameUpdate({ user }: { user: User }) {
               onMouseUp={handleButtonMouseUp}
               onMouseLeave={handleButtonMouseUp}
             >
-              Cancel
+              {t("nameUpdate.cancel")}
             </Button>
           )}
         </div>

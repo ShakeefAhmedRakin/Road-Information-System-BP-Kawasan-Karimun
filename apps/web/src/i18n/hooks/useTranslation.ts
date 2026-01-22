@@ -9,20 +9,30 @@ import enAuth from "../locales/en/auth.json";
 import idAuth from "../locales/id/auth.json";
 import enDashboard from "../locales/en/dashboard.json";
 import idDashboard from "../locales/id/dashboard.json";
+import enAccount from "../locales/en/account.json";
+import idAccount from "../locales/id/account.json";
+import enBreadcrumbs from "../locales/en/breadcrumbs.json";
+import idBreadcrumbs from "../locales/id/breadcrumbs.json";
 
 type TranslationKeys = {
   auth: typeof enAuth;
   dashboard: typeof enDashboard;
+  account: typeof enAccount;
+  breadcrumbs: typeof enBreadcrumbs;
 };
 
 const translations: Record<string, TranslationKeys> = {
   en: {
     auth: enAuth,
     dashboard: enDashboard,
+    account: enAccount,
+    breadcrumbs: enBreadcrumbs,
   },
   id: {
     auth: idAuth,
     dashboard: idDashboard,
+    account: idAccount,
+    breadcrumbs: idBreadcrumbs,
   },
 };
 

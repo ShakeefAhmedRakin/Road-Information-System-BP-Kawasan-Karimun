@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "Akun",
+    "description": "Kelola informasi akun pengguna Anda"
+  },
+  "userCard": {
+    "changeAvatar": "Ubah Avatar",
+    "clearAvatar": "Hapus Avatar"
+  },
+  "nameUpdate": {
+    "title": "Nama Lengkap",
+    "description": "Perbarui nama lengkap Anda",
+    "placeholder": "Masukkan nama lengkap Anda",
+    "save": "Simpan",
+    "cancel": "Batal"
+  },
+  "password": {
+    "title": "Manajemen Kata Sandi",
+    "description": "Kelola informasi kata sandi Anda",
+    "changeDisabled": "Pengubahan Kata Sandi Dinonaktifkan",
+    "changeDisabledDescription": "Untuk mengubah kata sandi Anda, silakan hubungi administrator Anda. Ini membantu menjaga keamanan dan memastikan kontrol akses yang tepat."
+  },
+  "sessions": {
+    "title": "Sesi Aktif",
+    "description": "Kelola sesi aktif Anda di semua perangkat",
+    "current": "Saat Ini",
+    "active": "Aktif",
+    "revoke": "Cabut",
+    "cannotRevokeCurrent": "Tidak dapat mencabut sesi saat ini",
+    "revokeThisSession": "Cabut sesi ini",
+    "ip": "IP",
+    "lastActive": "Terakhir aktif",
+    "on": "di",
+    "unknownBrowser": "Peramban Tidak Dikenal",
+    "unknownOS": "OS Tidak Dikenal",
+    "justNow": "Baru saja",
+    "minutesAgo": "{{minutes}}m yang lalu",
+    "hoursAgo": "{{hours}}j yang lalu",
+    "daysAgo": "{{days}}h yang lalu"
+  },
+  "messages": {
+    "success": {
+      "nameUpdated": "Nama berhasil diperbarui",
+      "avatarUpdated": "Avatar diperbarui",
+      "avatarCleared": "Avatar dihapus",
+      "sessionRevoked": "Sesi dicabut"
+    },
+    "error": {
+      "nameUpdateFailed": "Gagal memperbarui nama",
+      "avatarUpdateFailed": "Gagal memperbarui avatar",
+      "avatarClearFailed": "Gagal menghapus avatar",
+      "sessionRevokeFailed": "Gagal mencabut sesi",
+      "invalidImageFile": "Silakan pilih file gambar yang valid.",
+      "mustBeImage": "File yang dipilih harus berupa gambar.",
+      "imageTooLarge": "Gambar asli harus 5MB atau lebih kecil."
+    },
+    "validation": {
+      "nameMinLength": "Nama harus minimal 2 karakter"
+    }
+  }
+}
