@@ -1,0 +1,29 @@
+{
+  "loading": "Loading roads...",
+  "error": {
+    "message": "Failed to load roads",
+    "retry": "Retry"
+  },
+  "noRoads": {
+    "message": "No visible roads available at this time."
+  },
+  "table": {
+    "headers": {
+      "no": "No.",
+      "roadNumber": "Road Number",
+      "roadName": "Road Name",
+      "totalLength": "Total Length",
+      "sectionWidth": "Section Width",
+      "reportStatus": "Report Status",
+      "actions": "Actions"
+    },
+    "reportStatus": {
+      "available": "Available",
+      "pending": "Pending"
+    },
+    "actions": {
+      "reportPending": "Report Pending",
+      "viewReport": "View Report"
+    }
+  }
+}

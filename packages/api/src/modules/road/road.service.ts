@@ -132,6 +132,40 @@ class RoadService {
     }));
   }
 
+  async listVisibleRoadsForVisitors(): Promise<
+    Array<ReadRoadType & { segmentCount: number }>
+  > {
+    const roads = await db
+      .select()
+      .from(road)
+      .where(eq(road.isVisibleByVisitors, true));
+
+    // Get segment counts for each road
+    const roadIds = roads.map((r) => r.id);
+    const segmentCountsMap = new Map<string, number>();
+
+    if (roadIds.length > 0) {
+      const segmentCounts = await db
+        .select({
+          roadId: segment.roadId,
+          count: sql<number>`count(*)::int`,
+        })
+        .from(segment)
+        .where(inArray(segment.roadId, roadIds))
+        .groupBy(segment.roadId);
+
+      for (const { roadId, count } of segmentCounts) {
+        segmentCountsMap.set(roadId, count);
+      }
+    }
+
+    // Add segment counts to roads
+    return roads.map((road) => ({
+      ...road,
+      segmentCount: segmentCountsMap.get(road.id) ?? 0,
+    }));
+  }
+
   async deleteRoad(roadId: string): Promise<{ success: boolean }> {
     // Segments will be automatically deleted due to cascade delete in the schema
     const result = await db.delete(road).where(eq(road.id, roadId));
@@ -150,6 +184,7 @@ class RoadService {
       number: string;
       totalLengthKm: number;
       segmentGenerationMode: SegmentGenerationMode;
+      isVisibleByVisitors: boolean;
     }>
   ): Promise<{ success: boolean; road: ReadRoadType }> {
     const updateData: Partial<ReadRoadType> = {};
@@ -160,6 +195,8 @@ class RoadService {
       updateData.totalLengthKm = updates.totalLengthKm;
     if (updates.segmentGenerationMode !== undefined)
       updateData.segmentGenerationMode = updates.segmentGenerationMode;
+    if (updates.isVisibleByVisitors !== undefined)
+      updateData.isVisibleByVisitors = updates.isVisibleByVisitors;
 
     if (Object.keys(updateData).length === 0) {
       throw new Error("No fields to update");

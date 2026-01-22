@@ -1,0 +1,29 @@
+{
+  "loading": "Memuat jalan...",
+  "error": {
+    "message": "Gagal memuat jalan",
+    "retry": "Coba Lagi"
+  },
+  "noRoads": {
+    "message": "Tidak ada jalan yang terlihat saat ini."
+  },
+  "table": {
+    "headers": {
+      "no": "No.",
+      "roadNumber": "Nomor Jalan",
+      "roadName": "Nama Jalan",
+      "totalLength": "Panjang Total",
+      "sectionWidth": "Lebar Bagian",
+      "reportStatus": "Status Laporan",
+      "actions": "Aksi"
+    },
+    "reportStatus": {
+      "available": "Tersedia",
+      "pending": "Menunggu"
+    },
+    "actions": {
+      "reportPending": "Laporan Menunggu",
+      "viewReport": "Lihat Laporan"
+    }
+  }
+}

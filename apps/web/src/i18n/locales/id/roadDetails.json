@@ -35,6 +35,10 @@
     "roadName": "Nama Jalan",
     "roadNumber": "Nomor Jalan",
     "roadLength": "Panjang Jalan (km)",
+    "visibleToVisitors": {
+      "label": "Terlihat oleh pengunjung",
+      "description": "Ketika diaktifkan, jalan ini dapat dilihat oleh pengunjung."
+    },
     "modifyWip": "Ubah (WIP)",
     "modifyWipTitle": "Fitur ini belum tersedia",
     "close": "Tutup",
@@ -60,6 +64,8 @@
       "nameFailed": "Gagal memperbarui nama jalan",
       "numberUpdated": "Nomor jalan berhasil diperbarui",
       "numberFailed": "Gagal memperbarui nomor jalan",
+      "visibilityUpdated": "Visibilitas jalan berhasil diperbarui",
+      "visibilityFailed": "Gagal memperbarui visibilitas jalan",
       "loadSegmentFailed": "Gagal memuat data segmen. Silakan coba lagi.",
       "missingDamage": "Tidak dapat membuat ulang segmen: data penilaian kerusakan hilang. Hubungi dukungan.",
       "lengthRequired": "Panjang jalan wajib diisi",

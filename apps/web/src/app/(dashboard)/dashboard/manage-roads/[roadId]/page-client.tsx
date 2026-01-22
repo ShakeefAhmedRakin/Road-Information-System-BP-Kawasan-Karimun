@@ -339,6 +339,7 @@ export default function RoadPageClient({ roadId }: RoadPageClientProps) {
                 roadNumber={data.road.number}
                 roadLength={Number(data.road.totalLengthKm)}
                 segmentGenerationMode={data.road.segmentGenerationMode}
+                isVisibleByVisitors={data.road.isVisibleByVisitors}
                 onUpdate={() => {
                   refetch();
                 }}

@@ -23,6 +23,8 @@ import enCreateRoad from "../locales/en/createRoad.json";
 import idCreateRoad from "../locales/id/createRoad.json";
 import enRoadDetails from "../locales/en/roadDetails.json";
 import idRoadDetails from "../locales/id/roadDetails.json";
+import enVisitorRoads from "../locales/en/visitorRoads.json";
+import idVisitorRoads from "../locales/id/visitorRoads.json";
 
 type TranslationKeys = {
   auth: typeof enAuth;
@@ -34,6 +36,7 @@ type TranslationKeys = {
   manageRoads: typeof enManageRoads;
   createRoad: typeof enCreateRoad;
   roadDetails: typeof enRoadDetails;
+  visitorRoads: typeof enVisitorRoads;
 };
 
 const translations: Record<string, TranslationKeys> = {
@@ -47,6 +50,7 @@ const translations: Record<string, TranslationKeys> = {
     manageRoads: enManageRoads,
     createRoad: enCreateRoad,
     roadDetails: enRoadDetails,
+    visitorRoads: enVisitorRoads,
   },
   id: {
     auth: idAuth,
@@ -58,6 +62,7 @@ const translations: Record<string, TranslationKeys> = {
     manageRoads: idManageRoads,
     createRoad: idCreateRoad,
     roadDetails: idRoadDetails,
+    visitorRoads: idVisitorRoads,
   },
 };
 

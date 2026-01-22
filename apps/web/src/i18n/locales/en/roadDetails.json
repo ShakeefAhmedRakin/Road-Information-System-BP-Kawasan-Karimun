@@ -35,6 +35,10 @@
     "roadName": "Road Name",
     "roadNumber": "Road Number",
     "roadLength": "Road Length (km)",
+    "visibleToVisitors": {
+      "label": "Visible to visitors",
+      "description": "When enabled, this road can be viewed by visitors."
+    },
     "modifyWip": "Modify (WIP)",
     "modifyWipTitle": "This feature is not available yet",
     "close": "Close",
@@ -60,6 +64,8 @@
       "nameFailed": "Failed to update road name",
       "numberUpdated": "Road number updated successfully",
       "numberFailed": "Failed to update road number",
+      "visibilityUpdated": "Road visibility updated successfully",
+      "visibilityFailed": "Failed to update road visibility",
       "loadSegmentFailed": "Failed to load segment data. Please try again.",
       "missingDamage": "Cannot regenerate segments: missing damage assessment data. Please contact support.",
       "lengthRequired": "Road length is required",

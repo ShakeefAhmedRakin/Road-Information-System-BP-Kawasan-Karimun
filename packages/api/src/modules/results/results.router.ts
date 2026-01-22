@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { operatorProcedure } from "../../lib/orpc";
+import { operatorProcedure, visitorProcedure } from "../../lib/orpc";
 import { roadService } from "../road/road.service";
 import { resultService } from "./results.service";
 
@@ -71,6 +71,43 @@ export const resultRouter = {
     );
     return { roads: items };
   }),
+
+  // Visitor endpoints
+  listVisibleRoadsWithReportSummary: visitorProcedure.handler(async () => {
+    const roads = await roadService.listVisibleRoadsForVisitors();
+    const items = await Promise.all(
+      roads.map(async (road) => {
+        const reportSummary =
+          await resultService.getReportSummaryByRoadId(road.id);
+        return { road, reportSummary };
+      })
+    );
+    return { roads: items };
+  }),
+
+  getReportByRoadIdForVisitor: visitorProcedure
+    .input(z.object({ roadId: z.string().min(1, "Road ID is required") }))
+    .handler(async ({ input }) => {
+      // Verify the road is visible to visitors
+      const road = await roadService.getRoadById(input.roadId);
+      if (!road || !road.isVisibleByVisitors) {
+        throw new Error("Road not found or not visible to visitors");
+      }
+      const report = await resultService.getReportByRoadId(input.roadId);
+      return report;
+    }),
+
+  statusByRoadIdForVisitor: visitorProcedure
+    .input(z.object({ roadId: z.string().min(1, "Road ID is required") }))
+    .handler(async ({ input }) => {
+      // Verify the road is visible to visitors
+      const road = await roadService.getRoadById(input.roadId);
+      if (!road || !road.isVisibleByVisitors) {
+        throw new Error("Road not found or not visible to visitors");
+      }
+      const status = await resultService.getResultStatusByRoadId(input.roadId);
+      return status;
+    }),
 };
 
 export type ResultRouter = typeof resultRouter;

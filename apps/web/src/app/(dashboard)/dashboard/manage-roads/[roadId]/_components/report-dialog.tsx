@@ -68,6 +68,7 @@ interface ReportDialogProps {
   roadName: string;
   roadNumber: string;
   isChecking: boolean;
+  useVisitorEndpoint?: boolean;
 }
 
 const formatNumber = (
@@ -122,6 +123,7 @@ export function ReportDialogTrigger({
   roadNumber,
   disabled,
   isChecking,
+  useVisitorEndpoint = false,
 }: ReportDialogProps) {
   const { t } = useTranslation("roadDetails");
   const { t: tCreateRoad } = useTranslation("createRoad");
@@ -130,9 +132,13 @@ export function ReportDialogTrigger({
   const contentRef = useRef<HTMLDivElement>(null);
 
   const reportQuery = useQuery({
-    ...orpc.result.getReportByRoadId.queryOptions({
-      input: { roadId },
-    }),
+    ...(useVisitorEndpoint
+      ? orpc.result.getReportByRoadIdForVisitor.queryOptions({
+          input: { roadId },
+        })
+      : orpc.result.getReportByRoadId.queryOptions({
+          input: { roadId },
+        })),
     enabled: open && !disabled,
     staleTime: 0,
     refetchOnWindowFocus: false,

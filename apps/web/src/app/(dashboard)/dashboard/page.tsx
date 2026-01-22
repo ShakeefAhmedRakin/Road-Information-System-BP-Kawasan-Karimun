@@ -11,6 +11,12 @@ export default async function Home() {
   }
 
   const isOperatorOrAbove = await hasMinimumRole(USER_ROLES.OPERATOR);
+  const isVisitor = user.role === USER_ROLES.VISITOR;
 
-  return <HomePageContent isOperatorOrAbove={isOperatorOrAbove} />;
+  return (
+    <HomePageContent
+      isOperatorOrAbove={isOperatorOrAbove}
+      isVisitor={isVisitor}
+    />
+  );
 }

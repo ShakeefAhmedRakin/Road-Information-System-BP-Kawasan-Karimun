@@ -10,7 +10,7 @@ import {
   TERRAIN_TYPES,
 } from "@repo/shared";
 import z from "zod";
-import { operatorProcedure } from "../../lib/orpc";
+import { operatorProcedure, visitorProcedure } from "../../lib/orpc";
 import { segmentService } from "../segment/segment.service";
 import { roadService } from "./road.service";
 
@@ -54,6 +54,7 @@ export const roadRouter = {
         number: z.string().optional(),
         totalLengthKm: z.number().positive().optional(),
         segmentGenerationMode: z.enum(["exact", "rounded"]).optional(),
+        isVisibleByVisitors: z.boolean().optional(),
       })
     )
     .handler(async ({ input }) => {
@@ -148,6 +149,12 @@ export const roadRouter = {
         segmentCount: segmentIds.length,
       };
     }),
+
+  // Visitor endpoints
+  listVisibleRoadsForVisitors: visitorProcedure.handler(async () => {
+    const roads = await roadService.listVisibleRoadsForVisitors();
+    return { roads };
+  }),
 };
 
 export type RoadRouter = typeof roadRouter;

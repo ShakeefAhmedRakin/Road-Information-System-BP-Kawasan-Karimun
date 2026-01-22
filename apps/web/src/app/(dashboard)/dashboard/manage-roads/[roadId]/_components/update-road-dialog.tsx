@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogContent,
@@ -45,6 +46,7 @@ const updateRoadInputSchema = z.object({
   number: z.string().optional(),
   totalLengthKm: z.number().positive().optional(),
   segmentGenerationMode: z.enum(["exact", "rounded"]).optional(),
+  isVisibleByVisitors: z.boolean().optional(),
 });
 
 interface UpdateRoadDialogProps {
@@ -53,6 +55,7 @@ interface UpdateRoadDialogProps {
   roadNumber: string;
   roadLength: number;
   segmentGenerationMode: string;
+  isVisibleByVisitors: boolean;
   onUpdate?: () => void;
 }
 
@@ -62,6 +65,7 @@ export default function UpdateRoadDialog({
   roadNumber: initialRoadNumber,
   roadLength: initialRoadLength,
   segmentGenerationMode: initialSegmentGenerationMode,
+  isVisibleByVisitors: initialIsVisibleByVisitors,
   onUpdate,
 }: UpdateRoadDialogProps) {
   const { t, locale } = useTranslation("roadDetails");
@@ -78,6 +82,7 @@ export default function UpdateRoadDialog({
 
   const [name, setName] = useState(initialRoadName);
   const [number, setNumber] = useState(initialRoadNumber);
+  const [isVisibleByVisitors, setIsVisibleByVisitors] = useState(initialIsVisibleByVisitors);
 
   const nameTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const numberTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -90,6 +95,10 @@ export default function UpdateRoadDialog({
   useEffect(() => {
     setNumber(initialRoadNumber);
   }, [initialRoadNumber]);
+
+  useEffect(() => {
+    setIsVisibleByVisitors(initialIsVisibleByVisitors);
+  }, [initialIsVisibleByVisitors]);
 
   useEffect(() => {
     setNewLengthValue(initialRoadLength);
@@ -155,6 +164,24 @@ export default function UpdateRoadDialog({
         onError: (error: Error) => {
           toast.error(error.message || t("updateRoad.toasts.numberFailed"));
           setNumber(initialRoadNumber);
+        },
+      }
+    );
+  };
+
+  const handleVisibilityChange = async (newVisibility: boolean) => {
+    if (newVisibility === initialIsVisibleByVisitors) return;
+
+    updateRoadMutation.mutate(
+      { roadId, isVisibleByVisitors: newVisibility },
+      {
+        onSuccess: () => {
+          toast.success(t("updateRoad.toasts.visibilityUpdated"));
+          onUpdate?.();
+        },
+        onError: (error: Error) => {
+          toast.error(error.message || t("updateRoad.toasts.visibilityFailed"));
+          setIsVisibleByVisitors(initialIsVisibleByVisitors);
         },
       }
     );
@@ -465,6 +492,33 @@ export default function UpdateRoadDialog({
                 >
                   {t("updateRoad.modifyWip")}
                 </Button>
+              </div>
+            </div>
+
+            {/* Visibility Toggle */}
+            <div className="space-y-2">
+              <div className="flex items-start space-x-3 space-y-0">
+                <Checkbox
+                  id="road-visibility"
+                  checked={isVisibleByVisitors}
+                  onCheckedChange={(checked) => {
+                    const newValue = checked === true;
+                    setIsVisibleByVisitors(newValue);
+                    handleVisibilityChange(newValue);
+                  }}
+                  disabled={isUpdating}
+                />
+                <div className="space-y-1 leading-none">
+                  <Label
+                    htmlFor="road-visibility"
+                    className="cursor-pointer font-normal"
+                  >
+                    {t("updateRoad.visibleToVisitors.label")}
+                  </Label>
+                  <p className="text-muted-foreground text-sm">
+                    {t("updateRoad.visibleToVisitors.description")}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
