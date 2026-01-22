@@ -10,11 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { orpc } from "@/utils/orpc";
 import { useQuery } from "@tanstack/react-query";
@@ -70,7 +65,24 @@ export function VisitorRoadsTable() {
 
   const roads = data?.roads ?? [];
 
-  if (roads.length === 0) {
+  // Sort roads by number (try numeric sort, fallback to string sort)
+  const sortedRoads = [...roads].sort((a, b) => {
+    const numA = Number(a.road.number);
+    const numB = Number(b.road.number);
+    
+    // If both are valid numbers, sort numerically
+    if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
+      return numA - numB;
+    }
+    
+    // Fallback to string comparison
+    return a.road.number.localeCompare(b.road.number, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+  });
+
+  if (sortedRoads.length === 0) {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-y-2 text-center">
         <p className="text-muted-foreground text-sm">
@@ -81,35 +93,44 @@ export function VisitorRoadsTable() {
   }
 
   return (
-    <div className="w-full overflow-x-auto rounded-lg border thin-styled-scroll-container">
-      <Table className="min-w-full">
-        <TableHeader>
+    <div className="thin-styled-scroll-container h-full flex-1 overflow-x-auto overflow-y-auto rounded-lg border">
+      <Table className="table-fixed min-w-full">
+        <colgroup>
+          <col style={{ width: "40px" }} />
+          <col style={{ width: "120px" }} />
+          <col style={{ width: "200px" }} />
+          <col style={{ width: "100px" }} />
+          <col style={{ width: "100px" }} />
+          <col style={{ width: "150px" }} />
+          <col style={{ width: "120px" }} />
+        </colgroup>
+        <TableHeader className="bg-muted sticky top-0 z-10">
           <TableRow>
-            <TableHead className="w-10 min-w-[40px] text-center">
+            <TableHead className="text-center">
               {tVisitor("table.headers.no")}
             </TableHead>
-            <TableHead className="w-[100px] min-w-[100px]">
+            <TableHead>
               {tVisitor("table.headers.roadNumber")}
             </TableHead>
-            <TableHead className="w-[150px] min-w-[150px]">
+            <TableHead>
               {tVisitor("table.headers.roadName")}
             </TableHead>
-            <TableHead className="w-[100px] min-w-[100px] text-right">
+            <TableHead className="text-right">
               {tVisitor("table.headers.totalLength")}
             </TableHead>
-            <TableHead className="w-[100px] min-w-[100px] text-right">
+            <TableHead className="text-right">
               {tVisitor("table.headers.sectionWidth")}
             </TableHead>
-            <TableHead className="w-[150px] min-w-[150px] text-center">
+            <TableHead className="text-center">
               {tVisitor("table.headers.reportStatus")}
             </TableHead>
-            <TableHead className="w-[120px] min-w-[120px] text-center">
+            <TableHead className="text-center">
               {tVisitor("table.headers.actions")}
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {roads.map(({ road, reportSummary }, index) => {
+          {sortedRoads.map(({ road, reportSummary }, index) => {
             const hasReport = reportSummary != null;
             const totalLength = Number(road.totalLengthKm);
             const width = Number(road.pavementWidthM);
@@ -119,37 +140,19 @@ export function VisitorRoadsTable() {
                 <TableCell className="text-center font-medium">
                   {index + 1}
                 </TableCell>
-                <TableCell className="w-[100px] max-w-[100px] overflow-hidden">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="truncate cursor-help" title={road.number}>
-                        {road.number}
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="max-w-xs break-words">{road.number}</p>
-                    </TooltipContent>
-                  </Tooltip>
+                <TableCell className="whitespace-nowrap">
+                  {road.number}
                 </TableCell>
-                <TableCell className="w-[150px] max-w-[150px] overflow-hidden">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="truncate cursor-help" title={road.name}>
-                        {road.name}
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="max-w-xs break-words">{road.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
+                <TableCell className="break-words">
+                  {road.name}
                 </TableCell>
-                <TableCell className="w-[100px] min-w-[100px] text-right">
+                <TableCell className="text-right whitespace-nowrap">
                   {formatNumber(totalLength)} km
                 </TableCell>
-                <TableCell className="w-[100px] min-w-[100px] text-right">
+                <TableCell className="text-right whitespace-nowrap">
                   {formatNumber(width)} m
                 </TableCell>
-                <TableCell className="w-[150px] min-w-[150px] text-center">
+                <TableCell className="text-center">
                   {hasReport ? (
                     <Badge variant="default" className="bg-green-600">
                       {tVisitor("table.reportStatus.available")}
@@ -160,7 +163,7 @@ export function VisitorRoadsTable() {
                     </Badge>
                   )}
                 </TableCell>
-                <TableCell className="w-[120px] min-w-[120px] text-center">
+                <TableCell className="text-center">
                   <ReportStatusCell
                     roadId={road.id}
                     roadName={road.name}

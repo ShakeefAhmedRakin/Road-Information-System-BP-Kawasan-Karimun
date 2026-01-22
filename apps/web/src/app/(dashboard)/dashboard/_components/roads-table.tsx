@@ -8,17 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useTranslation } from "@/i18n/hooks/useTranslation";
 import { orpc } from "@/utils/orpc";
 import { PAVEMENT_TYPES, type PavementType } from "@repo/shared";
 import { useQuery } from "@tanstack/react-query";
 import type { SegmentCondition } from "api/src/modules/results/results.schema";
-import { ArrowBigRight, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Fragment } from "react";
 import { buttonVariants } from "../../../../components/ui/button";
@@ -80,7 +75,24 @@ export function RoadsTable() {
 
   const roads = data?.roads ?? [];
 
-  if (roads.length === 0) {
+  // Sort roads by number (try numeric sort, fallback to string sort)
+  const sortedRoads = [...roads].sort((a, b) => {
+    const numA = Number(a.road.number);
+    const numB = Number(b.road.number);
+    
+    // If both are valid numbers, sort numerically
+    if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
+      return numA - numB;
+    }
+    
+    // Fallback to string comparison
+    return a.road.number.localeCompare(b.road.number, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+  });
+
+  if (sortedRoads.length === 0) {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-y-2 text-center">
         <p className="text-muted-foreground text-sm">{t("roadsTable.noRoads.message")}</p>
@@ -95,23 +107,40 @@ export function RoadsTable() {
   }
 
   return (
-    <div className="w-full overflow-x-auto rounded-lg border thin-styled-scroll-container">
-      <Table className="min-w-full">
-        <TableHeader>
+    <div className="thin-styled-scroll-container h-full flex-1 overflow-x-auto overflow-y-auto rounded-lg border">
+      <Table className="table-fixed min-w-full">
+        <colgroup>
+          <col style={{ width: "40px" }} />
+          <col style={{ width: "120px" }} />
+          <col style={{ width: "200px" }} />
+          <col style={{ width: "100px" }} />
+          <col style={{ width: "100px" }} />
+          {PAVEMENT_TYPES.map((type) => (
+            <col key={type} style={{ width: "70px" }} />
+          ))}
+          <col style={{ width: "20px" }} />
+          {CONDITION_ORDER.map((condition) => (
+            <Fragment key={condition}>
+              <col style={{ width: "45px" }} />
+              <col style={{ width: "45px" }} />
+            </Fragment>
+          ))}
+        </colgroup>
+        <TableHeader className="bg-muted sticky top-0 z-10">
           <TableRow>
-            <TableHead rowSpan={2} className="w-10 min-w-[40px] text-center align-middle">
+            <TableHead rowSpan={2} className="text-center align-middle">
               {t("roadsTable.headers.no")}
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle w-[50px] min-w-[50px]">
+            <TableHead rowSpan={2} className="align-middle">
               {t("roadsTable.headers.roadNumber")}
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle w-[100px] min-w-[100px]">
+            <TableHead rowSpan={2} className="align-middle">
               {t("roadsTable.headers.roadName")}
             </TableHead>
-            <TableHead rowSpan={2} className="w-[100px] min-w-[100px] text-right align-middle">
+            <TableHead rowSpan={2} className="text-right align-middle">
               {t("roadsTable.headers.totalLength")}
             </TableHead>
-            <TableHead rowSpan={2} className="w-[100px] min-w-[100px] text-right align-middle">
+            <TableHead rowSpan={2} className="text-right align-middle">
               {t("roadsTable.headers.sectionWidth")}
             </TableHead>
             <TableHead
@@ -120,6 +149,7 @@ export function RoadsTable() {
             >
               <div className="px-1 break-words">{t("roadsTable.headers.percentagesOfSurfaceType")}</div>
             </TableHead>
+            <TableHead rowSpan={3} className="!p-0" />
             <TableHead
               colSpan={CONDITION_ORDER.length * 2}
               className="!text-center whitespace-normal"
@@ -129,14 +159,14 @@ export function RoadsTable() {
           </TableRow>
           <TableRow>
             {PAVEMENT_TYPES.map((type) => (
-              <TableHead key={type} className="w-[70px] min-w-[70px] text-center">
+              <TableHead key={type} className="text-center">
                 {formatPavementLabel(type)}
               </TableHead>
             ))}
             {CONDITION_ORDER.map((condition) => (
               <TableHead
                 key={`${condition}-group`}
-                className="w-[90px] min-w-[90px] text-center"
+                className="text-center"
                 colSpan={2}
               >
                 {t(`roadsTable.headers.conditions.${condition.toLowerCase()}`)}
@@ -150,20 +180,20 @@ export function RoadsTable() {
             <TableHead />
             <TableHead />
             {PAVEMENT_TYPES.map((type) => (
-              <TableHead key={`${type}-percent`} className="w-[70px] min-w-[70px] text-center">
+              <TableHead key={`${type}-percent`} className="text-center">
                 {t("roadsTable.headers.percent")}
               </TableHead>
             ))}
             {CONDITION_ORDER.map((condition) => (
               <Fragment key={`${condition}-labels`}>
-                <TableHead className="w-[45px] min-w-[45px] text-center">{t("roadsTable.headers.km")}</TableHead>
-                <TableHead className="w-[45px] min-w-[45px] text-center">{t("roadsTable.headers.percent")}</TableHead>
+                <TableHead className="text-center">{t("roadsTable.headers.km")}</TableHead>
+                <TableHead className="text-center">{t("roadsTable.headers.percent")}</TableHead>
               </Fragment>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {roads.map(({ road, reportSummary }, index) => {
+          {sortedRoads.map(({ road, reportSummary }, index) => {
             const hasReport = reportSummary != null;
             const totalLength = Number(road.totalLengthKm);
             const width = Number(road.pavementWidthM);
@@ -173,39 +203,21 @@ export function RoadsTable() {
                 <TableCell className="text-center font-medium">
                   {index + 1}
                 </TableCell>
-                <TableCell className="w-[50px] max-w-[50px] overflow-hidden">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="truncate cursor-help" title={road.number}>
-                        {road.number}
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="max-w-xs break-words">{road.number}</p>
-                    </TooltipContent>
-                  </Tooltip>
+                <TableCell className="whitespace-nowrap">
+                  {road.number}
                 </TableCell>
-                <TableCell className="w-[100px] max-w-[100px] overflow-hidden">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="truncate cursor-help" title={road.name}>
-                        {road.name}
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="max-w-xs break-words">{road.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
+                <TableCell className="break-words">
+                  {road.name}
                 </TableCell>
-                <TableCell className="w-[100px] min-w-[100px] text-right">
+                <TableCell className="text-right whitespace-nowrap">
                   {formatNumber(totalLength)}
                 </TableCell>
-                <TableCell className="w-[100px] min-w-[100px] text-right">
+                <TableCell className="text-right whitespace-nowrap">
                   {formatNumber(width)}
                 </TableCell>
                 {hasReport ? (
                   PAVEMENT_TYPES.map((type) => (
-                    <TableCell key={type} className="w-[70px] min-w-[70px] text-center">
+                    <TableCell key={type} className="text-center whitespace-nowrap">
                       {formatPercent(
                         reportSummary.pavementTypePercentages[type] ?? 0
                       )}
@@ -219,16 +231,17 @@ export function RoadsTable() {
                     {t("roadsTable.pendingLabel")}
                   </TableCell>
                 )}
+                <TableCell className="!p-0" />
                 {hasReport ? (
                   CONDITION_ORDER.map((condition) => (
                     <Fragment key={`${condition}-value`}>
-                      <TableCell className="w-[45px] min-w-[45px] text-center">
+                      <TableCell className="text-center whitespace-nowrap">
                         {formatNumber(
                           reportSummary.conditionLengthStats[condition]
                             ?.lengthKm ?? 0
                         )}
                       </TableCell>
-                      <TableCell className="w-[45px] min-w-[45px] text-center">
+                      <TableCell className="text-center whitespace-nowrap">
                         {formatPercent(
                           reportSummary.conditionLengthStats[condition]
                             ?.percentage ?? 0
