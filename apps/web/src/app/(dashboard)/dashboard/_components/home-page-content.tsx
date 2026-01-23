@@ -18,13 +18,14 @@ export default function HomePageContent({
     <PageLayout
       title={t("home.title")}
       description={t("home.description")}
+      contained
     >
       {isOperatorOrAbove ? (
-        <div className="space-y-4">
+        <div className="flex h-full max-h-full flex-1 flex-col">
           <RoadsTable />
         </div>
       ) : isVisitor ? (
-        <div className="space-y-4">
+        <div className="flex h-full max-h-full flex-1 flex-col">
           <VisitorRoadsTable />
         </div>
       ) : (

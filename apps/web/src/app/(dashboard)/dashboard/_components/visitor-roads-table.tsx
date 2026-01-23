@@ -93,7 +93,7 @@ export function VisitorRoadsTable() {
   }
 
   return (
-    <div className="thin-styled-scroll-container h-full flex-1 overflow-x-auto overflow-y-auto rounded-lg border">
+    <div className="thin-styled-scroll-container h-full max-h-full flex-1 overflow-x-auto overflow-y-auto rounded-lg border">
       <Table className="table-fixed min-w-full">
         <colgroup>
           <col style={{ width: "40px" }} />
@@ -143,8 +143,8 @@ export function VisitorRoadsTable() {
                 <TableCell className="whitespace-nowrap">
                   {road.number}
                 </TableCell>
-                <TableCell className="break-words">
-                  {road.name}
+                <TableCell className="overflow-hidden" title={road.name}>
+                  <div className="truncate max-w-full">{road.name}</div>
                 </TableCell>
                 <TableCell className="text-right whitespace-nowrap">
                   {formatNumber(totalLength)} km
