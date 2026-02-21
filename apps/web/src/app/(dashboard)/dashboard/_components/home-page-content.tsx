@@ -21,11 +21,11 @@ export default function HomePageContent({
       contained
     >
       {isOperatorOrAbove ? (
-        <div className="flex h-full max-h-full flex-1 flex-col">
+        <div className="flex h-full max-h-full min-w-0 flex-1 flex-col">
           <RoadsTable />
         </div>
       ) : isVisitor ? (
-        <div className="flex h-full max-h-full flex-1 flex-col">
+        <div className="flex h-full max-h-full min-w-0 flex-1 flex-col">
           <VisitorRoadsTable />
         </div>
       ) : (

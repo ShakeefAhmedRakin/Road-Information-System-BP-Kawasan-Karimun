@@ -110,7 +110,7 @@ export function RoadsTable() {
 
   return (
     <div className="thin-styled-scroll-container h-full max-h-full flex-1 overflow-x-auto overflow-y-auto rounded-lg border">
-      <Table>
+      <Table className="min-w-max">
         <TableHeader className="sticky top-0 z-10">
           {/* Row 1: Group headers */}
           <TableRow className="bg-muted">
