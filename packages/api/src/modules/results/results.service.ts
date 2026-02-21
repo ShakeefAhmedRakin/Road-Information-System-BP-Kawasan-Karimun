@@ -18,6 +18,7 @@ import {
 } from "../shared/damage.schema";
 import type {
   ConditionLengthStats,
+  PavementTypeLengthStats,
   PavementTypePercentages,
   ReadResultRecord,
   SegmentCondition,
@@ -146,6 +147,8 @@ class ResultService {
     const segmentResults = summariesWithMeta.map((entry) => entry.summary);
     const pavementTypePercentages =
       this.computePavementTypePercentages(summariesWithMeta);
+    const pavementTypeLengthStats =
+      this.computePavementTypeLengthStats(summariesWithMeta);
     const conditionLengthStats =
       this.computeConditionLengthStats(summariesWithMeta);
 
@@ -158,6 +161,7 @@ class ResultService {
           userId,
           segmentResults,
           pavementTypePercentages,
+          pavementTypeLengthStats,
           conditionLengthStats,
           updatedAt: new Date(),
         })
@@ -168,6 +172,7 @@ class ResultService {
         resultId: updated?.id ?? existingResult.id,
         segmentResults,
         pavementTypePercentages,
+        pavementTypeLengthStats,
         conditionLengthStats,
       };
     }
@@ -179,6 +184,7 @@ class ResultService {
         roadId,
         segmentResults,
         pavementTypePercentages,
+        pavementTypeLengthStats,
         conditionLengthStats,
       })
       .returning({ id: result.id });
@@ -187,6 +193,7 @@ class ResultService {
       resultId: inserted.id,
       segmentResults,
       pavementTypePercentages,
+      pavementTypeLengthStats,
       conditionLengthStats,
     };
   }
@@ -221,12 +228,14 @@ class ResultService {
 
   async getReportSummaryByRoadId(roadId: string): Promise<{
     pavementTypePercentages: PavementTypePercentages;
+    pavementTypeLengthStats: PavementTypeLengthStats | null;
     conditionLengthStats: ConditionLengthStats;
   } | null> {
     const existing = await this.getResultRecordByRoadId(roadId);
     if (!existing) return null;
     return {
       pavementTypePercentages: existing.pavementTypePercentages,
+      pavementTypeLengthStats: existing.pavementTypeLengthStats ?? null,
       conditionLengthStats: existing.conditionLengthStats,
     };
   }
@@ -338,6 +347,7 @@ class ResultService {
         id: existingResult.id,
         updatedAt: existingResult.updatedAt,
         pavementTypePercentages: existingResult.pavementTypePercentages,
+        pavementTypeLengthStats: existingResult.pavementTypeLengthStats ?? null,
         conditionLengthStats: existingResult.conditionLengthStats,
         segments,
       },
@@ -734,6 +744,62 @@ class ResultService {
     }
 
     return percentages;
+  }
+
+  private computePavementTypeLengthStats(
+    summaries: SegmentSummaryMeta[]
+  ): PavementTypeLengthStats {
+    const stats = {} as PavementTypeLengthStats;
+
+    for (const type of PAVEMENT_TYPES) {
+      stats[type] = { lengthKm: 0, percentage: 0 };
+    }
+
+    let totalLength = 0;
+
+    for (const { summary, lengthKm } of summaries) {
+      stats[summary.pavementType].lengthKm += lengthKm;
+      totalLength += lengthKm;
+    }
+
+    const divisor = totalLength || 1;
+
+    const rawPercentages: Array<{
+      type: PavementType;
+      percentage: number;
+    }> = [];
+
+    for (const type of PAVEMENT_TYPES) {
+      const entry = stats[type];
+      entry.lengthKm = this.round(entry.lengthKm);
+      const rawPercentage = (entry.lengthKm / divisor) * 100;
+      rawPercentages.push({ type, percentage: rawPercentage });
+    }
+
+    for (const { type, percentage } of rawPercentages) {
+      stats[type].percentage = this.round(percentage);
+    }
+
+    // Normalize to ensure sum equals exactly 100%
+    const sum = Object.values(stats).reduce(
+      (acc, stat) => acc + stat.percentage,
+      0
+    );
+    const difference = 100 - sum;
+
+    if (Math.abs(difference) > 0.001) {
+      const entries = Object.entries(stats) as Array<
+        [PavementType, { lengthKm: number; percentage: number }]
+      >;
+      const largestEntry = entries.reduce((max, entry) =>
+        entry[1].percentage > max[1].percentage ? entry : max
+      );
+      stats[largestEntry[0]].percentage = this.round(
+        largestEntry[1].percentage + difference
+      );
+    }
+
+    return stats;
   }
 
   private computeConditionLengthStats(

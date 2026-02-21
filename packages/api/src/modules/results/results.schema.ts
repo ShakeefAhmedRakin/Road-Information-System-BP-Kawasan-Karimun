@@ -26,6 +26,14 @@ export type SegmentResultSummary = {
 
 export type PavementTypePercentages = Record<PavementType, number>;
 
+export type PavementTypeLengthStats = Record<
+  PavementType,
+  {
+    lengthKm: number;
+    percentage: number;
+  }
+>;
+
 export type ConditionLengthStats = Record<
   SegmentCondition,
   {
@@ -52,6 +60,8 @@ export const result = pgTable(
     pavementTypePercentages: jsonb("pavement_type_percentages")
       .notNull()
       .$type<PavementTypePercentages>(),
+    pavementTypeLengthStats: jsonb("pavement_type_length_stats")
+      .$type<PavementTypeLengthStats>(),
     conditionLengthStats: jsonb("condition_length_stats")
       .notNull()
       .$type<ConditionLengthStats>(),

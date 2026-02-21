@@ -390,20 +390,22 @@ export function ReportDialogTrigger({
       return null;
     }
 
+    const hasSurfaceLengthStats = report.pavementTypeLengthStats != null;
+
     return (
       <div className="overflow-x-auto rounded-lg border thin-styled-scroll-container">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead rowSpan={2}>{t("reportDialog.summaryTable.roadNumber")}</TableHead>
-              <TableHead rowSpan={2}>{t("reportDialog.summaryTable.roadName")}</TableHead>
-              <TableHead rowSpan={2}>{t("reportDialog.summaryTable.totalLength")}</TableHead>
-              <TableHead rowSpan={2}>{t("reportDialog.summaryTable.sectionWidth")}</TableHead>
+              <TableHead rowSpan={3}>{t("reportDialog.summaryTable.roadNumber")}</TableHead>
+              <TableHead rowSpan={3}>{t("reportDialog.summaryTable.roadName")}</TableHead>
+              <TableHead rowSpan={3}>{t("reportDialog.summaryTable.totalLength")}</TableHead>
+              <TableHead rowSpan={3}>{t("reportDialog.summaryTable.sectionWidth")}</TableHead>
               <TableHead
-                colSpan={SURFACE_TYPES.length}
+                colSpan={SURFACE_TYPES.length * 2}
                 className="!text-center"
               >
-                {t("reportDialog.summaryTable.percentagesOfSurfaceType")}
+                {t("reportDialog.summaryTable.lengthBySurfaceType")}
               </TableHead>
               <TableHead
                 colSpan={CONDITION_ORDER.length * 2}
@@ -414,7 +416,11 @@ export function ReportDialogTrigger({
             </TableRow>
             <TableRow>
               {SURFACE_TYPES.map((type) => (
-                <TableHead key={type} className="text-center">
+                <TableHead
+                  key={type}
+                  className="text-center"
+                  colSpan={2}
+                >
                   {tCreateRoad(`enums.pavementType.${type}`)}
                 </TableHead>
               ))}
@@ -429,14 +435,11 @@ export function ReportDialogTrigger({
               ))}
             </TableRow>
             <TableRow>
-              <TableHead />
-              <TableHead />
-              <TableHead />
-              <TableHead />
               {SURFACE_TYPES.map((type) => (
-                <TableHead key={`${type}-percent`} className="text-center">
-                  {t("reportDialog.summaryTable.percent")}
-                </TableHead>
+                <Fragment key={`${type}-labels`}>
+                  <TableHead className="text-center">{t("reportDialog.summaryTable.km")}</TableHead>
+                  <TableHead className="text-center">{t("reportDialog.summaryTable.percent")}</TableHead>
+                </Fragment>
               ))}
               {CONDITION_ORDER.map((condition) => (
                 <Fragment key={`${condition}-labels`}>
@@ -452,11 +455,31 @@ export function ReportDialogTrigger({
               <TableCell>{road.name}</TableCell>
               <TableCell>{formatNumber(road.totalLengthKm)}</TableCell>
               <TableCell>{formatNumber(road.pavementWidthM)}</TableCell>
-              {SURFACE_TYPES.map((type) => (
-                <TableCell key={`${type}-value`} className="text-center">
-                  {formatPercent(report.pavementTypePercentages[type] ?? 0)}
-                </TableCell>
-              ))}
+              {hasSurfaceLengthStats
+                ? SURFACE_TYPES.map((type) => (
+                    <Fragment key={`${type}-value`}>
+                      <TableCell className="text-center">
+                        {formatNumber(
+                          report.pavementTypeLengthStats![type]?.lengthKm ?? 0
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {formatPercent(
+                          report.pavementTypeLengthStats![type]?.percentage ?? 0
+                        )}
+                      </TableCell>
+                    </Fragment>
+                  ))
+                : SURFACE_TYPES.map((type) => (
+                    <Fragment key={`${type}-value`}>
+                      <TableCell className="text-center">-</TableCell>
+                      <TableCell className="text-center">
+                        {formatPercent(
+                          report.pavementTypePercentages[type] ?? 0
+                        )}
+                      </TableCell>
+                    </Fragment>
+                  ))}
               {CONDITION_ORDER.map((condition) => (
                 <Fragment key={`${condition}-value`}>
                   <TableCell className="text-center">

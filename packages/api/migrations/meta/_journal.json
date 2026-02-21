@@ -85,6 +85,13 @@
       "when": 1763724290207,
       "tag": "0011_strong_tag",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1771682343683,
+      "tag": "0012_perfect_firelord",
+      "breakpoints": true
     }
   ]
 }

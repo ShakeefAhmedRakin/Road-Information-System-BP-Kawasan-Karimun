@@ -94,37 +94,28 @@ export function VisitorRoadsTable() {
 
   return (
     <div className="thin-styled-scroll-container h-full max-h-full flex-1 overflow-x-auto overflow-y-auto rounded-lg border">
-      <Table className="table-fixed min-w-full">
-        <colgroup>
-          <col style={{ width: "40px" }} />
-          <col style={{ width: "120px" }} />
-          <col style={{ width: "200px" }} />
-          <col style={{ width: "100px" }} />
-          <col style={{ width: "100px" }} />
-          <col style={{ width: "150px" }} />
-          <col style={{ width: "120px" }} />
-        </colgroup>
-        <TableHeader className="bg-muted sticky top-0 z-10">
-          <TableRow>
-            <TableHead className="text-center">
+      <Table>
+        <TableHeader className="sticky top-0 z-10">
+          <TableRow className="bg-muted">
+            <TableHead className="bg-muted text-center">
               {tVisitor("table.headers.no")}
             </TableHead>
-            <TableHead>
+            <TableHead className="bg-muted">
               {tVisitor("table.headers.roadNumber")}
             </TableHead>
-            <TableHead>
+            <TableHead className="bg-muted">
               {tVisitor("table.headers.roadName")}
             </TableHead>
-            <TableHead className="text-right">
+            <TableHead className="bg-muted text-right">
               {tVisitor("table.headers.totalLength")}
             </TableHead>
-            <TableHead className="text-right">
+            <TableHead className="bg-muted text-right">
               {tVisitor("table.headers.sectionWidth")}
             </TableHead>
-            <TableHead className="text-center">
+            <TableHead className="bg-muted text-center">
               {tVisitor("table.headers.reportStatus")}
             </TableHead>
-            <TableHead className="text-center">
+            <TableHead className="bg-muted text-center">
               {tVisitor("table.headers.actions")}
             </TableHead>
           </TableRow>
@@ -143,8 +134,8 @@ export function VisitorRoadsTable() {
                 <TableCell className="whitespace-nowrap">
                   {road.number}
                 </TableCell>
-                <TableCell className="overflow-hidden" title={road.name}>
-                  <div className="truncate max-w-full">{road.name}</div>
+                <TableCell className="whitespace-nowrap">
+                  {road.name}
                 </TableCell>
                 <TableCell className="text-right whitespace-nowrap">
                   {formatNumber(totalLength)} km

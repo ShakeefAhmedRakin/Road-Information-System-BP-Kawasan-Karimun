@@ -1,0 +1,1 @@
+ALTER TABLE "result" ADD COLUMN "pavement_type_length_stats" jsonb;

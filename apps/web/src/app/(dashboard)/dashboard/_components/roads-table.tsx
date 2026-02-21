@@ -48,7 +48,7 @@ export function RoadsTable() {
   if (isLoading) {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-y-2">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
         <p className="text-muted-foreground text-sm">
           {t("roadsTable.loading")}
         </p>
@@ -79,12 +79,12 @@ export function RoadsTable() {
   const sortedRoads = [...roads].sort((a, b) => {
     const numA = Number(a.road.number);
     const numB = Number(b.road.number);
-    
+
     // If both are valid numbers, sort numerically
     if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
       return numA - numB;
     }
-    
+
     // Fallback to string comparison
     return a.road.number.localeCompare(b.road.number, undefined, {
       numeric: true,
@@ -95,7 +95,9 @@ export function RoadsTable() {
   if (sortedRoads.length === 0) {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-y-2 text-center">
-        <p className="text-muted-foreground text-sm">{t("roadsTable.noRoads.message")}</p>
+        <p className="text-muted-foreground text-sm">
+          {t("roadsTable.noRoads.message")}
+        </p>
         <Link
           href={StaticRoutes.CREATE_ROAD}
           className={buttonVariants({ variant: "default" })}
@@ -108,86 +110,87 @@ export function RoadsTable() {
 
   return (
     <div className="thin-styled-scroll-container h-full max-h-full flex-1 overflow-x-auto overflow-y-auto rounded-lg border">
-      <Table className="table-fixed min-w-full">
-        <colgroup>
-          <col style={{ width: "40px" }} />
-          <col style={{ width: "120px" }} />
-          <col style={{ width: "200px" }} />
-          <col style={{ width: "100px" }} />
-          <col style={{ width: "100px" }} />
-          {PAVEMENT_TYPES.map((type) => (
-            <col key={type} style={{ width: "70px" }} />
-          ))}
-          <col style={{ width: "20px" }} />
-          {CONDITION_ORDER.map((condition) => (
-            <Fragment key={condition}>
-              <col style={{ width: "45px" }} />
-              <col style={{ width: "45px" }} />
-            </Fragment>
-          ))}
-        </colgroup>
-        <TableHeader className="bg-muted sticky top-0 z-10">
-          <TableRow>
-            <TableHead rowSpan={2} className="text-center align-middle">
+      <Table>
+        <TableHeader className="sticky top-0 z-10">
+          {/* Row 1: Group headers */}
+          <TableRow className="bg-muted">
+            <TableHead
+              rowSpan={3}
+              className="bg-muted text-center align-middle"
+            >
               {t("roadsTable.headers.no")}
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle">
+            <TableHead rowSpan={3} className="bg-muted align-middle">
               {t("roadsTable.headers.roadNumber")}
             </TableHead>
-            <TableHead rowSpan={2} className="align-middle">
+            <TableHead rowSpan={3} className="bg-muted align-middle">
               {t("roadsTable.headers.roadName")}
             </TableHead>
-            <TableHead rowSpan={2} className="text-right align-middle">
+            <TableHead rowSpan={3} className="bg-muted text-right align-middle">
               {t("roadsTable.headers.totalLength")}
             </TableHead>
-            <TableHead rowSpan={2} className="text-right align-middle">
+            <TableHead rowSpan={3} className="bg-muted text-right align-middle">
               {t("roadsTable.headers.sectionWidth")}
             </TableHead>
             <TableHead
-              colSpan={PAVEMENT_TYPES.length}
-              className="!text-center whitespace-normal"
+              colSpan={PAVEMENT_TYPES.length * 2}
+              className="bg-muted !text-center whitespace-normal"
             >
-              <div className="px-1 break-words">{t("roadsTable.headers.percentagesOfSurfaceType")}</div>
+              <div className="px-1 break-words">
+                {t("roadsTable.headers.lengthBySurfaceType")}
+              </div>
             </TableHead>
-            <TableHead rowSpan={3} className="!p-0" />
+            <TableHead rowSpan={3} className="bg-muted !w-2 !p-0" />
             <TableHead
               colSpan={CONDITION_ORDER.length * 2}
-              className="!text-center whitespace-normal"
+              className="bg-muted !text-center whitespace-normal"
             >
-              <div className="px-1 break-words">{t("roadsTable.headers.lengthByCondition")}</div>
+              <div className="px-1 break-words">
+                {t("roadsTable.headers.lengthByCondition")}
+              </div>
             </TableHead>
           </TableRow>
-          <TableRow>
+          {/* Row 2: Individual type/condition names */}
+          <TableRow className="bg-muted">
             {PAVEMENT_TYPES.map((type) => (
-              <TableHead key={type} className="text-center">
+              <TableHead
+                key={type}
+                className="bg-muted text-center"
+                colSpan={2}
+              >
                 {formatPavementLabel(type)}
               </TableHead>
             ))}
             {CONDITION_ORDER.map((condition) => (
               <TableHead
                 key={`${condition}-group`}
-                className="text-center"
+                className="bg-muted text-center"
                 colSpan={2}
               >
                 {t(`roadsTable.headers.conditions.${condition.toLowerCase()}`)}
               </TableHead>
             ))}
           </TableRow>
-          <TableRow>
-            <TableHead />
-            <TableHead />
-            <TableHead />
-            <TableHead />
-            <TableHead />
+          {/* Row 3: km / % sub-headers */}
+          <TableRow className="bg-muted">
             {PAVEMENT_TYPES.map((type) => (
-              <TableHead key={`${type}-percent`} className="text-center">
-                {t("roadsTable.headers.percent")}
-              </TableHead>
+              <Fragment key={`${type}-labels`}>
+                <TableHead className="bg-muted text-center">
+                  {t("roadsTable.headers.km")}
+                </TableHead>
+                <TableHead className="bg-muted text-center">
+                  {t("roadsTable.headers.percent")}
+                </TableHead>
+              </Fragment>
             ))}
             {CONDITION_ORDER.map((condition) => (
               <Fragment key={`${condition}-labels`}>
-                <TableHead className="text-center">{t("roadsTable.headers.km")}</TableHead>
-                <TableHead className="text-center">{t("roadsTable.headers.percent")}</TableHead>
+                <TableHead className="bg-muted text-center">
+                  {t("roadsTable.headers.km")}
+                </TableHead>
+                <TableHead className="bg-muted text-center">
+                  {t("roadsTable.headers.percent")}
+                </TableHead>
               </Fragment>
             ))}
           </TableRow>
@@ -197,6 +200,8 @@ export function RoadsTable() {
             const hasReport = reportSummary != null;
             const totalLength = Number(road.totalLengthKm);
             const width = Number(road.pavementWidthM);
+            const hasSurfaceLengthStats =
+              hasReport && reportSummary.pavementTypeLengthStats != null;
 
             return (
               <TableRow key={road.id}>
@@ -206,9 +211,7 @@ export function RoadsTable() {
                 <TableCell className="whitespace-nowrap">
                   {road.number}
                 </TableCell>
-                <TableCell className="overflow-hidden" title={road.name}>
-                  <div className="truncate max-w-full">{road.name}</div>
-                </TableCell>
+                <TableCell className="whitespace-nowrap">{road.name}</TableCell>
                 <TableCell className="text-right whitespace-nowrap">
                   {formatNumber(totalLength)}
                 </TableCell>
@@ -216,17 +219,42 @@ export function RoadsTable() {
                   {formatNumber(width)}
                 </TableCell>
                 {hasReport ? (
-                  PAVEMENT_TYPES.map((type) => (
-                    <TableCell key={type} className="text-center whitespace-nowrap">
-                      {formatPercent(
-                        reportSummary.pavementTypePercentages[type] ?? 0
-                      )}
-                    </TableCell>
-                  ))
+                  hasSurfaceLengthStats ? (
+                    PAVEMENT_TYPES.map((type) => (
+                      <Fragment key={type}>
+                        <TableCell className="text-center whitespace-nowrap">
+                          {formatNumber(
+                            reportSummary.pavementTypeLengthStats![type]
+                              ?.lengthKm ?? 0
+                          )}
+                        </TableCell>
+                        <TableCell className="text-center whitespace-nowrap">
+                          {formatPercent(
+                            reportSummary.pavementTypeLengthStats![type]
+                              ?.percentage ?? 0
+                          )}
+                        </TableCell>
+                      </Fragment>
+                    ))
+                  ) : (
+                    /* Fallback for old reports without length stats: show "-" for km, use old percentages */
+                    PAVEMENT_TYPES.map((type) => (
+                      <Fragment key={type}>
+                        <TableCell className="text-center whitespace-nowrap">
+                          -
+                        </TableCell>
+                        <TableCell className="text-center whitespace-nowrap">
+                          {formatPercent(
+                            reportSummary.pavementTypePercentages[type] ?? 0
+                          )}
+                        </TableCell>
+                      </Fragment>
+                    ))
+                  )
                 ) : (
                   <TableCell
-                    colSpan={PAVEMENT_TYPES.length}
-                    className="text-center italic text-muted-foreground"
+                    colSpan={PAVEMENT_TYPES.length * 2}
+                    className="text-muted-foreground text-center italic"
                   >
                     {t("roadsTable.pendingLabel")}
                   </TableCell>
@@ -252,7 +280,7 @@ export function RoadsTable() {
                 ) : (
                   <TableCell
                     colSpan={CONDITION_ORDER.length * 2}
-                    className="text-center italic text-muted-foreground"
+                    className="text-muted-foreground text-center italic"
                   >
                     {t("roadsTable.pendingLabel")}
                   </TableCell>

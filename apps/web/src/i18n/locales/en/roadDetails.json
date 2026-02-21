@@ -140,7 +140,7 @@
       "roadName": "Road Name",
       "totalLength": "Total Length (km)",
       "sectionWidth": "Section Width (m)",
-      "percentagesOfSurfaceType": "Percentages of Surface Type",
+      "lengthBySurfaceType": "Length by Surface Type",
       "lengthByCondition": "Length by Condition",
       "condition": "Condition",
       "tti": "TTI",

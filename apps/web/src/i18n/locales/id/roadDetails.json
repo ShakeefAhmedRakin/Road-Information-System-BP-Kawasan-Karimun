@@ -140,7 +140,7 @@
       "roadName": "Nama Jalan",
       "totalLength": "Panjang Total (km)",
       "sectionWidth": "Lebar Bagian (m)",
-      "percentagesOfSurfaceType": "Persentase Jenis Permukaan",
+      "lengthBySurfaceType": "Panjang berdasarkan Jenis Permukaan",
       "lengthByCondition": "Panjang berdasarkan Kondisi",
       "condition": "Kondisi",
       "tti": "TTI",
