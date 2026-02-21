@@ -486,11 +486,9 @@ export default function UpdateRoadDialog({
                   type="button"
                   variant="outline"
                   onClick={handleModifyLength}
-                  title={t("updateRoad.modifyWipTitle")}
-                  // WIP
-                  disabled={true}
+                  disabled={isUpdating}
                 >
-                  {t("updateRoad.modifyWip")}
+                  {t("updateRoad.modifyLength")}
                 </Button>
               </div>
             </div>

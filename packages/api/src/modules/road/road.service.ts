@@ -237,9 +237,10 @@ class RoadService {
     }
 
     // Return the data needed for segment regeneration
+    // Note: numeric columns from PostgreSQL return as strings, must convert
     return {
       segmentIntervalM: roadRecord.segmentIntervalM,
-      pavementWidthM: roadRecord.pavementWidthM,
+      pavementWidthM: this.toNumber(roadRecord.pavementWidthM),
       // From first segment
       pavementType: firstSegment.pavementType,
       carriagewayWidthM: this.toNullableNumber(firstSegment.carriagewayWidthM),

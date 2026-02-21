@@ -39,8 +39,7 @@
       "label": "Terlihat oleh pengunjung",
       "description": "Ketika diaktifkan, jalan ini dapat dilihat oleh pengunjung."
     },
-    "modifyWip": "Ubah (WIP)",
-    "modifyWipTitle": "Fitur ini belum tersedia",
+    "modifyLength": "Ubah",
     "close": "Tutup",
     "lengthModal": {
       "title": "Konfirmasi Perubahan Panjang Jalan",

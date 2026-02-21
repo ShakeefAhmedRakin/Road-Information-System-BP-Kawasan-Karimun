@@ -39,8 +39,7 @@
       "label": "Visible to visitors",
       "description": "When enabled, this road can be viewed by visitors."
     },
-    "modifyWip": "Modify (WIP)",
-    "modifyWipTitle": "This feature is not available yet",
+    "modifyLength": "Modify",
     "close": "Close",
     "lengthModal": {
       "title": "Confirm Road Length Change",
