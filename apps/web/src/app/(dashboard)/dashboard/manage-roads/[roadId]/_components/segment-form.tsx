@@ -98,8 +98,13 @@ const SegmentForm = forwardRef<SegmentFormHandle, SegmentFormProps>(
       defaultValues,
     });
 
+    // Only reset when the form has no unsaved changes.
+    // This prevents React Query background refetches (e.g. on window focus)
+    // from wiping user edits when segment prop references change.
     useEffect(() => {
-      form.reset(defaultValues);
+      if (!form.formState.isDirty) {
+        form.reset(defaultValues);
+      }
     }, [defaultValues, form]);
 
     const watchedPavementType = form.watch("pavementType");
