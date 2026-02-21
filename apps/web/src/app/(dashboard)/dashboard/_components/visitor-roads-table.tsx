@@ -124,7 +124,7 @@ export function VisitorRoadsTable() {
           {sortedRoads.map(({ road, reportSummary }, index) => {
             const hasReport = reportSummary != null;
             const totalLength = Number(road.totalLengthKm);
-            const width = Number(road.pavementWidthM);
+            const width = road.firstSegmentPavementWidthM;
 
             return (
               <TableRow key={road.id}>

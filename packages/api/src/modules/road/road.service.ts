@@ -102,13 +102,13 @@ class RoadService {
   }
 
   async listAllRoads(): Promise<
-    Array<ReadRoadType & { segmentCount: number }>
+    Array<ReadRoadType & { segmentCount: number; firstSegmentPavementWidthM: number }>
   > {
     const roads = await db.select().from(road);
 
-    // Get segment counts for each road
     const roadIds = roads.map((r) => r.id);
     const segmentCountsMap = new Map<string, number>();
+    const firstSegmentWidthMap = new Map<string, number>();
 
     if (roadIds.length > 0) {
       const segmentCounts = await db
@@ -123,26 +123,40 @@ class RoadService {
       for (const { roadId, count } of segmentCounts) {
         segmentCountsMap.set(roadId, count);
       }
+
+      const firstSegments = await db
+        .selectDistinctOn([segment.roadId], {
+          roadId: segment.roadId,
+          pavementWidthM: segment.pavementWidthM,
+        })
+        .from(segment)
+        .where(inArray(segment.roadId, roadIds))
+        .orderBy(segment.roadId, segment.segmentNumber);
+
+      for (const row of firstSegments) {
+        firstSegmentWidthMap.set(row.roadId, this.toNumber(row.pavementWidthM));
+      }
     }
 
-    // Add segment counts to roads
     return roads.map((road) => ({
       ...road,
       segmentCount: segmentCountsMap.get(road.id) ?? 0,
+      firstSegmentPavementWidthM:
+        firstSegmentWidthMap.get(road.id) ?? this.toNumber(road.pavementWidthM),
     }));
   }
 
   async listVisibleRoadsForVisitors(): Promise<
-    Array<ReadRoadType & { segmentCount: number }>
+    Array<ReadRoadType & { segmentCount: number; firstSegmentPavementWidthM: number }>
   > {
     const roads = await db
       .select()
       .from(road)
       .where(eq(road.isVisibleByVisitors, true));
 
-    // Get segment counts for each road
     const roadIds = roads.map((r) => r.id);
     const segmentCountsMap = new Map<string, number>();
+    const firstSegmentWidthMap = new Map<string, number>();
 
     if (roadIds.length > 0) {
       const segmentCounts = await db
@@ -157,12 +171,26 @@ class RoadService {
       for (const { roadId, count } of segmentCounts) {
         segmentCountsMap.set(roadId, count);
       }
+
+      const firstSegments = await db
+        .selectDistinctOn([segment.roadId], {
+          roadId: segment.roadId,
+          pavementWidthM: segment.pavementWidthM,
+        })
+        .from(segment)
+        .where(inArray(segment.roadId, roadIds))
+        .orderBy(segment.roadId, segment.segmentNumber);
+
+      for (const row of firstSegments) {
+        firstSegmentWidthMap.set(row.roadId, this.toNumber(row.pavementWidthM));
+      }
     }
 
-    // Add segment counts to roads
     return roads.map((road) => ({
       ...road,
       segmentCount: segmentCountsMap.get(road.id) ?? 0,
+      firstSegmentPavementWidthM:
+        firstSegmentWidthMap.get(road.id) ?? this.toNumber(road.pavementWidthM),
     }));
   }
 
